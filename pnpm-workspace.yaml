@@ -1,0 +1,35 @@
+# pnpm 11 no longer reads the "pnpm" field from package.json. These settings
+# live here instead. See docs/DEVIATIONS.md D-04.
+
+# pnpm 10+ blocks dependency build scripts by default. Astro needs esbuild's,
+# and sharp's for image optimisation. Without this the install succeeds but
+# prints ERR_PNPM_IGNORED_BUILDS and leaves those packages unbuilt.
+#
+# Note the key is `allowBuilds` (a map), not pnpm 10's `onlyBuiltDependencies`
+# (a list). The old name still parses but is not honoured, so it fails silently.
+allowBuilds:
+  esbuild: true
+  sharp: true
+
+# Surface incompatible peer ranges at install time rather than at first
+# typecheck. This is the guard that catches problems like the TypeScript 7
+# incompatibility documented in docs/DEVIATIONS.md (D-01).
+strictPeerDependencies: true
+
+peerDependencyRules:
+  allowedVersions:
+    # eslint-plugin-astro >= 2.0.0 requires eslint >= 10 *and* requires
+    # eslint-plugin-jsx-a11y >= 6.10.2 — but 6.10.2 is the latest published
+    # release and still declares `eslint: ^3 || ... || ^9`. The two
+    # requirements cannot both be satisfied as declared.
+    #
+    # jsx-a11y is a rules-only plugin with no ESLint 10 incompatibility in
+    # practice; its declared range is simply stale. This override is scoped to
+    # that single edge so strict peer checking stays on everywhere else.
+    # Remove it once jsx-a11y publishes ESLint 10 support.
+    # See docs/DEVIATIONS.md D-24.
+    eslint-plugin-jsx-a11y>eslint: "10"
+
+minimumReleaseAgeExclude:
+  - "@astrojs/check@0.9.10"
+  - astro@7.1.4

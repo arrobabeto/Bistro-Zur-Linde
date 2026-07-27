@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# Protect the default branch. Work happens on dev and feature/* branches.
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "main" ]; then
+  echo "error: tried to commit directly to main branch"
+  exit 1
+fi
+
+pnpm run pretty-quick
+pnpm run lint
+pnpm run typecheck
+
+echo
+echo 'everything okay'
+echo

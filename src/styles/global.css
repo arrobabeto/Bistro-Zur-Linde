@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Tailwind 4 is CSS-first — this block is the single place to
+ * retheme a project. There is no JS config file and no `darkMode` key.
+ *
+ * These tokens are deliberately neutral placeholders. Replace them per
+ * project; do not hardcode colour values in components (ADR-0008).
+ */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, serif;
+
+  --color-brand-50: #f0f7ff;
+  --color-brand-100: #e0effe;
+  --color-brand-300: #7cc4fa;
+  --color-brand-500: #0ea5e9;
+  --color-brand-700: #0369a1;
+  --color-brand-900: #0e2138;
+
+  --spacing-section: 5rem;
+}
+
+@custom-variant enter (&:hover, &:focus-visible);
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-neutral-900 antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-brand-500 outline-2 outline-offset-2;
+  }
+}
+
+/*
+ * Shared component classes live here rather than in `.astro` <style> blocks.
+ * Those blocks are processed separately and cannot see @theme tokens without
+ * a @reference line, so `@apply` fails there with "Cannot apply unknown
+ * utility class". See docs/DEVIATIONS.md V-09.
+ */
+@layer components {
+  .container-prose {
+    @apply mx-auto w-full max-w-3xl px-6;
+  }
+
+  .container-wide {
+    @apply mx-auto w-full max-w-6xl px-6;
+  }
+}

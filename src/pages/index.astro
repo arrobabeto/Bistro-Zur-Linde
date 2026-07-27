@@ -1,0 +1,62 @@
+---
+// Phase 1 placeholder. Replaced in Phase 4 by src/pages/[...slug].astro, which
+// resolves this route from the CMS `pages` row with slug "home".
+import { PUBLIC_SITE_NAME, PUBLIC_SITE_DESCRIPTION } from "astro:env/client"
+
+import { DEFAULT_LOCALE, LOCALES } from "~/config/locales"
+import "~/styles/global.css"
+
+const checks = [
+  { label: "Astro", value: "7.x, zero client JS by default" },
+  { label: "Tailwind", value: "4.x, CSS-first tokens" },
+  { label: "Locales", value: LOCALES.join(", ") },
+  { label: "Default locale", value: DEFAULT_LOCALE },
+]
+---
+
+<!doctype html>
+<html lang={DEFAULT_LOCALE}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{PUBLIC_SITE_NAME}</title>
+    <meta name="description" content={PUBLIC_SITE_DESCRIPTION} />
+  </head>
+
+  <body>
+    <main class="container-prose py-section">
+      <p
+        class="text-brand-700 mb-3 text-xs font-semibold tracking-[0.18em] uppercase"
+      >
+        Phase 1 · scaffold
+      </p>
+
+      <h1 class="mb-4 text-4xl font-semibold tracking-tight text-balance">
+        {PUBLIC_SITE_NAME}
+      </h1>
+
+      <p class="mb-10 text-lg text-neutral-600">
+        {PUBLIC_SITE_DESCRIPTION}
+      </p>
+
+      <dl class="divide-y divide-neutral-200 border-y border-neutral-200">
+        {
+          checks.map((check) => (
+            <div class="flex items-baseline justify-between gap-6 py-3">
+              <dt class="text-sm font-medium text-neutral-500">
+                {check.label}
+              </dt>
+              <dd class="text-sm text-neutral-900">{check.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <p class="mt-10 text-sm text-neutral-500">
+        The toolchain is wired. Phase 2 adds the Orbitype data layer, and Phase
+        4 replaces this page with the CMS-driven catch-all route.
+      </p>
+    </main>
+  </body>
+</html>

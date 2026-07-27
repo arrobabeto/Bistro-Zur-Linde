@@ -1,0 +1,60 @@
+{
+  "name": "orbitype-astro-template",
+  "version": "0.1.0",
+  "private": true,
+  "license": "proprietary",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=11.0.0"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "setup": "node scripts/setup.mjs && astro sync && husky",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "astro check",
+    "format": "prettier --write .",
+    "pretty-quick": "pretty-quick --staged",
+    "mcp:env": "node scripts/print-mcp-env.mjs",
+    "mcp:verify": "node scripts/verify-orbitype-mcp.mjs",
+    "figma:verify": "node scripts/verify-figma-mcp.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test:e2e"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "11.0.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vercel/og": "^0.11.1",
+    "astro": "^7.1.4",
+    "luxon": "^3.7.2",
+    "sanitize-html": "^2.17.6",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.0",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.2",
+    "@types/sanitize-html": "^2.16.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "astro-eslint-parser": "^3.0.0",
+    "eslint": "^10.8.0",
+    "eslint-plugin-astro": "^3.0.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "pretty-quick": "^4.2.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0"
+  }
+}
