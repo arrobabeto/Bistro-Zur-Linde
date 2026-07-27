@@ -1,0 +1,36 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+.astro/
+.vercel/
+.output/
+
+# environment — never commit real credentials
+.env
+.env.*
+!.env.example
+
+# MCP configuration holds live API keys
+.cursor/mcp.json
+
+# reference material: predecessor-stack checkouts consulted during development.
+# never committed — they carry third-party content and live credentials.
+example-only/
+
+# testing
+test-results/
+playwright-report/
+playwright/.cache/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editor and OS
+.DS_Store
+.idea/
+*.swp
