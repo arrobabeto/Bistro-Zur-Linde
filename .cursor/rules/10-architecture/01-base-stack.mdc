@@ -1,0 +1,34 @@
+---
+description: Base technology stack and toolchain versions
+alwaysApply: true
+---
+
+# Base stack
+
+| Tool | Version / constraint |
+|------|---------------------|
+| Astro | 7.x |
+| `@astrojs/vercel` | pinned exactly (no caret) |
+| TypeScript | 6.x (not 7 — `@astrojs/check` peer bound) |
+| Tailwind CSS | 4.x via `@tailwindcss/vite` |
+| Node.js | even majors only (22, 24, …); build machine sets Vercel runtime |
+| pnpm | 11.x; lockfile committed |
+
+## Package manager
+
+- Always use **pnpm**, never npm or yarn
+- First-time setup: **`pnpm run setup`** (not `pnpm setup` — shadows pnpm's built-in command)
+- Install: `pnpm install --frozen-lockfile` in CI
+- Settings live in `pnpm-workspace.yaml`, not `package.json#pnpm`
+
+## Config files
+
+- `astro.config.ts` — not `.mjs`; imports locale list from `src/config/locales.ts`
+- `eslint.config.js` — flat config, ESLint 10
+- No `tailwind.config.js` — tokens in `src/styles/global.css`
+
+## Integrations
+
+- `@astrojs/tailwind` is incompatible with Astro 7 — do not add it
+- Email: provider-agnostic `fetch` stub until wired (ADR-0002 pattern)
+- OG images: `@vercel/og` on Node serverless; `@types/react` dev-only (ADR-0003)

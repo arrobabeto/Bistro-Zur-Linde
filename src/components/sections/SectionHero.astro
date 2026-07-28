@@ -1,0 +1,64 @@
+---
+// SectionHero.astro
+//
+// CMS JSON:
+// {
+//   "title":    { "en": "Headline", "de": "Titel" },
+//   "lead":     { "en": "Lead text", "de": "Lead" },
+//   "ctaLabel": { "en": "Get started", "de": "Loslegen" },
+//   "ctaHref":  "/posts",
+//   "img":      "",
+//   "_orbi":    { "component": "SectionHero" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  lead?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  img?: string
+  locale: Locale
+}
+
+const { title, lead, ctaLabel, ctaHref, img, locale } = Astro.props
+const heading = translate(title, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section class="container-wide py-section">
+  <div class="grid items-center gap-10 lg:grid-cols-2">
+    <div>
+      {
+        heading && (
+          <h1 class="mb-4 text-4xl font-semibold tracking-tight text-balance md:text-5xl">
+            {heading}
+          </h1>
+        )
+      }
+      <p class="mb-8 text-lg text-neutral-600">{translate(lead, locale)}</p>
+      {
+        cta && ctaHref && (
+          <a
+            href={ctaHref}
+            class="bg-brand-900 inline-flex rounded-lg px-5 py-2.5 text-sm font-medium text-white"
+          >
+            {cta}
+          </a>
+        )
+      }
+    </div>
+    {
+      img && (
+        <img
+          src={img}
+          alt=""
+          class="w-full rounded-2xl object-cover shadow-sm"
+          loading="eager"
+        />
+      )
+    }
+  </div>
+</section>

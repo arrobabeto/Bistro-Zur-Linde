@@ -1,0 +1,29 @@
+---
+description: Prefer vanilla HTML, CSS, and minimal TypeScript islands
+alwaysApply: true
+---
+
+# Prefer vanilla
+
+## Default stance
+
+Content pages ship **HTML and CSS only**. The template has no Vue, React, or Svelte runtime.
+
+## When interactivity is needed
+
+1. Native HTML first (`<details>`, `<dialog>`, form `action` to API routes)
+2. CSS-only states (`:hover`, `:focus-visible`, `@custom-variant`)
+3. Vanilla TS in an Astro island (`client:load` / `client:visible`) only if 1–2 cannot work
+
+## Forbidden without explicit request
+
+- Adding React, Vue, Svelte, or Preact dependencies
+- Hydrating entire layouts or section lists
+- Client-side routers or global state libraries
+
+## Exceptions already accepted
+
+- `@types/react` — devDependency for `@vercel/og` types only (ADR-0003)
+- `@vercel/og` — server endpoint, not client bundle
+
+Measure bundle impact before adding any `client:*` directive.

@@ -1,0 +1,23 @@
+---
+import { resolveSection } from "~/lib/sections"
+import DebugPanel from "./DebugPanel.astro"
+import type { Section } from "~/types/section"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  data: Section
+  locale: Locale
+}
+
+const { data, locale } = Astro.props
+const { _orbi, ...sectionProps } = data
+const Component = resolveSection(_orbi?.component)
+---
+
+{
+  Component ? (
+    <Component {...sectionProps} locale={locale} />
+  ) : (
+    <DebugPanel data={data} />
+  )
+}

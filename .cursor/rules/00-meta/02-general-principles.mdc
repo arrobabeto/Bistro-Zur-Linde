@@ -1,0 +1,30 @@
+---
+description: KISS, YAGNI, and type safety defaults
+alwaysApply: true
+---
+
+# General principles
+
+## KISS
+
+Prefer the simplest correct solution. One function, one file, one responsibility. If a helper is used once, inline it.
+
+## YAGNI
+
+Do not build features, abstractions, or configuration for hypothetical future needs. The template ships mock mode, seed, and installer — not every possible CMS edge case.
+
+## Type safety
+
+- `pnpm run typecheck` must pass (`astro check`)
+- No `any` — ESLint enforces `@typescript-eslint/no-explicit-any`
+- Use `import type` for type-only imports
+- Section props: define an `interface Props` in each section; spread CMS fields explicitly
+- Prefer `AstroInstance["default"]` for dynamic section typing
+
+## Verification before merge
+
+```bash
+pnpm run verify   # lint + typecheck + e2e + key leakage
+```
+
+Fix lint and type errors; do not disable rules to greenwash CI.

@@ -298,15 +298,13 @@ Present in the predecessor's header set. Deprecated and ignored by modern browse
 
 ---
 
-### D-09 — `uid()` is created by the installer
+### D-09 — `uid()` installer behaviour (revised after live probe)
 
-**Blueprint said:** "`uid()` is an Orbitype-provided default."
+**Earlier claim:** `uid()` is not Orbitype-provided; the installer must create it or installation fails.
 
-**Reality: it is not.** `uid()` is an ordinary user-defined Postgres function that the predecessor creates through a side-channel SQL script, returning a 6-character random alphanumeric string. Every table in the schema defaults its primary key to it.
+**Live finding (2026-07-27):** on a fresh empty connector, `uid()` already existed and was byte-identical to the blueprint’s 6-character function. `CREATE OR REPLACE FUNCTION uid()` returns **500** with `must be owner of function uid`. Tables still create successfully because the function is present.
 
-**This was a build-breaking defect.** The installer creates tables containing `DEFAULT uid()` but the blueprint never had it create the function, so schema installation would fail against an empty connector — precisely the first-run path the welcome screen exists to serve.
-
-**Adaptation:** `CREATE OR REPLACE FUNCTION uid()` is the installer's first statement, before any `CREATE TABLE`. It is idempotent. Recorded as ADR-0011, with the 62⁶ keyspace noted as risk R-12.
+**Adaptation:** the installer still attempts `CREATE OR REPLACE`, then on failure runs `SELECT uid()` and treats a working function as success. Idempotent insurance remains correct; the premise that Orbitype never provisions `uid()` was too strong. ADR-0011 updated.
 
 ---
 
@@ -499,11 +497,15 @@ Each surfaced as a hard failure during Phase 1, not as a preference.
 
 Expected the Vercel build output to show cache configuration, by analogy with ISR's `.prerender-config.json`.
 
-**Reality:** `.vercel/output/config.json` after a `server`-mode build contains only routing entries — filesystem handling, the `_astro` immutable asset header, and `_render` dispatch. No cache metadata, no tags, no prerender config.
+**Reality:** `.vercel/output/config.json` after a `server`-mode build contains only routing entries. The native cache provider works at **runtime**. Additionally, `@astrojs/vercel` does **not** support `astro preview`, so local CDN-hit tests cannot use the preview server. Caching e2e therefore runs the API-not-cached middleware assertion under `astro dev`; a true CDN HIT is verified on a Vercel deployment (Phase 10).
 
-This is correct rather than broken: the native cache provider works at **runtime**, emitting `Cache-Control`, `Vercel-CDN-Cache-Control` and cache-tag headers per response. It is a genuine architectural difference from ISR, which is a build-time declaration.
+---
 
-**Consequence, and it is the important one:** caching behaviour is **not observable from a local build**. `cache.enabled` is also `false` under `astro dev`. The two caching assertions in §17.2 therefore require `astro build && astro preview` or a real deployment — they cannot run in the standard mock-mode Playwright setup. Reinforces R-11 and the open item below.
+### D-27 — `.cursor/mcp.json` is committed (env placeholders only)
+
+**Earlier claim:** gitignore `.cursor/mcp.json` because it holds live keys.
+
+**Adaptation (ADR-0014):** the file holds only `${env:VAR}` references, so it is safe to commit and clones inherit MCP. `.cursor/mcp.json.example` documents multi-connector scope suffixes. `scripts/check-mcp-safety.mjs` plus the pre-commit hook reject any inlined key.
 
 ---
 

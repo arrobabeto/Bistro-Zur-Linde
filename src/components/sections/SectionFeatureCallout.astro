@@ -1,0 +1,49 @@
+---
+// SectionFeatureCallout.astro
+//
+// CMS JSON (human-readable key first, _orbi last):
+// {
+//   "title":   { "en": "Why teams switch", "de": "Warum Teams wechseln" },
+//   "content": { "en": "<p>Body</p>", "de": "<p>Text</p>" },
+//   "variant": "highlight",
+//   "_orbi":   { "component": "SectionFeatureCallout" }
+// }
+import SafeHtml from "~/components/common/SafeHtml.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  content?: I18nString
+  variant?: "default" | "highlight"
+  locale: Locale
+}
+
+const { title, content, variant = "default", locale } = Astro.props
+const heading = translate(title, locale)
+const isHighlight = variant === "highlight"
+---
+
+<section class="container-wide py-section">
+  <div
+    class:list={[
+      "mx-auto max-w-5xl rounded-2xl p-6 md:p-10",
+      isHighlight
+        ? "bg-brand-900 text-white"
+        : "bg-neutral-100 text-neutral-900",
+    ]}
+  >
+    {
+      heading && (
+        <h2 class="mb-4 text-2xl font-bold tracking-tight">{heading}</h2>
+      )
+    }
+    <SafeHtml
+      html={translate(content, locale)}
+      class={isHighlight
+        ? "prose prose-invert max-w-none"
+        : "prose max-w-none text-neutral-700"}
+    />
+  </div>
+</section>

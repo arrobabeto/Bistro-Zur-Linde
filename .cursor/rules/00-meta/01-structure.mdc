@@ -1,0 +1,36 @@
+---
+description: Repository structure and layer boundaries
+alwaysApply: true
+---
+
+# Structure
+
+```
+src/
+  components/     # Presentation only — sections, layout, seo, common
+  config/         # Locale list, site constants
+  layouts/        # Page shells (Base.astro)
+  lib/            # Pure TS — i18n, sections registry, orbitype client
+    orbitype/     # SQL, seed, schema, pages, posts, templates
+  pages/          # Routes and API endpoints
+  styles/         # global.css — tokens and shared classes
+  types/          # Shared TypeScript types
+docs/adr/         # Architecture decision records
+scripts/          # Setup, verify, safety checks
+.cursor/          # MCP config and these rules
+```
+
+## Layer rules
+
+| Layer | May import | Must not import |
+|-------|-----------|-----------------|
+| `components/`, `layouts/` | `~/lib/i18n`, `~/lib/sections`, `~/types/*`, `~/config/*` | `~/lib/orbitype/*`, `astro:env/server` |
+| `pages/` (`.astro`) | data layer, i18n, components | — |
+| `pages/api/` | data layer, `astro:env/server` | components |
+| `lib/orbitype/` | `client.ts`, types, config | components |
+
+Data flows **down**: pages fetch → pass resolved props → sections render.
+
+## Path alias
+
+Use `~/` for `src/` imports (configured in `tsconfig.json`).

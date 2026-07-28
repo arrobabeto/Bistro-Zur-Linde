@@ -1,0 +1,31 @@
+---
+description: Naming conventions for files, folders, and symbols
+alwaysApply: true
+---
+
+# Naming
+
+## Files and folders
+
+- Astro sections: `SectionPascalCase.astro` under `src/components/sections/`
+- Layouts: `PascalCase.astro` under `src/components/layout/` or `src/layouts/`
+- Data layer: kebab-case modules under `src/lib/orbitype/`
+- Types: singular domain nouns in `src/types/` (`page.ts`, `section.ts`)
+- API routes: kebab-case path segments (`install-schema.ts`, `contact.ts`)
+- Scripts: kebab-case `.mjs` in `scripts/`
+- ADRs: `NNNN-short-kebab-title.md` in `docs/adr/`
+
+## Symbols
+
+- Functions and variables: `camelCase`
+- Types and interfaces: `PascalCase`
+- Constants shared across modules: `SCREAMING_SNAKE_CASE` in `src/config/`
+- CMS component names match filenames exactly: `"SectionHero"`, not `"hero"`
+
+## Forbidden in this template
+
+- Client, project, or site-specific names anywhere in the repository
+- Third-party person names in docs, comments, or identifiers
+- Framework-specific prefixes from other stacks (e.g. `useXxx` hooks)
+
+Clones rename `PUBLIC_SITE_*` env vars and tokens — the template stays neutral.

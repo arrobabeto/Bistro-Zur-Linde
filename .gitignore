@@ -13,8 +13,9 @@ dist/
 .env.*
 !.env.example
 
-# MCP configuration holds live API keys
-.cursor/mcp.json
+# .cursor/mcp.json is committed — it holds only ${env:...} placeholders, never
+# literal keys. scripts/check-mcp-safety.mjs and the pre-commit hook enforce
+# that. See ADR-0014.
 
 # reference material: predecessor-stack checkouts consulted during development.
 # never committed — they carry third-party content and live credentials.

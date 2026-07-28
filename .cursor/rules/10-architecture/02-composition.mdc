@@ -1,0 +1,41 @@
+---
+description: File size limits and composition boundaries
+globs: src/**/*
+alwaysApply: false
+---
+
+# Composition
+
+## File size
+
+- Target **under 200 lines** per module; split when a file mixes fetch, transform, and render concerns
+- Section components: markup + minimal prop parsing only — no SQL, no `fetch`
+- One section component per CMS component name
+
+## Import boundaries
+
+Components and layouts **never** import:
+
+- `~/lib/orbitype/*` (pages/API fetch for them)
+- `astro:env/server` (secrets stay in data layer)
+
+ESLint enforces this in `eslint.config.js`. Do not `@ts-ignore` around it.
+
+## Section rendering pipeline
+
+```
+pages/[...slug].astro
+  → getPage(), getTemplate()
+  → compose sections array
+  → AnySection (strips _orbi, adds locale)
+  → Section*.astro
+```
+
+## Dynamic sections
+
+Registry: `import.meta.glob("/src/components/sections/Section*.astro")`. Adding a section = adding one file. No manual registry map.
+
+## Tests and scripts
+
+- E2E: `tests/` via Playwright
+- Setup/verify: `scripts/*.mjs` — Node globals allowed, `no-console` off

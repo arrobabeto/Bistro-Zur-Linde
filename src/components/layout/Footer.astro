@@ -1,0 +1,26 @@
+---
+import { phrases } from "~/lib/phrases"
+import { translate } from "~/lib/i18n"
+import type { Locale } from "~/config/locales"
+import { siteName } from "~/lib/site"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const year = new Date().getFullYear()
+---
+
+<footer class="mt-auto border-t border-neutral-200">
+  <div
+    class="container-wide flex flex-col gap-2 py-8 text-sm text-neutral-500 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p>
+      © {year}
+      {" "}
+      {siteName()}
+    </p>
+    <p>{translate(phrases.all_rights_reserved, locale)}</p>
+  </div>
+</footer>

@@ -1,0 +1,38 @@
+---
+description: Lint, format, and verify workflow for code quality
+globs: src/**,scripts/**,*.{js,ts,mjs}
+alwaysApply: false
+---
+
+# Code quality improvement
+
+## Before finishing a change
+
+```bash
+pnpm run lint        # ESLint, zero warnings
+pnpm run typecheck   # astro check
+pnpm run format      # Prettier when touching many files
+```
+
+Pre-commit hook runs: `mcp:safety`, `pretty-quick`, `lint`, `typecheck`.
+
+## ESLint highlights
+
+- `@typescript-eslint/no-explicit-any`: error
+- `eqeqeq`: always strict equality
+- `no-console`: warn (allowed: `warn`, `error`) except in `scripts/`
+- Components: `no-restricted-imports` for orbitype and server env (ADR-0007)
+- No hardcoded hex colours in components/pages (ADR-0008)
+
+## Astro-specific
+
+- Use `eslint-plugin-astro` recommended rules
+- Frontmatter scripts: keep logic minimal; heavy work belongs in `src/lib/`
+
+## Do not
+
+- Disable ESLint rules file-wide without ADR-level justification
+- Commit formatting-only churn unrelated to your task
+- Skip typecheck because "it's just Astro markup" — frontmatter is TypeScript
+
+Full gate: `pnpm run verify` (adds e2e + key leakage scan).

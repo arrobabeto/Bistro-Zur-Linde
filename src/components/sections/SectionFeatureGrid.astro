@@ -1,0 +1,59 @@
+---
+// SectionFeatureGrid.astro
+//
+// CMS JSON:
+// {
+//   "title": { "en": "Features", "de": "Funktionen" },
+//   "items": [
+//     {
+//       "title": { "en": "Fast", "de": "Schnell" },
+//       "text":  { "en": "…", "de": "…" },
+//       "icon":  ""
+//     }
+//   ],
+//   "_orbi": { "component": "SectionFeatureGrid" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Item {
+  title?: I18nString
+  text?: I18nString
+  icon?: string
+}
+
+interface Props {
+  title?: I18nString
+  items?: Item[]
+  locale: Locale
+}
+
+const { title, items = [], locale } = Astro.props
+const heading = translate(title, locale)
+---
+
+<section class="container-wide py-section">
+  {
+    heading && (
+      <h2 class="mb-8 text-center text-3xl font-semibold tracking-tight">
+        {heading}
+      </h2>
+    )
+  }
+  <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      items.map((item) => (
+        <li class="rounded-2xl border border-neutral-200 p-6">
+          {item.icon && (
+            <img src={item.icon} alt="" class="mb-3 h-8 w-8" loading="lazy" />
+          )}
+          <h3 class="mb-2 text-lg font-semibold">
+            {translate(item.title, locale)}
+          </h3>
+          <p class="text-sm text-neutral-600">{translate(item.text, locale)}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

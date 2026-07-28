@@ -1,0 +1,31 @@
+---
+description: Keep solutions simple and focused
+alwaysApply: true
+---
+
+# Keep it simple
+
+## Decision test
+
+If two approaches work, choose the one with:
+
+- Fewer files
+- Fewer dependencies
+- Fewer runtime modes (dev/mock/prod paths should share code)
+- No new env vars unless necessary
+
+## Patterns already chosen for simplicity
+
+- `fetch` instead of SDK (ADR-0002)
+- Filename registry instead of manual maps (ADR-0004)
+- `seed.ts` single source instead of duplicated mocks (ADR-0012)
+- `global.css` tokens instead of Tailwind JS config (ADR-0008)
+
+## Red flags
+
+- Adding a dependency to save ten lines
+- Introducing a "core" or "shared" package inside the repo
+- Abstract factories for sections with only three variants
+- Configuration JSON driving what TypeScript could express
+
+Simple code is easier for the next clone — and for agents editing the template.

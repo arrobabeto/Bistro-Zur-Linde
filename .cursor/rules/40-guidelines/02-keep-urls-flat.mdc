@@ -1,0 +1,31 @@
+---
+description: Flat CMS-driven URL structure
+globs: src/pages/**,src/lib/i18n.ts
+alwaysApply: false
+---
+
+# Keep URLs flat
+
+## Routing model
+
+- CMS pages: single catch-all `src/pages/[...slug].astro`
+- Slug is the Orbitype `pages.slug` field — no nested folder per page in `src/pages/`
+- Home: slug `"home"` maps to `/` via `localePath()`
+
+## Locale prefixes
+
+- Default locale (`en`): **no prefix** — `/about`, not `/en/about`
+- Additional locales: `/<locale>/<slug>` when configured in `src/config/locales.ts`
+- Posts: `/posts`, `/posts/[id]/[...slug]` — separate from CMS catch-all
+
+## Do not
+
+- Create `src/pages/about.astro` for CMS content — it bypasses the CMS
+- Deeply nest marketing URLs in the filesystem (`/services/consulting/...`) unless slug explicitly contains slashes
+- Add trailing-slash redirects without updating sitemap and canonical helpers in `src/lib/seo.ts`
+
+## Static generation
+
+When `RENDER_MODE=static`, `getStaticPaths()` enumerates slugs from Orbitype (or seed). Root path uses `slug: undefined`.
+
+Flat URLs keep Orbitype slugs, sitemap entries, and revalidation paths aligned.

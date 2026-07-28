@@ -1,0 +1,49 @@
+---
+import Base from "~/layouts/Base.astro"
+import Seo from "~/components/seo/Seo.astro"
+import JsonLd from "~/components/seo/JsonLd.astro"
+import AnySection from "~/components/sections/AnySection.astro"
+import { DEFAULT_LOCALE } from "~/config/locales"
+import { getPost } from "~/lib/orbitype/posts"
+import { translate } from "~/lib/i18n"
+import { buildPostSeo } from "~/lib/seo"
+
+const locale = DEFAULT_LOCALE
+const id = Astro.params.id
+if (!id) return Astro.rewrite("/404")
+
+const post = await getPost(id)
+if (!post) return Astro.rewrite("/404")
+
+if (Astro.cache.enabled) {
+  Astro.cache.set({
+    tags: [`post:${post.id}`, "posts"],
+    lastModified: post.updated_at ? new Date(post.updated_at) : undefined,
+  })
+}
+
+const seo = buildPostSeo({
+  post,
+  locale,
+  path: Astro.url.pathname,
+})
+---
+
+<Base locale={locale}>
+  <Fragment slot="head">
+    <Seo {...seo} />
+    <JsonLd data={seo.jsonLd} />
+  </Fragment>
+  <main>
+    <header class="container-prose pt-section pb-6">
+      <h1 class="text-4xl font-semibold tracking-tight text-balance">
+        {translate(post.title, locale)}
+      </h1>
+    </header>
+    {
+      post.sections.map((section) => (
+        <AnySection data={section} locale={locale} />
+      ))
+    }
+  </main>
+</Base>

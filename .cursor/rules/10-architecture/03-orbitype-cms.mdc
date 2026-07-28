@@ -1,0 +1,63 @@
+---
+description: Orbitype CMS contract — sections, SQL, errors, MCP discipline
+globs: src/lib/orbitype/**,src/pages/api/**,src/components/sections/**
+alwaysApply: false
+---
+
+# Orbitype CMS
+
+**Most important rule in this template.** Violations break rendering, security, or agent workflows.
+
+## Sections contract
+
+Every section object in CMS JSON:
+
+```json
+{
+  "title": { "en": "..." },
+  "_orbi": { "component": "SectionHero" }
+}
+```
+
+- `_orbi` is **always last** in documentation examples; parsers do not require order
+- `_orbi.component` must match a `Section*.astro` filename stem
+- All other keys become props spread into the section (minus `_orbi` stripped by `AnySection`)
+- Pass **`normalizeSections()`** on every `sections`, `sections_before`, `sections_after` read — Orbitype may store nested arrays `[[{...}]]`
+
+## SQL access
+
+- Single client: `orbitypeSql(sql, bindings)` in `src/lib/orbitype/client.ts`
+- **Named bindings only** — never interpolate user input into SQL strings
+- Every mutation includes **`RETURNING`** — responses contain only returned rows; no rowcount
+- Install **`uid()` before tables** — see ADR-0011
+
+## Error shapes (do not assume 401)
+
+| Condition | Status | Body |
+|-----------|--------|------|
+| Missing API key | 400 | `text/plain` |
+| Invalid API key | 404 | JSON `E_ROW_NOT_FOUND` |
+| Bad route/method | 404 | JSON |
+
+Always read error bodies with `.text()`. Never call `.json()` on errors blindly.
+
+## MCP session discipline
+
+Before any Orbitype MCP tool use in Cursor:
+
+1. Export `ORBITYPE_SQL_API_KEY` (`pnpm run mcp:env`)
+2. Reload MCP in Cursor
+3. Call **`orbitype_get_context`** first to confirm connector scope
+4. Use read-only `SELECT` for exploration; confirm with user before `INSERT`/`UPDATE`/`DELETE`/`DDL`
+
+Safe workflow: context → read → propose SQL → user confirms → mutate with `RETURNING`.
+
+## Mock and seed
+
+- `ORBITYPE_MOCK=true` or missing key → seed data via `src/lib/orbitype/seed.ts`
+- `findSeedPage(slug)` returns `null` for unknown slugs (404 in mock mode)
+- `POST /api/setup/seed` populates live connector from same builders
+
+## Templates
+
+Composition: `[...before, ...page, ...after]`. See ADR-0013.

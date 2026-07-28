@@ -66,8 +66,10 @@ export default [
 
   {
     // ADR-0008. Design tokens live in src/styles/global.css; a hardcoded
-    // colour cannot be re-themed.
+    // colour cannot be re-themed. OG image canvases are exempt — they paint
+    // into a bitmap via Satori and cannot use CSS tokens.
     files: ["src/components/**", "src/layouts/**", "src/pages/**"],
+    ignores: ["src/pages/api/og/**"],
     rules: {
       "no-restricted-syntax": [
         "error",

@@ -1,0 +1,43 @@
+---
+import type { SeoData } from "~/lib/seo"
+import { PUBLIC_TWITTER_CREATOR, PUBLIC_TWITTER_SITE } from "astro:env/client"
+
+type Props = SeoData
+
+const {
+  title,
+  description,
+  keywords,
+  canonical,
+  alternates,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogType,
+  twitterCard,
+} = Astro.props
+
+const twitterSite = PUBLIC_TWITTER_SITE || Astro.props.twitterSite
+const twitterCreator = PUBLIC_TWITTER_CREATOR || Astro.props.twitterCreator
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
+<link rel="canonical" href={canonical} />
+{
+  alternates.map((alt) => (
+    <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+  ))
+}
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={ogDescription} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonical} />
+<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:title" content={ogTitle} />
+<meta name="twitter:description" content={ogDescription} />
+<meta name="twitter:image" content={ogImage} />
+{twitterSite && <meta name="twitter:site" content={twitterSite} />}
+{twitterCreator && <meta name="twitter:creator" content={twitterCreator} />}

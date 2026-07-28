@@ -1,0 +1,56 @@
+---
+// SectionCta.astro
+//
+// CMS JSON:
+// {
+//   "title":    { "en": "Ready?", "de": "Bereit?" },
+//   "text":     { "en": "…", "de": "…" },
+//   "ctaLabel": { "en": "Contact", "de": "Kontakt" },
+//   "ctaHref":  "/#contact",
+//   "_orbi":    { "component": "SectionCta" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  text?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  locale: Locale
+}
+
+const { title, text, ctaLabel, ctaHref = "#", locale } = Astro.props
+const heading = translate(title, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section class="py-section">
+  <div
+    class="container-wide bg-brand-900 rounded-3xl px-8 py-12 text-center text-white"
+  >
+    {
+      heading && (
+        <h2 class="mb-3 text-3xl font-semibold tracking-tight">{heading}</h2>
+      )
+    }
+    {
+      text && (
+        <p class="text-brand-100 mx-auto mb-8 max-w-2xl">
+          {translate(text, locale)}
+        </p>
+      )
+    }
+    {
+      cta && (
+        <a
+          href={ctaHref}
+          class="text-brand-900 inline-flex rounded-lg bg-white px-5 py-2.5 text-sm font-medium"
+        >
+          {cta}
+        </a>
+      )
+    }
+  </div>
+</section>

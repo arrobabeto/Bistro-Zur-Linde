@@ -1,0 +1,50 @@
+---
+description: Index of Cursor rules for the Orbitype Astro template
+alwaysApply: true
+---
+
+# Cursor rules index
+
+Rules are grouped by concern. Read the relevant file before editing that area.
+
+## Meta
+
+- [00-naming](00-meta/00-naming.mdc) — file, folder, and symbol naming
+- [01-structure](00-meta/01-structure.mdc) — directory layout and layer boundaries
+- [02-general-principles](00-meta/02-general-principles.mdc) — KISS, YAGNI, type safety
+
+## Architecture
+
+- [01-base-stack](10-architecture/01-base-stack.mdc) — Astro 7, pnpm, TypeScript, Tailwind 4, Node
+- [02-composition](10-architecture/02-composition.mdc) — file size limits, import boundaries
+- [03-orbitype-cms](10-architecture/03-orbitype-cms.mdc) — sections contract, SQL, MCP workflow
+- [04-rendering-and-performance](10-architecture/04-rendering-and-performance.mdc) — caching, middleware, JS budget
+
+## Principles
+
+- [01-do-not-lie](20-principles/01-do-not-lie.mdc) — honest defaults, no fake data
+- [02-prefer-vanilla](20-principles/02-prefer-vanilla.mdc) — no client framework
+- [03-prefer-explicit](20-principles/03-prefer-explicit.mdc) — explicit over implicit
+- [04-do-not-over-engineer](20-principles/04-do-not-over-engineer.mdc) — minimal abstractions
+
+## Code quality
+
+- [01-code-quality-improvement](20-code-quality/01-code-quality-improvement.mdc) — lint, format, verify
+
+## Guidelines
+
+- [01-keep-it-simple](40-guidelines/01-keep-it-simple.mdc) — simplest working solution
+- [02-keep-urls-flat](40-guidelines/02-keep-urls-flat.mdc) — flat CMS URL structure
+
+## Database
+
+- [01-database-interaction](50-database/01-database-interaction.mdc) — SQL bindings, RETURNING, uid()
+
+## UI
+
+- [01-section-authoring](60-ui/01-section-authoring.mdc) — section components, SafeHtml, locale
+- [02-research-before-building](60-ui/02-research-before-building.mdc) — check existing patterns first
+
+## ADRs
+
+Architecture decisions live in `docs/adr/`. Consult them when a rule references an ADR number.

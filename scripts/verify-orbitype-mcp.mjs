@@ -2,13 +2,15 @@
  * Checks that Orbitype MCP wiring is plausible before you rely on it, and
  * probes the SQL API if a key is available.
  *
- * This verifies configuration, not MCP itself — only Cursor can exercise the
- * MCP transport. Confirm the connector with `orbitype_get_context` in a chat.
+ * This verifies configuration and reachability. Confirm the connector with
+ * `orbitype_get_context` in a Cursor chat after exporting ORBITYPE_SQL_API_KEY
+ * and reloading MCP (Settings → Tools & MCP).
  */
 import fs from "node:fs"
 
 const MCP_CONFIG = ".cursor/mcp.json"
 const MCP_EXAMPLE = ".cursor/mcp.json.example"
+const MCP_ENDPOINT = "https://core.orbitype.com/api/mcp/v1"
 
 let failures = 0
 
@@ -34,7 +36,7 @@ if (!fs.existsSync(MCP_EXAMPLE)) {
 }
 
 if (!fs.existsSync(MCP_CONFIG)) {
-  warn(`${MCP_CONFIG} not found — copy the example and add your keys`)
+  fail(`${MCP_CONFIG} is missing — it must be committed so clones inherit MCP`)
 } else {
   let config
   try {
@@ -68,11 +70,17 @@ if (!fs.existsSync(MCP_CONFIG)) {
       continue
     }
 
+    if (server?.url !== MCP_ENDPOINT) {
+      warn(`${name}: unexpected URL ${server?.url}`)
+    }
+
     const variable = match[1]
     if (process.env[variable]) {
       pass(`${name}: ${variable} is exported`)
     } else {
-      fail(`${name}: ${variable} is not exported — run \`pnpm run mcp:env\``)
+      warn(
+        `${name}: ${variable} is not exported — run \`pnpm run mcp:env\` and add it to your shell profile`,
+      )
     }
   }
 }
@@ -105,11 +113,34 @@ if (!sqlKey) {
   } catch (error) {
     fail(`SQL API request failed: ${error.message}`)
   }
+
+  // Probe connector scope the same way MCP's orbitype_get_context does —
+  // OPTIONS /api with the key. Confirms the key is bound to a connector.
+  console.log("\nConnector scope (orbitype_get_context equivalent)\n")
+  try {
+    const response = await fetch("https://core.orbitype.com/api", {
+      method: "OPTIONS",
+      headers: { "X-API-KEY": sqlKey },
+    })
+    if (response.ok || response.status === 204) {
+      const body = await response.text().catch(() => "")
+      pass(
+        `connector scope probe responded ${response.status}${body ? `: ${body.slice(0, 120)}` : ""}`,
+      )
+    } else {
+      const body = await response.text().catch(() => "")
+      warn(
+        `connector scope probe responded ${response.status}: ${body.slice(0, 200)}`,
+      )
+    }
+  } catch (error) {
+    warn(`connector scope probe failed: ${error.message}`)
+  }
 }
 
 console.log(
   failures === 0
-    ? "\nAll checks passed. Run `orbitype_get_context` in Cursor to confirm the connector.\n"
+    ? "\nAll checks passed. Export ORBITYPE_SQL_API_KEY, reload MCP in Cursor, then run `orbitype_get_context`.\n"
     : `\n${failures} check(s) failed.\n`,
 )
 

@@ -1,0 +1,49 @@
+---
+description: Orbitype SQL interaction — bindings, RETURNING, uid, MCP context
+globs: src/lib/orbitype/**,src/pages/api/**,scripts/**
+alwaysApply: false
+---
+
+# Database interaction
+
+## Client entry point
+
+All SQL through `orbitypeSql(sql, bindings)` — POST to connector SQL API with `X-API-KEY`.
+
+```ts
+await orbitypeSql(
+  `INSERT INTO contacts (first_name, email, message)
+   VALUES (:first_name, :email, :message)
+   RETURNING id`,
+  { first_name, email, message },
+)
+```
+
+## Rules
+
+1. **Named bindings** (`:name`) for all dynamic values
+2. **`RETURNING`** on every `INSERT`, `UPDATE`, `DELETE` you need to verify
+3. **`uid()` before tables** on install — create or verify (ADR-0011)
+4. **Normalize sections** after every JSON column read
+5. Never log or expose `ORBITYPE_API_SQL_KEY`
+
+## Schema source of truth
+
+DDL strings: `src/lib/orbitype/schema.ts`  
+Install endpoint: `POST /api/setup/install-schema`  
+Migrate endpoint: `POST /api/setup/migrate` (additive `ALTER TABLE`)
+
+Tables: `pages`, `posts`, `settings`, `contacts`, `templates`, `comments`.
+
+## MCP agents
+
+Before writing SQL via MCP:
+
+1. `orbitype_get_context` — confirm connector and scope
+2. Read with `SELECT` first
+3. Mutations require user confirmation
+4. Include `RETURNING` so results are visible
+
+## Error handling
+
+Read failures as text. Invalid key → 404 JSON, not 401. Missing key → 400 plain text. Do not assume uniform JSON error bodies.

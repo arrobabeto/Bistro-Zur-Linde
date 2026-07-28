@@ -19,11 +19,13 @@
     "format": "prettier --write .",
     "pretty-quick": "pretty-quick --staged",
     "mcp:env": "node scripts/print-mcp-env.mjs",
+    "mcp:safety": "node scripts/check-mcp-safety.mjs",
     "mcp:verify": "node scripts/verify-orbitype-mcp.mjs",
     "figma:verify": "node scripts/verify-figma-mcp.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test:e2e"
+    "check:leakage": "node scripts/check-key-leakage.mjs",
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test:e2e && pnpm run check:leakage"
   },
   "dependencies": {
     "@astrojs/vercel": "11.0.3",

@@ -1,0 +1,35 @@
+---
+// SectionProse.astro
+//
+// CMS JSON:
+// {
+//   "title":   { "en": "Heading", "de": "Titel" },
+//   "content": { "en": "<p>Body</p>", "de": "<p>Text</p>" },
+//   "_orbi":   { "component": "SectionProse" }
+// }
+import SafeHtml from "~/components/common/SafeHtml.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  content?: I18nString
+  locale: Locale
+}
+
+const { title, content, locale } = Astro.props
+const heading = translate(title, locale)
+---
+
+<section class="container-prose py-section">
+  {
+    heading && (
+      <h2 class="mb-4 text-2xl font-semibold tracking-tight">{heading}</h2>
+    )
+  }
+  <SafeHtml
+    html={translate(content, locale)}
+    class="prose max-w-none text-neutral-700"
+  />
+</section>

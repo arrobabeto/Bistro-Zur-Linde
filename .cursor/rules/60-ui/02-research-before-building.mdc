@@ -1,0 +1,34 @@
+---
+description: Research existing patterns before building new UI or sections
+globs: src/components/**,src/styles/**
+alwaysApply: false
+---
+
+# Research before building
+
+## Before a new section
+
+1. Read an existing similar section (`SectionHero`, `SectionProse`, `SectionCta`)
+2. Check `src/lib/orbitype/schema.ts` defaults for expected JSON shape
+3. Confirm name matches registry convention (`Section*.astro`)
+4. Review `docs/adr/0004-filename-based-section-registry.md`
+
+## Before layout or global style changes
+
+1. Read `src/styles/global.css` — tokens and shared classes live there
+2. Check `src/layouts/Base.astro` and `src/components/layout/*`
+3. Verify SEO impact with `src/lib/seo.ts` and `Seo.astro`
+
+## Before new API or data behaviour
+
+1. Read `src/lib/orbitype/client.ts` and the relevant domain module
+2. Check `docs/DEVIATIONS.md` for verified API behaviour
+3. Run `pnpm run mcp:verify` if touching MCP-related docs or scripts
+
+## Figma / design handoff
+
+- Map colours to `@theme` tokens — do not paste hex into components
+- Spacing uses Tailwind scale or `--spacing-section` token
+- Prefer extending existing sections over one-off page markup
+
+Duplicating patterns incorrectly is worse than reusing them with new props.

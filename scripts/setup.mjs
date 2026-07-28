@@ -40,10 +40,14 @@ if (fs.existsSync(".env")) {
   fs.writeFileSync(".env", ENV_TEMPLATE)
 }
 
-if (!fs.existsSync(".cursor/mcp.json")) {
+if (fs.existsSync(".cursor/mcp.json")) {
   console.log(
-    "• hint: copy .cursor/mcp.json.example to .cursor/mcp.json and add your keys,\n" +
-      "  then run `pnpm run mcp:env` to print the shell exports Cursor needs",
+    "• MCP is committed (.cursor/mcp.json). Run `pnpm run mcp:env`, export the\n" +
+      "  printed variables, then reload MCP in Cursor Settings → Tools & MCP",
+  )
+} else {
+  console.log(
+    "• hint: .cursor/mcp.json is missing — restore it from git so clones inherit MCP",
   )
 }
 

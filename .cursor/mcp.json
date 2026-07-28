@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "orbitype-sql": {
+      "url": "https://core.orbitype.com/api/mcp/v1",
+      "headers": {
+        "X-API-KEY": "${env:ORBITYPE_SQL_API_KEY}"
+      }
+    }
+  }
+}

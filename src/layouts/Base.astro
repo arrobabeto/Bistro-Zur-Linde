@@ -1,0 +1,57 @@
+---
+import ConsentScripts from "~/components/layout/ConsentScripts.astro"
+import Footer from "~/components/layout/Footer.astro"
+import Navigation from "~/components/layout/Navigation.astro"
+import JsonLd from "~/components/seo/JsonLd.astro"
+import type { Locale } from "~/config/locales"
+import {
+  organizationLogo,
+  organizationName,
+  siteDescription,
+  siteName,
+  siteUrl,
+} from "~/lib/site"
+import "~/styles/global.css"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+
+const orgGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: organizationName(),
+      url: siteUrl(),
+      logo: organizationLogo(),
+    },
+    {
+      "@type": "WebSite",
+      name: siteName(),
+      url: siteUrl(),
+      description: siteDescription(),
+      publisher: { "@type": "Organization", name: organizationName() },
+    },
+  ],
+}
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <slot name="head" />
+    <JsonLd data={orgGraph} />
+    <ConsentScripts />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Navigation locale={locale} />
+    <slot />
+    <Footer locale={locale} />
+  </body>
+</html>

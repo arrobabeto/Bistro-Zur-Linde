@@ -6,16 +6,34 @@
         "X-API-KEY": "${env:ORBITYPE_SQL_API_KEY}"
       }
     },
-    "orbitype-s3-public": {
+    "orbitype-sql-prod-website": {
       "url": "https://core.orbitype.com/api/mcp/v1",
       "headers": {
-        "X-API-KEY": "${env:ORBITYPE_S3_PUBLIC_API_KEY}"
+        "X-API-KEY": "${env:ORBITYPE_SQL_API_KEY_PROD_WEBSITE}"
       }
     },
-    "orbitype-s3-private": {
+    "orbitype-sql-prod-marketing": {
       "url": "https://core.orbitype.com/api/mcp/v1",
       "headers": {
-        "X-API-KEY": "${env:ORBITYPE_S3_PRIVATE_API_KEY}"
+        "X-API-KEY": "${env:ORBITYPE_SQL_API_KEY_PROD_MARKETING}"
+      }
+    },
+    "orbitype-sql-local": {
+      "url": "https://core.orbitype.com/api/mcp/v1",
+      "headers": {
+        "X-API-KEY": "${env:ORBITYPE_SQL_API_KEY_LOCAL}"
+      }
+    },
+    "orbitype-s3-public-prod": {
+      "url": "https://core.orbitype.com/api/mcp/v1",
+      "headers": {
+        "X-API-KEY": "${env:ORBITYPE_S3_PUBLIC_API_KEY_PROD}"
+      }
+    },
+    "orbitype-s3-private-prod": {
+      "url": "https://core.orbitype.com/api/mcp/v1",
+      "headers": {
+        "X-API-KEY": "${env:ORBITYPE_S3_PRIVATE_API_KEY_PROD}"
       }
     }
   }

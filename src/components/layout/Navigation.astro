@@ -1,0 +1,35 @@
+---
+import { phrases } from "~/lib/phrases"
+import { translate } from "~/lib/i18n"
+import type { Locale } from "~/config/locales"
+import { siteName } from "~/lib/site"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+---
+
+<header class="border-b border-neutral-200">
+  <nav
+    class="container-wide flex items-center justify-between gap-6 py-4"
+    aria-label={translate(phrases.menu, locale)}
+  >
+    <a href="/" class="text-lg font-semibold tracking-tight text-neutral-900">
+      {siteName()}
+    </a>
+    <ul class="flex items-center gap-6 text-sm text-neutral-600">
+      <li>
+        <a class="enter:text-brand-700 transition-colors" href="/">
+          {translate(phrases.homepage, locale)}
+        </a>
+      </li>
+      <li>
+        <a class="enter:text-brand-700 transition-colors" href="/posts">
+          {translate(phrases.posts, locale)}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

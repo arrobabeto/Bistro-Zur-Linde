@@ -1,0 +1,32 @@
+---
+description: Explicit configuration, props, and control flow over magic
+alwaysApply: true
+---
+
+# Prefer explicit
+
+## Locale
+
+- Pass `locale: Locale` as a prop — do not read locale from globals inside sections
+- Resolve strings with `translate(value, locale)` at the call site
+- Route locale comes from `parseRoute()`, not implicit Astro i18n folder routing (ADR-0006)
+
+## Configuration
+
+- Public site values: `astro:env/client` imports (`PUBLIC_*`)
+- Secrets: `astro:env/server` in API routes and `src/lib/orbitype/` only
+- `astro.config.ts` reads `process.env` directly — document why when adding vars
+
+## Data flow
+
+- Pages fetch; sections render props — no hidden fetches in components
+- Section registry keys equal filenames — no alias map unless documented
+- Cache tags and `maxAge` declared in `routeRules`, not inferred
+
+## Errors
+
+- Throw `OrbitypeError` with status and body text from SQL client
+- Return real HTTP status codes from API routes (`400`, `404`, not generic `500` for validation)
+- Unknown CMS slugs → `Astro.rewrite("/404")`, not silent redirect to home
+
+Explicit code survives cloning, code review, and agent edits better than convention alone.

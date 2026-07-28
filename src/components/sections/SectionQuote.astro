@@ -1,0 +1,41 @@
+---
+// SectionQuote.astro
+//
+// CMS JSON:
+// {
+//   "quote":  { "en": "…", "de": "…" },
+//   "author": "Ada Lovelace",
+//   "role":   "Mathematician",
+//   "_orbi":  { "component": "SectionQuote" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  quote?: I18nString
+  author?: string
+  role?: string
+  locale: Locale
+}
+
+const { quote, author, role, locale } = Astro.props
+const text = translate(quote, locale)
+---
+
+{
+  text && (
+    <section class="container-prose py-section text-center">
+      <blockquote class="text-2xl font-medium tracking-tight text-balance text-neutral-900">
+        “{text}”
+      </blockquote>
+      {(author || role) && (
+        <footer class="mt-4 text-sm text-neutral-500">
+          {author}
+          {author && role ? " · " : ""}
+          {role}
+        </footer>
+      )}
+    </section>
+  )
+}

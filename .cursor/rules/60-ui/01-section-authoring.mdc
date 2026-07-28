@@ -1,0 +1,47 @@
+---
+description: Authoring CMS section components
+globs: src/components/sections/**
+alwaysApply: false
+---
+
+# Section authoring
+
+## File checklist
+
+1. Name: `SectionName.astro` matching `_orbi.component` exactly
+2. `interface Props` with **`locale: Locale`** required
+3. Optional CMS fields typed with `?` — CMS may omit keys
+4. User strings via `translate(field, locale)`
+5. HTML bodies via **`<SafeHtml html={translate(content, locale)} />`** — never raw `set:html` on CMS input
+
+## Props pattern
+
+```astro
+---
+import type { Locale } from "~/config/locales"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+
+interface Props {
+  title?: I18nString
+  locale: Locale
+}
+
+const { title, locale } = Astro.props
+const heading = translate(title, locale)
+---
+```
+
+## Styling
+
+- Tailwind utility classes in markup
+- **No `@apply` in `<style>` blocks** — use `src/styles/global.css` (ADR-0008)
+- No hardcoded hex colours — use theme tokens (`text-brand-500`, etc.)
+
+## Do not
+
+- Import `~/lib/orbitype/*` or fetch in sections
+- Add `client:*` without explicit performance justification
+- Assume arrays exist — default with `?? []` before `.map()`
+
+Unknown section types fall through to `DebugPanel` — fix the component name or add the file.

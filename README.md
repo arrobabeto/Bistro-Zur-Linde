@@ -97,7 +97,19 @@ Caching is inert under `astro dev`. To observe it, run `pnpm run build && pnpm p
 
 ## Build status
 
-Phases 0 and 1 are complete: the verification gate has run and the toolchain is wired, linting clean, typechecking clean, and building to zero client JavaScript. Phases 2 onward — the Orbitype data layer, the section renderer, SEO, the welcome experience and the API endpoints — are specified in blueprint §21 and not yet implemented.
+Phases 0–9 are implemented in this repository. Phase 10 (Vercel CDN hit + Orbitype Workflow) needs your Vercel project — follow [docs/03-deployment.md](docs/03-deployment.md).
+
+## MCP
+
+`.cursor/mcp.json` is committed with `${env:...}` placeholders. After clone:
+
+```bash
+pnpm run mcp:env   # print export lines
+# add ORBITYPE_SQL_API_KEY to ~/.zshrc, restart Cursor, reload MCP
+pnpm run mcp:verify
+```
+
+Figma MCP is optional per project; `pnpm run figma:verify` is shipped unused until you add tokens.
 
 ## License
 

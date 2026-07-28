@@ -1,0 +1,25 @@
+---
+// SectionSpacer.astro
+//
+// CMS JSON:
+// {
+//   "height": 48,
+//   "_orbi": { "component": "SectionSpacer" }
+// }
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  height?: number
+  locale: Locale
+}
+
+const { height = 0 } = Astro.props
+const safeHeight = Math.max(0, Number(height) || 0)
+---
+
+<div
+  aria-hidden="true"
+  style={`height: ${safeHeight}px`}
+  class="w-full shrink-0"
+>
+</div>

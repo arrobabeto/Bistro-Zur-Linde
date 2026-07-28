@@ -1,0 +1,99 @@
+---
+import Base from "~/layouts/Base.astro"
+import Seo from "~/components/seo/Seo.astro"
+import { DEFAULT_LOCALE } from "~/config/locales"
+import { listPosts } from "~/lib/orbitype/posts"
+import { translate } from "~/lib/i18n"
+import { phrases } from "~/lib/phrases"
+import { absoluteUrl, siteDescription, siteName } from "~/lib/site"
+import { stripHtml } from "~/lib/sanitize"
+
+const locale = DEFAULT_LOCALE
+const pageNum = Math.max(1, Number(Astro.url.searchParams.get("page") ?? "1"))
+const limit = 10
+const { posts, total } = await listPosts({ page: pageNum, limit })
+const totalPages = Math.max(1, Math.ceil(total / limit))
+
+if (Astro.cache.enabled) {
+  Astro.cache.set({ tags: ["posts"] })
+}
+
+const title = translate(phrases.posts, locale)
+---
+
+<Base locale={locale}>
+  <Fragment slot="head">
+    <Seo
+      title={`${title} · ${siteName()}`}
+      description={siteDescription()}
+      keywords={[]}
+      canonical={absoluteUrl(pageNum > 1 ? `/posts?page=${pageNum}` : "/posts")}
+      alternates={[
+        { hreflang: locale, href: absoluteUrl("/posts") },
+        { hreflang: "x-default", href: absoluteUrl("/posts") },
+      ]}
+      ogTitle={title}
+      ogDescription={siteDescription()}
+      ogImage={absoluteUrl("/favicon.svg")}
+      ogType="website"
+      twitterCard="summary"
+      twitterSite=""
+      twitterCreator=""
+      jsonLd={{}}
+    />
+  </Fragment>
+
+  <main class="container-prose py-section">
+    <h1 class="mb-8 text-4xl font-semibold tracking-tight">{title}</h1>
+
+    {
+      posts.length === 0 ? (
+        <p class="text-neutral-600">No published posts yet.</p>
+      ) : (
+        <ul class="divide-y divide-neutral-200 border-y border-neutral-200">
+          {posts.map((post) => {
+            const slug = translate(post.title, locale)
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-|-$/g, "")
+            return (
+              <li class="py-6">
+                <a href={`/posts/${post.id}/${slug}`} class="group block">
+                  <h2 class="group-hover:text-brand-700 text-xl font-semibold">
+                    {translate(post.title, locale)}
+                  </h2>
+                  <p class="mt-2 text-sm text-neutral-600">
+                    {stripHtml(translate(post.lead, locale))}
+                  </p>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      )
+    }
+
+    {
+      totalPages > 1 && (
+        <nav
+          class="mt-10 flex items-center justify-between text-sm"
+          aria-label="Pagination"
+        >
+          {pageNum > 1 ? (
+            <a href={`/posts?page=${pageNum - 1}`}>Previous</a>
+          ) : (
+            <span />
+          )}
+          <span class="text-neutral-500">
+            {pageNum} / {totalPages}
+          </span>
+          {pageNum < totalPages ? (
+            <a href={`/posts?page=${pageNum + 1}`}>Next</a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )
+    }
+  </main>
+</Base>

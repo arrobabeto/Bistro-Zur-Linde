@@ -1,0 +1,73 @@
+---
+import Base from "~/layouts/Base.astro"
+import Seo from "~/components/seo/Seo.astro"
+import JsonLd from "~/components/seo/JsonLd.astro"
+import AnySection from "~/components/sections/AnySection.astro"
+import { getPage, listPageSlugs } from "~/lib/orbitype/pages"
+import { getTemplate } from "~/lib/orbitype/templates"
+import { parseRoute, translate, localePath } from "~/lib/i18n"
+import { buildPageSeo } from "~/lib/seo"
+import { LOCALES } from "~/config/locales"
+import type { Locale } from "~/config/locales"
+
+export const prerender = import.meta.env.RENDER_MODE === "static"
+
+export async function getStaticPaths() {
+  if (import.meta.env.RENDER_MODE !== "static") return []
+
+  const slugs = await listPageSlugs()
+  const paths: Array<{ params: { slug: string | undefined } }> = []
+
+  for (const locale of LOCALES) {
+    for (const entry of slugs) {
+      const path = localePath(locale as Locale, entry.slug)
+      // Root path is params: { slug: undefined }, not "".
+      if (path === "/") {
+        paths.push({ params: { slug: undefined } })
+      } else {
+        paths.push({ params: { slug: path.replace(/^\//, "") } })
+      }
+    }
+  }
+
+  return paths
+}
+
+const { locale, slug } = parseRoute(Astro.params.slug)
+const page = await getPage(slug)
+
+if (!page) {
+  return Astro.rewrite("/404")
+}
+
+const template = await getTemplate(page.template ?? null)
+const sections = [
+  ...(template?.sections_before ?? []),
+  ...page.sections,
+  ...(template?.sections_after ?? []),
+]
+
+if (Astro.cache.enabled) {
+  Astro.cache.set({
+    tags: [`page:${page.id}`, `page-slug:${page.slug}`],
+    lastModified: page.updated_at ? new Date(page.updated_at) : undefined,
+  })
+}
+
+const seo = buildPageSeo({
+  page,
+  locale,
+  path: Astro.url.pathname,
+})
+---
+
+<Base locale={locale}>
+  <Fragment slot="head">
+    <Seo {...seo} />
+    <JsonLd data={seo.jsonLd} />
+  </Fragment>
+  <main>
+    <span class="sr-only">{translate(page.title, locale)}</span>
+    {sections.map((section) => <AnySection data={section} locale={locale} />)}
+  </main>
+</Base>

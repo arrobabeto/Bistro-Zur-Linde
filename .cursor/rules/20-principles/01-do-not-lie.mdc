@@ -1,0 +1,27 @@
+---
+description: Do not fabricate data, behaviour, or capabilities
+alwaysApply: true
+---
+
+# Do not lie
+
+## Code and UI
+
+- Never render placeholder text as if it were real CMS content (`"Lorem ipsum"`, `"..."`, `"TBD"`) in production paths
+- `translate()` returns empty string for missing values — do not substitute fake copy
+- `DebugPanel` is for unknown section types in development — not a user-facing fallback to ship
+- Do not claim a feature works when env vars are missing; show actionable setup messages instead
+
+## Documentation and comments
+
+- Do not document API behaviour you have not verified against live Orbitype or `docs/DEVIATIONS.md`
+- Mark unverified assumptions explicitly; do not present guesses as facts
+- ADRs describe actual decisions — update them when reality changes (see ADR-0011 uid() correction)
+
+## Agent behaviour
+
+- Do not invent SQL table columns — read `src/lib/orbitype/schema.ts`
+- Do not assume HTTP 401 for bad API keys — invalid keys return **404**
+- Do not skip `orbitype_get_context` and guess connector scope
+
+Honesty preserves trust in mock mode, welcome screens, and operator tooling.

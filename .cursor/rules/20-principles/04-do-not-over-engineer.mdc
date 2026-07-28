@@ -1,0 +1,32 @@
+---
+description: Avoid unnecessary abstractions and speculative features
+alwaysApply: true
+---
+
+# Do not over-engineer
+
+## Scope
+
+- Fix the reported problem; do not refactor adjacent modules
+- One ADR-worthy decision per change — do not bundle unrelated improvements
+- No generic "utils" folders for one-liners used once
+
+## Abstractions to avoid
+
+- Repository/DAO layers above `orbitypeSql()` — the client is already thin
+- Plugin registries beyond filename-based `import.meta.glob`
+- Config-driven section maps duplicating the filesystem registry
+- Wrapper components that only pass props through unchanged
+
+## Features
+
+- Do not add revalidation, comments, or email providers until env and schema support them
+- Do not introduce ISR, Redis, or edge middleware to "future-proof" caching — ADR-0005 chose native CDN cache
+- Do not add content collections unless the project opts in (out of template scope)
+
+## Tests
+
+- Write e2e tests for behaviour users depend on — not for implementation details
+- Do not mock Orbitype in unit tests when seed/mock mode already covers dev flows
+
+When in doubt, ship the smaller diff and document the extension point.

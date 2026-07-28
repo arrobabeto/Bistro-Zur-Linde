@@ -1,0 +1,40 @@
+---
+description: CDN caching, middleware guards, and zero-JS budget
+globs: astro.config.ts,src/middleware.ts,src/pages/**/*
+alwaysApply: false
+---
+
+# Rendering and performance
+
+## Output modes
+
+- Default: `output: "server"` with Vercel adapter
+- Optional: `RENDER_MODE=static` for fully prerendered builds
+- `cacheVercel()` is inert under static output — no cost when prerendering
+
+## CDN caching (ADR-0005)
+
+- `cache: { provider: cacheVercel() }` in `astro.config.ts`
+- Every `routeRules` entry **must set `maxAge`** — `swr` alone emits no headers
+- Per-route tags for `/api/revalidate` invalidation
+- Pages set runtime tags: `Astro.cache.set({ tags: [...] })` when cache enabled
+
+## Middleware — mandatory
+
+`src/middleware.ts` disables cache for `/api/**` because `/[...slug]` routeRules match API paths. **Do not delete this file** — API responses would become CDN-cacheable.
+
+## Zero JS budget
+
+- No `client:*` directives in default sections
+- No Vue, React, or Svelte runtime dependencies
+- Prefer `<details>`, CSS, and native form POST for simple interactivity
+- Add islands only with measured need and explicit approval
+
+## Static paths
+
+- Root catch-all home: `params: { slug: undefined }`, not empty string
+- In `getStaticPaths()`, use `import.meta.env.SITE` — not deprecated `Astro` global
+
+## Caching tests
+
+Cache headers appear at **runtime**, not in build artifacts. Test via `astro preview` or deployed preview, not `astro dev` (`cache.enabled` is false in dev).
