@@ -1,0 +1,6 @@
+display_name: "Orbitype read"
+short_description: "Read-only Orbitype SQL queries"
+brand_color: "#0F766E"
+default_prompt: "Probe the Orbitype connector context and list pages."
+policy:
+  allow_implicit_invocation: true

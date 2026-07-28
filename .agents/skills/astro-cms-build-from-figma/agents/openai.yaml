@@ -1,0 +1,6 @@
+display_name: "Astro CMS from Figma"
+short_description: "Figma → Astro sections → Orbitype publish"
+brand_color: "#1D4ED8"
+default_prompt: "Implement the next Figma frame as CMS-driven Astro sections, following the state machine through roundtrip verification."
+policy:
+  allow_implicit_invocation: true

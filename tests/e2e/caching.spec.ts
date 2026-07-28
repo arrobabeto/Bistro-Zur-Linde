@@ -1,17 +1,14 @@
 import { expect, test } from "@playwright/test"
 
 test.describe("caching", () => {
-  test("API responses are never CDN-cached", async ({ request }) => {
-    // Middleware forces cache.set(false) on /api/**. Under astro.dev the
-    // provider is inactive, so we assert the response still succeeds and
-    // does not advertise a public shared cache.
-    const response = await request.post("/api/setup/install-schema", {
-      data: { table: "all" },
+  test("API probe is never CDN-cached", async ({ request }) => {
+    // Side-effect-free endpoint. Middleware forces cache.set(false) on /api/**
+    // and the route sets no-store headers explicitly.
+    const response = await request.get("/api/health/cache-probe", {
       failOnStatusCode: false,
     })
 
-    // In mock / unconfigured modes this may be 400; that is fine.
-    expect([200, 207, 400]).toContain(response.status())
+    expect(response.status()).toBe(204)
 
     const headers = response.headers()
     const cacheControl = [
@@ -23,17 +20,16 @@ test.describe("caching", () => {
       .join(" ")
       .toLowerCase()
 
-    if (cacheControl) {
-      expect(cacheControl).not.toMatch(/s-maxage=\d+/)
-    }
+    expect(cacheControl).toMatch(/no-store/)
+    expect(cacheControl).not.toMatch(/s-maxage=\d+/)
   })
 
-  test("home page renders (CDN hit verified on Vercel in Phase 10)", async ({
+  test("home page renders (CDN hit verified on Vercel post-deploy)", async ({
     request,
   }) => {
     const response = await request.get("/")
     expect(response.status()).toBe(200)
     const body = await response.text()
-    expect(body).toMatch(/Welcome/i)
+    expect(body).toContain('data-testid="section-welcome"')
   })
 })

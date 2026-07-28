@@ -1,5 +1,5 @@
 ---
-import { resolveSection } from "~/lib/sections"
+import { resolveSection, validateSectionPayload } from "~/lib/sections"
 import DebugPanel from "./DebugPanel.astro"
 import type { Section } from "~/types/section"
 import type { Locale } from "~/config/locales"
@@ -10,14 +10,41 @@ interface Props {
 }
 
 const { data, locale } = Astro.props
-const { _orbi, ...sectionProps } = data
+const { _orbi, ...rest } = data
+const isDev = import.meta.env.DEV
+const validation = validateSectionPayload(_orbi?.component, data)
+
+if (!validation.ok) {
+  console.error("[sections] schema validation failed", {
+    component: _orbi?.component ?? null,
+    errors: validation.errors,
+  })
+}
+
+const sectionProps = validation.ok
+  ? (() => {
+      const { _orbi: _ignored, ...props } = validation.data
+      return props
+    })()
+  : rest
+
 const Component = resolveSection(_orbi?.component)
+
+if (!Component && !isDev) {
+  console.error("[sections] unknown component", {
+    component: _orbi?.component ?? null,
+  })
+}
 ---
 
 {
-  Component ? (
+  Component && (validation.ok || !isDev) ? (
     <Component {...sectionProps} locale={locale} />
-  ) : (
+  ) : isDev && !Component ? (
     <DebugPanel data={data} />
+  ) : isDev && !validation.ok ? (
+    <DebugPanel data={{ ...data, _validationErrors: validation.errors }} />
+  ) : (
+    <Fragment set:html={"<!-- unknown or invalid section -->"} />
   )
 }

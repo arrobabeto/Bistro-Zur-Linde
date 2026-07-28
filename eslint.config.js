@@ -13,6 +13,8 @@ export default [
       "example-only/**",
       "playwright-report/**",
       "test-results/**",
+      ".agents/**",
+      "artifacts/**",
     ],
   },
 

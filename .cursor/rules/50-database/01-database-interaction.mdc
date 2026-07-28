@@ -29,11 +29,12 @@ await orbitypeSql(
 
 ## Schema source of truth
 
-DDL strings: `src/lib/orbitype/schema.ts`  
-Install endpoint: `POST /api/setup/install-schema`  
-Migrate endpoint: `POST /api/setup/migrate` (additive `ALTER TABLE`)
+DDL strings: `src/lib/orbitype/schema-sql.mjs` (re-exported by `schema.ts`)  
+Install: `pnpm run cms:install` (`scripts/cms/install-schema.mjs`)  
+Migrate: `pnpm run cms:migrate` (additive `ALTER TABLE`)  
+Seed: `pnpm run cms:seed`
 
-Tables: `pages`, `posts`, `settings`, `contacts`, `templates`, `comments`.
+Never expose DDL via HTTP. Tables: `pages`, `posts`, `settings`, `contacts`, `templates`, `comments`.
 
 ## MCP agents
 

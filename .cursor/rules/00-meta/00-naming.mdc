@@ -11,9 +11,11 @@ alwaysApply: true
 - Layouts: `PascalCase.astro` under `src/components/layout/` or `src/layouts/`
 - Data layer: kebab-case modules under `src/lib/orbitype/`
 - Types: singular domain nouns in `src/types/` (`page.ts`, `section.ts`)
-- API routes: kebab-case path segments (`install-schema.ts`, `contact.ts`)
+- API routes: kebab-case path segments (`contact.ts`, `cache-probe.ts`)
+- CMS CLI: kebab-case under `scripts/cms/` (`install-schema.mjs`, `migrate.mjs`)
 - Scripts: kebab-case `.mjs` in `scripts/`
 - ADRs: `NNNN-short-kebab-title.md` in `docs/adr/`
+- Section schemas: `SectionName.schema.ts` beside `SectionName.astro`
 
 ## Symbols
 

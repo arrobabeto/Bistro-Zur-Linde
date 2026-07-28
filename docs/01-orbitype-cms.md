@@ -54,16 +54,21 @@ Same section components, different data.
 | ------------------------------------------ | ---------------------------------------- |
 | `src/pages/[...slug].astro`                | Generic page route                       |
 | `src/lib/orbitype/pages.ts`                | Fetches pages                            |
-| `src/pages/api/setup/install-schema.ts`    | Creates `uid()` (if needed) and tables   |
-| `src/pages/api/setup/seed.ts`              | Seeds homepage content                   |
-| `src/components/sections/AnySection.astro` | Dynamic section renderer                 |
+| `scripts/cms/install-schema.mjs`           | Creates `uid()` (if needed) and tables   |
+| `scripts/cms/seed.mjs`                     | Seeds homepage content (CLI only)        |
+| `scripts/cms/migrate.mjs`                  | Additive migrations (CLI only)           |
+| `src/components/sections/AnySection.astro` | Dynamic section renderer + Zod validate  |
 | `src/lib/normalize-sections.ts`            | Flattens malformed nested section arrays |
-| `src/lib/sections.ts`                      | Filename-keyed registry                  |
+| `src/lib/sections.ts`                      | Filename-keyed registry + schemas        |
 | `src/types/section.ts`                     | Section shape with `_orbi.component`     |
+| `content-manifest.json`                    | Required pages/components for CI         |
+| `AGENTS.md`                                | Cross-tool agent instructions            |
 
 ### Starter section components
 
-`SectionProse`, `SectionQuote`, `SectionWelcome`, `SectionSpacer`, `SectionHero`, `SectionFeatureGrid`, `SectionCta`, `SectionFeatureCallout`.
+`SectionProse`, `SectionQuote`, `SectionWelcome`, `SectionSpacer`, `SectionHero`, `SectionFeatureGrid`, `SectionCta`, `SectionFeatureCallout`, `SectionContactForm`.
+
+Each ships a sibling `SectionName.schema.ts` (Zod) when props are CMS-driven (ADR-0015).
 
 ---
 

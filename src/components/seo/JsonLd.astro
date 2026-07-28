@@ -4,7 +4,21 @@ interface Props {
 }
 
 const { data } = Astro.props
-const json = JSON.stringify(data)
+
+/**
+ * Escape JSON for embedding in <script> so a CMS string containing
+ * `</script>` cannot break out of the element.
+ */
+function serializeJsonLd(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029")
+}
+
+const json = serializeJsonLd(data)
 ---
 
 <script type="application/ld+json" is:inline set:html={json} />

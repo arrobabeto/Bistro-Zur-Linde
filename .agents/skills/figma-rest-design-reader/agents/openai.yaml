@@ -1,0 +1,6 @@
+display_name: "Figma REST reader"
+short_description: "Inspect Figma files via REST API keys"
+brand_color: "#A259FF"
+default_prompt: "Inspect the configured Figma design and list the relevant page frames."
+policy:
+  allow_implicit_invocation: true

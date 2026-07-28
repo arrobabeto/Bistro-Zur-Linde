@@ -1,6 +1,6 @@
 import type { Post } from "~/types/post"
 import { normalizeSections } from "~/lib/normalize-sections"
-import { orbitypeSql } from "./client"
+import { OrbitypeError, orbitypeSql } from "./client"
 import { hasSqlConfigured, isMockMode } from "./config"
 import { findSeedPost, seedPosts } from "./seed"
 
@@ -48,12 +48,11 @@ export async function listPosts(
 
     return { posts: posts.map(normalizePost), total }
   } catch (error) {
+    if (error instanceof OrbitypeError && error.isUnavailable) throw error
     console.error("[orbitype] listPosts failed:", error)
-    const all = seedPosts().filter((p) => (p.status?.value ?? "") === status)
-    return {
-      posts: all.slice(offset, offset + limit).map(normalizePost),
-      total: all.length,
-    }
+    throw error instanceof Error
+      ? error
+      : new OrbitypeError("listPosts failed", undefined, undefined, "sql")
   }
 }
 
@@ -65,7 +64,7 @@ export async function getPost(id: string): Promise<Post | null> {
 
   try {
     const rows = await orbitypeSql<Post>(
-      "SELECT * FROM posts WHERE id = :id LIMIT 1",
+      `SELECT * FROM posts WHERE id = :id ORDER BY updated_at DESC NULLS LAST LIMIT 1`,
       { id },
     )
     const row = rows[0]
@@ -73,9 +72,11 @@ export async function getPost(id: string): Promise<Post | null> {
     const seeded = findSeedPost(id)
     return seeded ? normalizePost(seeded) : null
   } catch (error) {
+    if (error instanceof OrbitypeError && error.isUnavailable) throw error
     console.error("[orbitype] getPost failed:", error)
-    const seeded = findSeedPost(id)
-    return seeded ? normalizePost(seeded) : null
+    throw error instanceof Error
+      ? error
+      : new OrbitypeError("getPost failed", undefined, undefined, "sql")
   }
 }
 
@@ -95,7 +96,15 @@ export async function listPublishedPostIds(): Promise<
        ORDER BY updated_at DESC`,
     )
   } catch (error) {
+    if (error instanceof OrbitypeError && error.isUnavailable) throw error
     console.error("[orbitype] listPublishedPostIds failed:", error)
-    return []
+    throw error instanceof Error
+      ? error
+      : new OrbitypeError(
+          "listPublishedPostIds failed",
+          undefined,
+          undefined,
+          "sql",
+        )
   }
 }

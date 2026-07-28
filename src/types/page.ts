@@ -1,6 +1,11 @@
 import type { I18nString } from "./i18n"
 import type { Section } from "./section"
 
+export type PageStatus = {
+  options?: string[]
+  value?: string
+}
+
 export type Page = {
   id: string
   title: I18nString
@@ -11,6 +16,7 @@ export type Page = {
   keywords?: string[]
   head?: Record<string, unknown>
   template?: string | null
+  status?: PageStatus | string
   created_at?: string
   updated_at?: string
 }

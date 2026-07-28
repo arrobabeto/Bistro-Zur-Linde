@@ -56,7 +56,7 @@ Safe workflow: context → read → propose SQL → user confirms → mutate wit
 
 - `ORBITYPE_MOCK=true` or missing key → seed data via `src/lib/orbitype/seed.ts`
 - `findSeedPage(slug)` returns `null` for unknown slugs (404 in mock mode)
-- `POST /api/setup/seed` populates live connector from same builders
+- `pnpm run cms:seed` populates a live connector from the same builders (CLI only)
 
 ## Templates
 

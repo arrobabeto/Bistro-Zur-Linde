@@ -26,6 +26,9 @@ test-results/
 playwright-report/
 playwright/.cache/
 
+# CMS export artifacts (may contain client content)
+artifacts/
+
 # logs
 *.log
 npm-debug.log*

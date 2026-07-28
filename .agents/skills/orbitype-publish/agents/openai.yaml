@@ -1,0 +1,6 @@
+display_name: "Orbitype publish"
+short_description: "Mutate Orbitype content with approval"
+brand_color: "#B45309"
+default_prompt: "Prepare an Orbitype mutation with RETURNING and wait for approval before running it."
+policy:
+  allow_implicit_invocation: false

@@ -5,6 +5,7 @@ import JsonLd from "~/components/seo/JsonLd.astro"
 import AnySection from "~/components/sections/AnySection.astro"
 import { getPage, listPageSlugs } from "~/lib/orbitype/pages"
 import { getTemplate } from "~/lib/orbitype/templates"
+import { OrbitypeError } from "~/lib/orbitype/client"
 import { parseRoute, translate, localePath } from "~/lib/i18n"
 import { buildPageSeo } from "~/lib/seo"
 import { LOCALES } from "~/config/locales"
@@ -21,7 +22,6 @@ export async function getStaticPaths() {
   for (const locale of LOCALES) {
     for (const entry of slugs) {
       const path = localePath(locale as Locale, entry.slug)
-      // Root path is params: { slug: undefined }, not "".
       if (path === "/") {
         paths.push({ params: { slug: undefined } })
       } else {
@@ -34,7 +34,28 @@ export async function getStaticPaths() {
 }
 
 const { locale, slug } = parseRoute(Astro.params.slug)
-const page = await getPage(slug)
+
+let page
+try {
+  page = await getPage(slug)
+} catch (error) {
+  if (import.meta.env.RENDER_MODE === "static") throw error
+  if (error instanceof OrbitypeError && error.isUnavailable) {
+    if (Astro.cache.enabled) Astro.cache.set(false)
+    return new Response(
+      "Service temporarily unavailable. Please try again shortly.",
+      {
+        status: 503,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Retry-After": "60",
+          "Cache-Control": "no-store",
+        },
+      },
+    )
+  }
+  throw error
+}
 
 if (!page) {
   return Astro.rewrite("/404")

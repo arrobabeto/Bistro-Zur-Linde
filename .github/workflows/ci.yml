@@ -1,0 +1,147 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev, develop]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/cache/save@v4
+        with:
+          path: |
+            node_modules
+            ~/.local/share/pnpm/store
+          key: deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+  quality:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check:node
+      - run: pnpm run lint
+      - run: pnpm run typecheck
+      - run: pnpm run check:leakage
+      - run: pnpm run check:cms-routes
+      - run: pnpm run check:section-contracts
+      - run: pnpm run check:content-placeholders
+      - run: pnpm run check:docs
+      - run: pnpm run check:assets
+      - run: pnpm run check:middleware
+      - run: pnpm run check:no-ddl-in-api
+      - run: pnpm run cms:validate
+
+  e2e-mock:
+    needs: install
+    runs-on: ubuntu-latest
+    env:
+      ORBITYPE_MOCK: "true"
+      ORBITYPE_API_SQL_KEY: ""
+      ORBITYPE_SQL_API_KEY: ""
+      FIGMA_API_KEY: ""
+      MAIL_API_KEY: ""
+      REVALIDATE_SECRET: ""
+      PUBLIC_SITE_URL: http://127.0.0.1:4173
+      PUBLIC_SITE_NAME: CI
+      PUBLIC_SITE_DESCRIPTION: CI
+      PUBLIC_ORGANIZATION_NAME: CI
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run test:e2e
+
+  build-server:
+    needs: quality
+    runs-on: ubuntu-latest
+    env:
+      ORBITYPE_MOCK: "true"
+      PUBLIC_SITE_URL: http://127.0.0.1:4321
+      PUBLIC_SITE_NAME: CI
+      PUBLIC_SITE_DESCRIPTION: CI
+      PUBLIC_ORGANIZATION_NAME: CI
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:server
+
+  build-static:
+    needs: quality
+    runs-on: ubuntu-latest
+    env:
+      ORBITYPE_MOCK: "true"
+      PUBLIC_SITE_URL: http://127.0.0.1:4321
+      PUBLIC_SITE_NAME: CI
+      PUBLIC_SITE_DESCRIPTION: CI
+      PUBLIC_ORGANIZATION_NAME: CI
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:static
+
+  cms-contract:
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run cms:validate
+      - name: Never use production secrets in this job
+        run: |
+          if [ -n "${{ secrets.ORBITYPE_API_SQL_KEY_PROD }}" ]; then
+            echo "Production SQL key must not be available to cms-contract"
+            exit 1
+          fi
+          echo "ok — no prod key bound"

@@ -1,0 +1,9 @@
+{
+  "repository": "arrobabeto/orbitype-astro-template",
+  "version": "0.1.0",
+  "commit": null,
+  "createdAt": null,
+  "owner": null,
+  "productionBranch": "main",
+  "notes": "Filled by pnpm run bootstrap when cloning into a client project."
+}

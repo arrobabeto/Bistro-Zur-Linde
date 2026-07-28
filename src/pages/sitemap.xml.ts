@@ -3,7 +3,8 @@ import { listPageSlugs } from "~/lib/orbitype/pages"
 import { listPublishedPostIds } from "~/lib/orbitype/posts"
 import { LOCALES, DEFAULT_LOCALE } from "~/config/locales"
 import type { Locale } from "~/config/locales"
-import { localePath, translate } from "~/lib/i18n"
+import { localePath } from "~/lib/i18n"
+import { postPath, postTitleSlug } from "~/lib/post-slug"
 import { siteUrl } from "~/lib/site"
 
 export const prerender = false
@@ -34,11 +35,8 @@ export const GET: APIRoute = async () => {
   }
 
   for (const post of posts) {
-    const slug = translate(post.title, DEFAULT_LOCALE)
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-    const loc = `${base}/posts/${post.id}/${slug}`
+    const slug = postTitleSlug(post.title)
+    const loc = `${base}${postPath(post.id, slug)}`
     const lastmod = post.updated_at
       ? `<lastmod>${new Date(post.updated_at).toISOString()}</lastmod>`
       : ""

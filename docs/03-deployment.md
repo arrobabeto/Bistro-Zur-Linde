@@ -1,18 +1,30 @@
 # Deployment
 
+## Render modes
+
+| Mode               | Command                 | Pages                      | APIs                                                                                            |
+| ------------------ | ----------------------- | -------------------------- | ----------------------------------------------------------------------------------------------- |
+| `server` (default) | `pnpm run build:server` | On-demand + CDN cache tags | Node serverless functions                                                                       |
+| `static`           | `pnpm run build:static` | Fully prerendered at build | Still emitted as serverless functions by the Vercel adapter when present under `src/pages/api/` |
+
+`RENDER_MODE=static` does **not** mean “no server”. Forms, OG, revalidate, and health probes remain server endpoints. Campaign sites that want zero runtime should remove or relocate APIs separately.
+
+Both modes must pass in CI (`pnpm run build:server` and `pnpm run build:static`).
+
 ## Vercel
 
 1. Import the repository. Framework preset: **Astro**.
 2. Install command: `pnpm install --frozen-lockfile`
-3. Build command: `pnpm run build`
-4. **Pin the Node.js version** in Project Settings to an even major ≥ 22 (match `engines` in `package.json`). The adapter otherwise inherits the build machine’s major.
+3. Build command: `pnpm run build` (or `pnpm run build:server`)
+4. **Pin the Node.js version** in Project Settings to the same major as `.nvmrc` / `engines` in `package.json`.
 5. Set environment variables from `.env.example` for Production / Preview / Development:
    - `ORBITYPE_MOCK=false` in production
    - `ORBITYPE_API_SQL_URL`, `ORBITYPE_API_SQL_KEY`
-   - All required `PUBLIC_*` fields
+   - All required `PUBLIC_*` fields — **never** `http://localhost` in production
    - `REVALIDATE_SECRET` if you wire Orbitype Workflows
    - `MAIL_*` once an email provider is implemented in `src/lib/email.ts`
-6. Optional: add apex → `www` redirects in `vercel.json`.
+6. Schema install and seed are **CLI-only**: `pnpm run cms:install` / `pnpm run cms:seed` from an authorized machine. They are not HTTP endpoints.
+7. Optional: add apex → `www` redirects in `vercel.json`.
 
 ## Caching
 
@@ -53,14 +65,17 @@ export default async function (payload) {
 
 ## Pre-launch checklist
 
-See blueprint §18.4. Minimum:
+See blueprint §18.4 and [preview-promote.md](preview-promote.md). Minimum:
 
 - [ ] `pnpm run verify` passes
-- [ ] `pnpm run build` + `pnpm run check:leakage` clean
-- [ ] Unknown slug returns 404
-- [ ] Sitemap / robots / llms return 200
-- [ ] Security headers present
+- [ ] Node pin matches `.nvmrc` / Vercel Project Settings
+- [ ] Unknown slug returns 404; CMS outage returns 503 (not a cached 404)
+- [ ] Sitemap / robots / llms return 200; no localhost in production canonicals
+- [ ] Security headers present; previews are `noindex`
 - [ ] CDN hit on a repeat page request
 - [ ] `/api/**` not cached
-- [ ] Workflow revalidation works
+- [ ] Workflow revalidation works (or documented as deferred)
+- [ ] Schema installed via CLI only (`cms:install` / `cms:seed`)
 - [ ] No client / third-party names in the template repo (clones may brand)
+
+Also see [vercel-linking.md](vercel-linking.md) for reproducible Vercel linking without committing `.vercel/`.

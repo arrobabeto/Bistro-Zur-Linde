@@ -1,7 +1,7 @@
 import type { Template } from "~/types/contact"
 import type { Section } from "~/types/section"
 import { normalizeSections } from "~/lib/normalize-sections"
-import { orbitypeSql } from "./client"
+import { OrbitypeError, orbitypeSql } from "./client"
 import { hasSqlConfigured, isMockMode } from "./config"
 
 export type ResolvedTemplate = {
@@ -17,7 +17,7 @@ export async function getTemplate(
 
   try {
     const rows = await orbitypeSql<Template>(
-      "SELECT * FROM templates WHERE name = :name LIMIT 1",
+      "SELECT * FROM templates WHERE name = :name ORDER BY id ASC LIMIT 1",
       { name },
     )
     const row = rows[0]
@@ -28,7 +28,10 @@ export async function getTemplate(
       sections_after: normalizeSections(row.sections_after),
     }
   } catch (error) {
+    if (error instanceof OrbitypeError && error.isUnavailable) throw error
     console.error("[orbitype] getTemplate failed:", error)
-    return null
+    throw error instanceof Error
+      ? error
+      : new OrbitypeError("getTemplate failed", undefined, undefined, "sql")
   }
 }

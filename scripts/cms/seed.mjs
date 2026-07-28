@@ -1,44 +1,73 @@
-import type { APIRoute } from "astro"
-import { orbitypeSql } from "~/lib/orbitype/client"
-import { ORBITYPE_API_KEYS_URL, hasSqlConfigured } from "~/lib/orbitype/config"
-import { seedPages, seedPosts } from "~/lib/orbitype/seed"
+#!/usr/bin/env node
+import { loadEnvFile } from "../lib/env.mjs"
+import { confirm, hasYesFlag } from "../lib/confirm.mjs"
+import {
+  getConnectorContext,
+  orbitypeSql,
+  sqlConfigured,
+} from "../lib/orbitype-sql.mjs"
+import {
+  buildSeedPages,
+  buildSeedPosts,
+} from "../../src/lib/orbitype/seed-data.mjs"
 
-export const prerender = false
+loadEnvFile()
 
-export const POST: APIRoute = async () => {
-  if (!hasSqlConfigured()) {
-    return new Response(
-      JSON.stringify({
-        ok: false,
-        message: `Orbitype SQL API is not configured. See ${ORBITYPE_API_KEYS_URL}`,
-        results: [],
-      }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
+const yes = hasYesFlag()
+
+async function main() {
+  if (!sqlConfigured()) {
+    console.error(
+      "Orbitype SQL API is not configured. Set ORBITYPE_API_SQL_KEY in .env",
+    )
+    process.exit(1)
+  }
+
+  let context = { projectId: null, connectorId: null }
+  try {
+    context = await getConnectorContext()
+  } catch (error) {
+    console.warn(
+      "• could not probe connector context:",
+      error instanceof Error ? error.message : error,
     )
   }
 
-  const results: Array<{
-    kind: string
-    slug?: string
-    id?: string
-    status: "inserted" | "skipped" | "error"
-    error?: string
-  }> = []
+  const pages = buildSeedPages()
+  const posts = buildSeedPosts()
 
-  for (const page of seedPages()) {
+  console.log("• about to seed starter content")
+  console.log(`  projectId:   ${context.projectId ?? "(unknown)"}`)
+  console.log(`  connectorId: ${context.connectorId ?? "(unknown)"}`)
+  console.log(`  pages:       ${pages.map((p) => p.slug).join(", ")}`)
+  console.log(`  posts:       ${posts.length}`)
+
+  const ok = await confirm("Insert starter rows (existing slugs skipped)?", {
+    yes,
+  })
+  if (!ok) {
+    console.log("• aborted")
+    process.exit(0)
+  }
+
+  const results = []
+
+  for (const page of pages) {
     try {
-      const existing = await orbitypeSql<{ slug: string }>(
+      const existing = await orbitypeSql(
         "SELECT slug FROM pages WHERE slug = :slug LIMIT 1",
         { slug: page.slug },
       )
       if (existing[0]) {
-        results.push({
-          kind: "page",
-          slug: page.slug,
-          status: "skipped",
-        })
+        results.push({ kind: "page", slug: page.slug, status: "skipped" })
         continue
       }
+
+      // Strip runtime-only welcome props before insert.
+      const sections = page.sections.map((section) => {
+        const { hasSqlKeyConfigured: _h, apiKeysUrl: _a, ...rest } = section
+        return rest
+      })
 
       await orbitypeSql(
         `INSERT INTO pages (title, slug, lead, img, sections, keywords, head)
@@ -57,7 +86,7 @@ export const POST: APIRoute = async () => {
           slug: page.slug,
           lead: JSON.stringify(page.lead ?? { en: "" }),
           img: page.img ?? "",
-          sections: JSON.stringify(page.sections),
+          sections: JSON.stringify(sections),
           keywords: JSON.stringify(page.keywords ?? []),
           head: JSON.stringify(page.head ?? {}),
         },
@@ -73,10 +102,10 @@ export const POST: APIRoute = async () => {
     }
   }
 
-  for (const post of seedPosts()) {
+  for (const post of posts) {
     try {
       const titleEn = post.title.en
-      const existing = await orbitypeSql<{ id: string }>(
+      const existing = await orbitypeSql(
         `SELECT id FROM posts WHERE title->>'en' = :title LIMIT 1`,
         { title: titleEn },
       )
@@ -85,7 +114,7 @@ export const POST: APIRoute = async () => {
         continue
       }
 
-      const inserted = await orbitypeSql<{ id: string }>(
+      const inserted = await orbitypeSql(
         `INSERT INTO posts (title, lead, img, status, sections, keywords)
          VALUES (
            :title::json,
@@ -125,18 +154,22 @@ export const POST: APIRoute = async () => {
     }
   }
 
-  const ok = results.every((r) => r.status !== "error")
-  return new Response(
-    JSON.stringify({
-      ok,
-      message: ok
-        ? "Starter content seeded (existing rows skipped)."
-        : "Seed finished with errors.",
-      results,
-    }),
-    {
-      status: ok ? 200 : 207,
-      headers: { "Content-Type": "application/json" },
-    },
+  for (const r of results) {
+    const label = r.slug ?? r.id ?? r.kind
+    const suffix = r.error ? ` — ${r.error}` : ""
+    console.log(`  ${r.kind} ${label}: ${r.status}${suffix}`)
+  }
+
+  const success = results.every((r) => r.status !== "error")
+  console.log(
+    success
+      ? "• starter content seeded (existing rows skipped)"
+      : "• seed finished with errors",
   )
+  process.exit(success ? 0 : 1)
 }
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error)
+  process.exit(1)
+})

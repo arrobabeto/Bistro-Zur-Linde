@@ -12,9 +12,9 @@ Investigation showed `uid()` is often **already provisioned** on connector creat
 
 ## Decision
 
-The installer **attempts `CREATE OR REPLACE FUNCTION uid()` first**, before any `CREATE TABLE`. On failure, it **falls back to `SELECT uid()`** to verify the function works and treats that as success.
+The CLI installer (`pnpm run cms:install`) **attempts `CREATE OR REPLACE FUNCTION uid()` first**, before any `CREATE TABLE`. On failure, it **falls back to `SELECT uid()`** to verify the function works and treats that as success.
 
-The SQL definition lives in `src/lib/orbitype/schema.ts` as idempotent insurance — not because Orbitype never provides it.
+The SQL definition lives in `src/lib/orbitype/schema-sql.mjs` (re-exported by `schema.ts`) as idempotent insurance — not because Orbitype never provides it. DDL is never reachable from deployed HTTP routes.
 
 ## Consequences
 

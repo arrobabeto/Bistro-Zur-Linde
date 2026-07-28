@@ -34,6 +34,10 @@ export function setEmailProvider(next: EmailProvider): void {
   provider = next
 }
 
+export function isEmailConfigured(): boolean {
+  return provider.name !== "unconfigured"
+}
+
 export async function sendEmail(message: EmailMessage): Promise<void> {
   await provider.send(message)
 }

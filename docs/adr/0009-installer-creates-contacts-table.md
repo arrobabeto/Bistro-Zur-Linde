@@ -10,9 +10,9 @@ The contact form endpoint expects the table to exist after setup.
 
 ## Decision
 
-The **`POST /api/setup/install-schema`** installer creates `contacts` alongside `pages`, `posts`, `settings`, `templates`, and `comments`. Column names stay **generic** — no project-specific fields in the template DDL.
+The **`pnpm run cms:install`** CLI (`scripts/cms/install-schema.mjs`) creates `contacts` alongside `pages`, `posts`, `settings`, and `templates`. Column names stay **generic** — no project-specific fields in the template DDL.
 
-Projects that need extra columns add them via `/api/setup/migrate` or custom migration SQL.
+Projects that need extra columns add them via `pnpm run cms:migrate` or custom migration SQL. Schema install is never exposed as a public HTTP endpoint.
 
 ## Consequences
 

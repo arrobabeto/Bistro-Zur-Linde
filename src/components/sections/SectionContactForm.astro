@@ -1,0 +1,147 @@
+---
+import type { Locale } from "~/config/locales"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import { isEmailConfigured } from "~/lib/email"
+
+interface Props {
+  title?: I18nString
+  lead?: I18nString
+  submitLabel?: I18nString
+  privacyLabel?: I18nString
+  privacyHref?: string
+  /** Override; defaults to whether an EmailProvider is wired. */
+  enabled?: boolean
+  locale: Locale
+}
+
+const {
+  title,
+  lead,
+  submitLabel,
+  privacyLabel,
+  privacyHref = "/privacy",
+  enabled,
+  locale,
+} = Astro.props
+
+const heading = translate(title, locale)
+const mailReady = enabled ?? isEmailConfigured()
+---
+
+<section class="container-prose py-section" data-testid="section-contact-form">
+  {
+    heading && (
+      <h2 class="mb-3 text-3xl font-semibold tracking-tight">{heading}</h2>
+    )
+  }
+  {lead && <p class="mb-8 text-neutral-600">{translate(lead, locale)}</p>}
+
+  {
+    !mailReady ? (
+      <p class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        The contact form is unavailable until an email provider is configured.
+      </p>
+    ) : (
+      <form
+        method="post"
+        action="/api/forms/contact"
+        class="space-y-4"
+        data-testid="contact-form"
+      >
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block text-sm">
+            <span class="mb-1 block font-medium">First name</span>
+            <input
+              required
+              name="first_name"
+              autocomplete="given-name"
+              class="w-full rounded-lg border border-neutral-300 px-3 py-2"
+            />
+          </label>
+          <label class="block text-sm">
+            <span class="mb-1 block font-medium">Last name</span>
+            <input
+              required
+              name="last_name"
+              autocomplete="family-name"
+              class="w-full rounded-lg border border-neutral-300 px-3 py-2"
+            />
+          </label>
+        </div>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Email</span>
+          <input
+            required
+            type="email"
+            name="email"
+            autocomplete="email"
+            class="w-full rounded-lg border border-neutral-300 px-3 py-2"
+          />
+        </label>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Phone</span>
+          <input
+            type="tel"
+            name="phone"
+            autocomplete="tel"
+            class="w-full rounded-lg border border-neutral-300 px-3 py-2"
+          />
+        </label>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Topic</span>
+          <input
+            name="topic"
+            class="w-full rounded-lg border border-neutral-300 px-3 py-2"
+          />
+        </label>
+        <label class="block text-sm">
+          <span class="mb-1 block font-medium">Message</span>
+          <textarea
+            required
+            name="message"
+            rows="5"
+            class="w-full rounded-lg border border-neutral-300 px-3 py-2"
+          />
+        </label>
+
+        {/* Honeypot — visually hidden, left empty by humans */}
+        <div class="absolute -left-[9999px]" aria-hidden="true">
+          <label>
+            Website
+            <input
+              type="text"
+              name="website"
+              tabindex={-1}
+              autocomplete="off"
+            />
+          </label>
+        </div>
+
+        <label class="flex items-start gap-2 text-sm">
+          <input
+            required
+            type="checkbox"
+            name="privacy"
+            value="on"
+            class="mt-1"
+          />
+          <span>
+            {translate(privacyLabel, locale) ||
+              "I agree to the privacy notice."}{" "}
+            <a class="text-brand-700 underline" href={privacyHref}>
+              Privacy
+            </a>
+          </span>
+        </label>
+
+        <button
+          type="submit"
+          class="bg-brand-900 rounded-lg px-5 py-2.5 text-sm font-medium text-white"
+        >
+          {translate(submitLabel, locale) || "Send"}
+        </button>
+      </form>
+    )
+  }
+</section>

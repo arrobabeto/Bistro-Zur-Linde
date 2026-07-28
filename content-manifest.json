@@ -1,0 +1,7 @@
+{
+  "requiredPages": {
+    "home": {
+      "components": ["SectionWelcome"]
+    }
+  }
+}

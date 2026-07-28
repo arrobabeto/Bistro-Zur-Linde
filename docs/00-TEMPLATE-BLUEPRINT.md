@@ -120,7 +120,7 @@ The only permitted mentions of the Nuxt stack are: the provenance paragraph in �
 
 ### 3.1 One-line description
 
-A production-ready, zero-JavaScript-by-default Astro starter for Orbitype-powered websites, with section-driven pages composed from CMS JSON, server-rendered SEO metadata, CDN-cached rendering with tag invalidation, and an MCP-based authoring workflow.
+A production-oriented, zero-JavaScript-by-default Astro starter for Orbitype-powered websites, with section-driven pages composed from CMS JSON, server-rendered SEO metadata, CDN-cached rendering with tag invalidation, and an MCP/skills-based authoring workflow. See the README feature-status matrix for what is verified vs still project-specific.
 
 ### 3.2 What problem it solves
 
@@ -858,9 +858,22 @@ orbitype-astro-template/
 │   └── og-default.jpg
 ├── scripts/
 │   ├── setup.mjs
+│   ├── bootstrap.mjs
 │   ├── print-mcp-env.mjs
 │   ├── verify-orbitype-mcp.mjs
-│   └── verify-figma-mcp.mjs
+│   ├── verify-figma.mjs
+│   ├── cms/
+│   │   ├── install-schema.mjs
+│   │   ├── migrate.mjs
+│   │   ├── seed.mjs
+│   │   ├── export.mjs
+│   │   └── rollback.mjs
+│   └── check-*.mjs
+├── .agents/skills/          # Codex / ChatGPT skills (source of truth)
+├── .cursor/skills/          # symlinks → .agents/skills
+├── AGENTS.md
+├── content-manifest.json
+├── template.lock.json
 ├── src/
 │   ├── components/
 │   │   ├── common/
@@ -978,7 +991,8 @@ Naming conventions: `PascalCase.astro` for components, `kebab-case.ts` for modul
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "build:server": "node scripts/check-build-warnings.mjs server",
+    "build:static": "node scripts/check-build-warnings.mjs static",
     "setup": "node scripts/setup.mjs && astro sync && husky",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "astro check",
@@ -986,15 +1000,18 @@ Naming conventions: `PascalCase.astro` for components, `kebab-case.ts` for modul
     "pretty-quick": "pretty-quick --staged",
     "mcp:env": "node scripts/print-mcp-env.mjs",
     "mcp:verify": "node scripts/verify-orbitype-mcp.mjs",
-    "figma:verify": "node scripts/verify-figma-mcp.mjs",
+    "figma:verify": "node scripts/verify-figma.mjs",
+    "cms:install": "node scripts/cms/install-schema.mjs",
+    "cms:migrate": "node scripts/cms/migrate.mjs",
+    "cms:seed": "node scripts/cms/seed.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test:e2e"
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run check:leakage && pnpm run test:e2e && ORBITYPE_MOCK=true pnpm run build:server && ORBITYPE_MOCK=true pnpm run build:static"
   }
 }
 ```
 
-No `author` field.
+No `author` field. There is **no** `astro preview` script — `@astrojs/vercel` does not support it.
 
 **`pnpm setup` is a built-in pnpm command**, so the `setup` script is shadowed by it. Always invoke it as `pnpm run setup`, with the explicit `run`, and document it that way everywhere — README, hook, docs, CI.
 
@@ -1445,7 +1462,7 @@ export function normalizeSections(sections: unknown): Section[] {
 
 ### 11.5 `src/lib/orbitype/seed.ts`
 
-**One definition of starter content, serving three consumers:** mock mode, the unconfigured/empty fallback, and `POST /api/setup/seed`. That unification is why FR-07 holds in mock mode — a slug-aware lookup naturally returns `null` for slugs it does not know. Recorded as ADR-0012.
+**One definition of starter content, serving three consumers:** mock mode, the unconfigured/empty fallback, and `pnpm run cms:seed`. That unification is why FR-07 holds in mock mode — a slug-aware lookup naturally returns `null` for slugs it does not know. Recorded as ADR-0012.
 
 Requirements:
 
@@ -1793,19 +1810,21 @@ JSON-LD: a `WebPage` node with a nested `Article`, `publisher` and `isPartOf: We
 
 `buildPageSeo` must handle a missing `page.head` gracefully, and merge `page.head` (a free-form JSON column) over the computed defaults so editors can override per page.
 
-### 11.15 API endpoints
+### 11.15 API endpoints and CMS CLI
 
-All endpoints set `export const prerender = false`.
+All HTTP endpoints set `export const prerender = false`.
 
-**`src/pages/api/setup/install-schema.ts`** — POST, body `{ table?: CmsTable | "all" }`. Returns 400 with an actionable message including the API-keys URL when the SQL env is missing. **Runs `CREATE_UID_FUNCTION_SQL` first**, then each `CREATE TABLE IF NOT EXISTS`, collecting per-table `{ table, status, error? }` results and returning `{ ok, message, results }`. Never aborts the whole batch on one failure.
+**Schema install / migrate / seed are CLI-only** (never deployed as HTTP):
 
-**`src/pages/api/setup/migrate.ts`** — POST. Applies the additive `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` statements, same result shape.
-
-**`src/pages/api/setup/seed.ts`** — POST. Inserts the seed content from §11.5 with `RETURNING`, skipping rows whose slug already exists.
+- `pnpm run cms:install` → `scripts/cms/install-schema.mjs` — confirms connector, runs `CREATE_UID_FUNCTION_SQL` first, then `CREATE TABLE IF NOT EXISTS`.
+- `pnpm run cms:migrate` → additive `ALTER TABLE` / indexes / triggers.
+- `pnpm run cms:seed` → inserts starter rows from `seed-data.mjs` with `RETURNING`, skipping existing slugs.
 
 **`src/pages/api/revalidate.ts`** — POST, body `{ tags?: string[], path?: string }`. Requires `REVALIDATE_SECRET`, compared in constant time, and rate-limited. Calls `context.cache.invalidate()` for each. Returns 404 when no secret is configured, so an unconfigured deployment exposes nothing. Two behaviours to document: invalidation is _soft_, marking entries stale for background revalidation rather than purging them; and path matching is exact with no globs, so a trailing-slash mismatch silently does nothing.
 
-**`src/pages/api/forms/contact.ts`** — POST. Validate with a Zod schema (required first name, last name, valid email, non-empty message). Send the email via `src/lib/email.ts`. Then best-effort insert into `contacts` with `RETURNING`; swallow insert errors because the email already succeeded. Include a honeypot field plus a per-IP rate limit.
+**`src/pages/api/forms/contact.ts`** — POST. Accepts JSON or `application/x-www-form-urlencoded` / multipart. Validate with a Zod schema (required first name, last name, valid email, non-empty message, privacy consent). Send the email via `src/lib/email.ts`. Then best-effort insert into `contacts` with `RETURNING`; swallow insert errors because the email already succeeded. Include a honeypot field (`website`) plus a per-IP rate limit.
+
+**`src/pages/api/health/live.ts` / `ready.ts` / `cache-probe.ts`** — liveness (no deps), readiness (read-only SQL with timeout), and a side-effect-free cache probe for e2e.
 
 **`src/pages/api/comments.ts`** — GET lists comments for a post, POST inserts one. Both return 404 when the comments flag is off, so a disabled feature is not merely hidden in the UI.
 
@@ -1957,15 +1976,14 @@ The largest section and the template's first impression. Requirements:
 
 - Renders the ordered setup steps from §11.5, each expandable, first one expanded by default.
 - Copy-to-clipboard on every code block, degrading to selectable text without JS.
-- The schema-installer button appears **only** when a SQL key is present, posts to `/api/setup/install-schema`, and renders per-table results inline. A two-step confirmation before executing, since it writes DDL to a real database.
-- A separate seed action posting to `/api/setup/seed`.
+- Schema install and seed are shown as **CLI commands** (`pnpm run cms:install`, `pnpm run cms:seed`) — never as HTTP buttons that hit public endpoints.
 - A prominent link to `https://app.orbitype.com/settings/api-keys`.
 - The MCP configuration snippet, matching `.cursor/mcp.json.example` exactly.
-- The Figma → Cursor → Orbitype workflow, as a short ordered list.
 - No third-party logo or company credit.
-- Accordion via `<details>`/`<summary>`; the only scripts are clipboard, the installer fetch and the seeder fetch.
+- Accordion via `<details>`/`<summary>`; the only client script is clipboard copy.
+- Stable `data-testid` attributes for e2e (`section-welcome`, `welcome-heading`, `welcome-step`).
 
-Props: `title`, `lead`, `capabilities[]`, `steps[]` (each with `title`, `text`, optional `kind: "wizard" | "seed"` and `code`), `hasSqlKeyConfigured?`, `apiKeysUrl?`, and `locale`.
+Props: `title`, `lead`, `capabilities[]`, `steps[]` (each with `title`, `text`, optional `kind: "cli"` and `code`), `hasSqlKeyConfigured?`, `apiKeysUrl?`, and `locale`.
 
 ---
 
@@ -2425,7 +2443,7 @@ What we accept: `cacheVercel()` is new and labelled experimental, so the adapter
 
 **Context.** Three features need the same starter content: mock mode, the fallback shown when the CMS is unreachable or empty, and a database seeder. Defining them separately guarantees drift. The predecessor already unifies the first two, and its fallback is slug-aware.
 
-**Decision.** `src/lib/orbitype/seed.ts` defines starter pages and posts once. Mock mode, the fallback path and `POST /api/setup/seed` all read from it. `findSeedPage(slug)` returns `null` for unknown slugs.
+**Decision.** `src/lib/orbitype/seed-data.mjs` holds starter payloads; `seed.ts` wraps them for the Astro runtime. Mock mode, the fallback path and `pnpm run cms:seed` all read from the same builders. `findSeedPage(slug)` returns `null` for unknown slugs.
 
 **Consequences.** Starter content cannot drift between local development and a seeded database. FR-07 holds in mock mode for free, because an unknown slug returns `null` rather than the welcome page — a subtle failure the earlier design would have shipped. Seed content must stay generic and client-neutral, since it is what every new project sees first.
 
@@ -2535,7 +2553,7 @@ Write `Base.astro`, `Navigation.astro`, `Footer.astro`, `ConsentScripts.astro`, 
 
 ### Phase 5 — Welcome experience, installer, seeder
 
-Write `SectionWelcome.astro`, `src/pages/api/setup/{install-schema,migrate,seed}.ts`. Complete the seed content.
+Write `SectionWelcome.astro`, CLI installers under `scripts/cms/`, and complete the seed content. Do **not** expose schema/seed over HTTP.
 
 **Acceptance:** The welcome screen shows all setup steps; the first is expanded and the second expands on click. The installer button is hidden without a SQL key and visible with one. Posting to the installer without configuration returns 400 with a message containing the API-keys URL. Against a real connector it creates `uid()` first, then all tables, idempotently, reporting per-table results. The seeder populates starter content and is safe to re-run. No third-party logo or company credit appears.
 

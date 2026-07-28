@@ -2,12 +2,21 @@ import type { APIRoute } from "astro"
 import { REVALIDATE_SECRET } from "astro:env/server"
 import { timingSafeEqual } from "node:crypto"
 import { z } from "zod"
+import { clientKey, rateLimit } from "~/lib/rate-limit"
 
 export const prerender = false
 
+const MAX_TAGS = 20
+const MAX_TAG_LENGTH = 128
+
 const bodySchema = z.object({
-  tags: z.array(z.string().min(1)).optional(),
-  path: z.string().min(1).optional(),
+  tags: z.array(z.string().min(1).max(MAX_TAG_LENGTH)).max(MAX_TAGS).optional(),
+  path: z
+    .string()
+    .min(1)
+    .max(512)
+    .regex(/^\//, "path must start with /")
+    .optional(),
 })
 
 function secretsEqual(a: string, b: string): boolean {
@@ -18,9 +27,25 @@ function secretsEqual(a: string, b: string): boolean {
 }
 
 export const POST: APIRoute = async ({ request, cache }) => {
-  // Unconfigured deployments expose nothing.
   if (!REVALIDATE_SECRET) {
     return new Response(null, { status: 404 })
+  }
+
+  const limited = rateLimit(`revalidate:${clientKey(request)}`, {
+    limit: 30,
+    windowMs: 60_000,
+  })
+  if (!limited.ok) {
+    return new Response(
+      JSON.stringify({ ok: false, message: "Rate limit exceeded" }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "Retry-After": String(limited.retryAfterSec),
+        },
+      },
+    )
   }
 
   const header =

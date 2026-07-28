@@ -6,8 +6,31 @@ import {
   PUBLIC_SITE_URL,
 } from "astro:env/client"
 
+function assertProductionSiteUrl(url: string): void {
+  if (process.env["VERCEL_ENV"] !== "production") return
+
+  let parsed: URL
+  try {
+    parsed = new URL(url)
+  } catch {
+    throw new Error(`PUBLIC_SITE_URL is not a valid URL: ${url}`)
+  }
+
+  const host = parsed.hostname.toLowerCase()
+  if (host === "localhost" || host === "127.0.0.1" || host.endsWith(".local")) {
+    throw new Error(
+      `PUBLIC_SITE_URL must not point at ${host} in production (got ${url})`,
+    )
+  }
+  if (parsed.protocol !== "https:") {
+    throw new Error(`PUBLIC_SITE_URL must use https in production (got ${url})`)
+  }
+}
+
 export function siteUrl(): string {
-  return PUBLIC_SITE_URL.replace(/\/$/, "")
+  const url = PUBLIC_SITE_URL.replace(/\/$/, "")
+  assertProductionSiteUrl(url)
+  return url
 }
 
 export function siteName(): string {

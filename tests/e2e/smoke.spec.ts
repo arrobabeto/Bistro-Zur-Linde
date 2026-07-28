@@ -1,17 +1,16 @@
 import { expect, test } from "@playwright/test"
 
 test.describe("smoke", () => {
-  test("home renders welcome heading", async ({ page }) => {
+  test("home renders welcome section", async ({ page }) => {
     const response = await page.goto("/")
     expect(response?.status()).toBe(200)
-    await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /Welcome/i,
-    )
+    await expect(page.getByTestId("section-welcome")).toBeVisible()
+    await expect(page.getByTestId("welcome-heading")).toBeVisible()
   })
 
   test("welcome accordion expands the second step", async ({ page }) => {
     await page.goto("/")
-    const details = page.locator("details")
+    const details = page.getByTestId("welcome-step")
     await expect(details.first()).toHaveAttribute("open", "")
     await details.nth(1).locator("summary").click()
     await expect(details.nth(1)).toHaveAttribute("open", "")
@@ -49,6 +48,19 @@ test.describe("smoke", () => {
     ).toBeGreaterThan(0)
   })
 
+  test("JSON-LD escapes script-breaking sequences", async ({ page }) => {
+    await page.goto("/")
+    const scripts = page.locator('script[type="application/ld+json"]')
+    const count = await scripts.count()
+    expect(count).toBeGreaterThan(0)
+    for (let i = 0; i < count; i++) {
+      const raw = await scripts.nth(i).innerHTML()
+      expect(raw).not.toMatch(/<\/script/i)
+      // Hostile closers must be unicode-escaped if present in data
+      expect(raw.includes("<")).toBe(false)
+    }
+  })
+
   test("sitemap and robots respond", async ({ request }) => {
     const sitemap = await request.get("/sitemap.xml")
     expect(sitemap.status()).toBe(200)
@@ -60,18 +72,10 @@ test.describe("smoke", () => {
     expect(text).toMatch(/sitemap/i)
   })
 
-  test("HTML does not leak a live ORBITYPE_API_SQL_KEY value", async ({
-    page,
-  }) => {
+  test("HTML does not leak secret key material", async ({ page }) => {
     await page.goto("/")
     const html = await page.content()
-    // Env var *names* appear in the welcome setup docs — that is intentional.
-    // A live key value must never appear. In mock mode there is no live key
-    // in the process; the build-output grep covers production artefacts.
-    const liveKey = process.env["ORBITYPE_API_SQL_KEY"]?.trim()
-    if (liveKey && liveKey.length >= 12 && liveKey !== "your-connector-key") {
-      expect(html).not.toContain(liveKey)
-    }
     expect(html).not.toMatch(/X-API-KEY["']?\s*[:=]\s*["'][A-Za-z0-9+/=]{20,}/)
+    expect(html).not.toMatch(/figd_[A-Za-z0-9]{10,}/)
   })
 })

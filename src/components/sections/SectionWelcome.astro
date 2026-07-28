@@ -1,7 +1,8 @@
 ---
 // SectionWelcome.astro
 //
-// First-run onboarding, schema installer and seeder.
+// First-run onboarding. Schema install and seed run via CLI only —
+// never from public HTTP endpoints.
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -15,7 +16,7 @@ interface Capability {
 interface Step {
   title: I18nString
   text: I18nString
-  kind?: "wizard" | "seed"
+  kind?: "cli" | "wizard" | "seed"
   code?: string
 }
 
@@ -42,7 +43,7 @@ const {
 const heading = translate(title, locale)
 ---
 
-<section class="container-wide py-section">
+<section class="container-wide py-section" data-testid="section-welcome">
   <div class="mx-auto max-w-3xl">
     <p
       class="text-brand-700 mb-3 text-xs font-semibold tracking-[0.18em] uppercase"
@@ -51,7 +52,10 @@ const heading = translate(title, locale)
     </p>
     {
       heading && (
-        <h1 class="mb-4 text-4xl font-semibold tracking-tight text-balance">
+        <h1
+          class="mb-4 text-4xl font-semibold tracking-tight text-balance"
+          data-testid="welcome-heading"
+        >
           {heading}
         </h1>
       )
@@ -83,12 +87,13 @@ const heading = translate(title, locale)
     )
   }
 
-  <div class="mx-auto max-w-3xl space-y-3">
+  <div class="mx-auto max-w-3xl space-y-3" data-testid="welcome-steps">
     {
       steps.map((step, index) => (
         <details
           class="group rounded-xl border border-neutral-200 bg-white open:shadow-sm"
           open={index === 0}
+          data-testid="welcome-step"
         >
           <summary class="cursor-pointer list-none px-5 py-4 font-medium text-neutral-900">
             <span class="text-brand-700 mr-2 font-mono text-sm">
@@ -116,63 +121,9 @@ const heading = translate(title, locale)
               </div>
             )}
 
-            {step.kind === "wizard" && hasSqlKeyConfigured && (
-              <div class="mt-4 space-y-3" data-install-wizard>
-                <p class="text-sm text-neutral-500" data-install-message>
-                  Start the wizard to install schema into your Orbitype
-                  workspace.
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    class="bg-brand-900 rounded-lg px-4 py-2 text-sm font-medium text-white"
-                    data-install-table="all"
-                  >
-                    Install all tables
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded-lg border border-neutral-300 px-4 py-2 text-sm"
-                    data-install-table="pages"
-                  >
-                    pages
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded-lg border border-neutral-300 px-4 py-2 text-sm"
-                    data-install-table="posts"
-                  >
-                    posts
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded-lg border border-neutral-300 px-4 py-2 text-sm"
-                    data-install-table="settings"
-                  >
-                    settings
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded-lg border border-neutral-300 px-4 py-2 text-sm"
-                    data-install-table="contacts"
-                  >
-                    contacts
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded-lg border border-neutral-300 px-4 py-2 text-sm"
-                    data-install-table="templates"
-                  >
-                    templates
-                  </button>
-                </div>
-                <ul class="space-y-1 text-sm" data-install-results />
-              </div>
-            )}
-
-            {step.kind === "wizard" && !hasSqlKeyConfigured && (
+            {step.kind === "cli" && !hasSqlKeyConfigured && (
               <p class="mt-3 text-sm text-amber-700">
-                Add a SQL API key to enable the installer.{" "}
+                Add a SQL API key to .env before running CLI installers.{" "}
                 <a
                   class="text-brand-700 underline"
                   href={apiKeysUrl}
@@ -182,21 +133,6 @@ const heading = translate(title, locale)
                   Open API keys
                 </a>
               </p>
-            )}
-
-            {step.kind === "seed" && hasSqlKeyConfigured && (
-              <div class="mt-4 space-y-3" data-seed-wizard>
-                <p class="text-sm text-neutral-500" data-seed-message>
-                  Seed the homepage into your Orbitype workspace.
-                </p>
-                <button
-                  type="button"
-                  class="bg-brand-900 rounded-lg px-4 py-2 text-sm font-medium text-white"
-                  data-seed-button
-                >
-                  Seed starter content
-                </button>
-              </div>
             )}
           </div>
         </details>
@@ -236,80 +172,5 @@ const heading = translate(title, locale)
     }
   }
 
-  function wireInstall() {
-    const root = document.querySelector("[data-install-wizard]")
-    if (!root) return
-
-    const message = root.querySelector("[data-install-message]")
-    const results = root.querySelector("[data-install-results]")
-
-    for (const button of root.querySelectorAll("[data-install-table]")) {
-      button.addEventListener("click", async () => {
-        const table = button.getAttribute("data-install-table") ?? "all"
-        const first = window.confirm(
-          `Prepare installation for ${table === "all" ? "all tables" : `${table} table`}?`,
-        )
-        if (!first) return
-        const second = window.confirm(
-          `Final confirmation: install ${table} in your Orbitype workspace now?`,
-        )
-        if (!second) return
-
-        if (message) message.textContent = "Running schema installer..."
-        if (results) results.innerHTML = ""
-
-        try {
-          const response = await fetch("/api/setup/install-schema", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ table }),
-          })
-          const data = await response.json()
-          if (message) message.textContent = data.message ?? "Done"
-          if (results && Array.isArray(data.results)) {
-            results.innerHTML = data.results
-              .map(
-                (r: { table: string; status: string; error?: string }) =>
-                  `<li><strong>${r.table}</strong>: ${r.status}${r.error ? ` — ${r.error}` : ""}</li>`,
-              )
-              .join("")
-          }
-        } catch (error) {
-          if (message)
-            message.textContent =
-              error instanceof Error ? error.message : "Install failed"
-        }
-      })
-    }
-  }
-
-  function wireSeed() {
-    const root = document.querySelector("[data-seed-wizard]")
-    if (!root) return
-    const message = root.querySelector("[data-seed-message]")
-    const button = root.querySelector("[data-seed-button]")
-    if (!button) return
-
-    button.addEventListener("click", async () => {
-      if (!window.confirm("Seed starter content into your Orbitype workspace?"))
-        return
-      if (message) message.textContent = "Seeding..."
-      try {
-        const response = await fetch("/api/setup/seed", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        })
-        const data = await response.json()
-        if (message) message.textContent = data.message ?? "Seeded"
-      } catch (error) {
-        if (message)
-          message.textContent =
-            error instanceof Error ? error.message : "Seed failed"
-      }
-    })
-  }
-
   wireCopy()
-  wireInstall()
-  wireSeed()
 </script>

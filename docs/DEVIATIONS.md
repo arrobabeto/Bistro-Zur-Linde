@@ -181,7 +181,7 @@ Source: https://vercel.com/docs/og-image-generation, `@vercel/og@0.11.1` type de
 
 ### V-13 — Content collections
 
-**As documented, and now mandatory.** Config lives in `src/content.config.ts`, collections use `defineCollection()` with a `loader`, `glob()` and `file()` come from `astro/loaders`, and `getCollection()` queries.
+**As documented, and now mandatory when used.** Astro 7 content collections config lives in a root `content.config.ts` (path naming per Astro docs), collections use `defineCollection()` with a `loader`, `glob()` and `file()` come from `astro/loaders`, and `getCollection()` queries. This template does **not** ship content collections (out of scope).
 
 Breaking changes worth knowing if a project opts in: legacy collections are fully removed in v6 with no compatibility flag; `z` must be imported from `astro/zod`, not `astro:content`; `entry.slug` is gone in favour of `entry.id`; and `entry.render()` is replaced by `render(entry)` imported from `astro:content`.
 
@@ -340,11 +340,11 @@ Not in the blueprint at all. Orbitype sometimes stores `sections` as a nested ar
 
 Owner-approved scope additions the blueprint omitted.
 
-- **Seed system.** The predecessor builds its mock pages from the same builders that populate the database. Adopting that gives one definition of starter content serving mock mode, the fallback, and `POST /api/setup/seed` — and fixes D-11 as a side effect. ADR-0012.
+- **Seed system.** The predecessor builds its mock pages from the same builders that populate the database. Adopting that gives one definition of starter content serving mock mode, the fallback, and `pnpm run cms:seed` — and fixes D-11 as a side effect. ADR-0012.
 - **`templates` table.** `sections_before` / `sections_after` for chrome shared across pages, changing composition to `[...before, ...page, ...after]`. ADR-0013, FR-25.
-- **Migration action.** `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` statements alongside the DDL, exposed via `/api/setup/migrate`.
+- **Migration action.** `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` statements alongside the DDL, exposed via `pnpm run cms:migrate` (CLI only — never HTTP).
 - **`phrases` catalogue.** The typed chrome-string object §4.2 alludes to but never specified. Now §11.18.
-- **MCP and Figma verification scripts.** `mcp:env`, `mcp:verify`, `figma:verify`.
+- **MCP and Figma verification scripts.** `mcp:env`, `mcp:verify`, `figma:verify` (Figma is REST, not MCP).
 
 `contacts` keeps generic columns; the predecessor's project-specific fields are dropped.
 
