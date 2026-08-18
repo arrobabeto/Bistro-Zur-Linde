@@ -1,10 +1,10 @@
-# Orbitype Astro Template
+# Bistro Zur Linde
 
-A zero-JavaScript-by-default Astro starter for [Orbitype](https://www.orbitype.com)-powered websites. Pages are composed from CMS-authored JSON sections, SEO is server-rendered, and CDN caching uses native Astro/`@astrojs/vercel` tags.
+Marketing website for **Bistro Zur Linde**. Built with Astro 7, content from [Orbitype](https://www.orbitype.com), and deployed on Vercel. Pages are composed from CMS-authored JSON sections; SEO is server-rendered; CDN caching uses native Astro / `@astrojs/vercel` tags.
 
-Use it for landing pages, marketing sites, brochure sites and documentation sites — anywhere content dominates and interactivity is incidental.
+Package name: `bistro-zur`. Set `PUBLIC_SITE_NAME` to `Bistro Zur Linde` (and a real `PUBLIC_SITE_DESCRIPTION`) in `.env`.
 
-> Independent Astro counterpart to a Nuxt/Vue Orbitype CMS template. Same `pages` / `posts` / `settings` schema and `sections` JSON convention.
+This site is based on the original [Orbitype](https://www.orbitype.com) Astro template, adapted by [@arrobabeto](https://github.com/arrobabeto).
 
 ---
 
@@ -23,7 +23,7 @@ Use it for landing pages, marketing sites, brochure sites and documentation site
 | Orbitype Workflow → `/api/revalidate`  | Code ready; Workflow not verified end-to-end               |
 | CI (GitHub Actions)                    | See `.github/workflows/ci.yml`                             |
 
-Do not describe an incomplete row as production-ready for a client launch.
+Do not describe an incomplete row as production-ready.
 
 ---
 
@@ -36,11 +36,9 @@ pnpm run setup
 pnpm dev
 ```
 
-Open `http://localhost:4321`. No credentials are needed — the template starts in **mock mode** and serves **built-in content** until you connect a CMS.
+Open `http://localhost:4321`. With `ORBITYPE_MOCK=true` (default in `.env.example`) the site serves built-in seed content and makes no CMS network calls.
 
-Note the explicit `run` in `pnpm run setup`. `pnpm setup` is a built-in pnpm command and will not run the project script.
-
-For a **client project** cloned from this template, also run `pnpm run bootstrap` (package name, locale, favicon, `template.lock.json`).
+Use `pnpm run setup`, not `pnpm setup` — the latter is a built-in pnpm command.
 
 ## Requirements
 
@@ -56,7 +54,6 @@ For a **client project** cloned from this template, also run `pnpm run bootstrap
 | `pnpm run build:server` | Server build; fails on unexpected warnings             |
 | `pnpm run build:static` | Static prerender build                                 |
 | `pnpm run setup`        | Create `.env` from `.env.example`, sync types, husky   |
-| `pnpm run bootstrap`    | Clone checklist for a real project                     |
 | `pnpm run cms:install`  | Install CMS schema (CLI, confirms connector)           |
 | `pnpm run cms:migrate`  | Additive migrations                                    |
 | `pnpm run cms:seed`     | Seed starter rows                                      |
@@ -81,16 +78,14 @@ There is **no** `astro preview` script: `@astrojs/vercel` does not support it. U
 | [docs/DEVIATIONS.md](docs/DEVIATIONS.md)                       | Verified departures                          |
 | `docs/adr/`                                                    | Architecture decision records                |
 
-## Configuring a project
+## Environment
 
-1. `pnpm run bootstrap` (or manually set `name` in `package.json`).
-2. Replace `public/favicon.svg` (bootstrap fails if the template hash remains).
-3. Fill in the `PUBLIC_*` variables in `.env` — production must use `https://`, never localhost.
-4. Create an Orbitype SQL connector key; set `ORBITYPE_API_SQL_KEY`; set `ORBITYPE_MOCK=false`.
-5. Run `pnpm run cms:install` then `pnpm run cms:seed` from an authorized machine (**never** via HTTP).
-6. Export authoring keys for Cursor MCP (`pnpm run mcp:env -- --write-file …`), reload MCP.
-7. Set design tokens in `src/styles/global.css`.
-8. Confirm locale in `src/config/locales.ts`.
+1. Copy `.env.example` via `pnpm run setup` if `.env` is missing.
+2. Set `PUBLIC_SITE_URL` (production must use `https://`, never localhost), `PUBLIC_SITE_NAME=Bistro Zur Linde`, and `PUBLIC_SITE_DESCRIPTION`.
+3. Create an Orbitype SQL connector key; set `ORBITYPE_API_SQL_KEY`; set `ORBITYPE_MOCK=false` when talking to the live CMS.
+4. Run `pnpm run cms:install` then `pnpm run cms:seed` from an authorized machine (**never** via HTTP).
+5. Export authoring keys for Cursor MCP (`pnpm run mcp:env -- --write-file …`), reload MCP.
+6. Design tokens live in `src/styles/global.css`. Locale is `en` in `src/config/locales.ts`.
 
 ## Rendering modes
 
