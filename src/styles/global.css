@@ -1,24 +1,96 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Tailwind 4 is CSS-first — this block is the single place to
- * retheme a project. There is no JS config file and no `darkMode` key.
- *
- * These tokens are deliberately neutral placeholders. Replace them per
- * project; do not hardcode colour values in components (ADR-0008).
+ * Bistro Zur Linde design tokens (Tailwind 4, CSS-first — ADR-0008).
+ * Palette, type and spacing extracted from Figma page 00.Design System and
+ * the Homesite frame (6:238): Cormorant Garamond for display, Inter for body.
  */
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url("/fonts/cormorant-garamond-latin-300-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 300;
+  src: url("/fonts/cormorant-garamond-latin-300-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/cormorant-garamond-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("/fonts/cormorant-garamond-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("/fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url("/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/inter-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("/fonts/inter-latin-500-normal.woff2") format("woff2");
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: ui-serif, Georgia, serif;
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
 
-  --color-brand-50: #f0f7ff;
-  --color-brand-100: #e0effe;
-  --color-brand-300: #7cc4fa;
-  --color-brand-500: #0ea5e9;
-  --color-brand-700: #0369a1;
-  --color-brand-900: #0e2138;
+  /* Palette: coffee, taupe, cream, copper accents */
+  --color-brand-50: #fbf8f4;
+  --color-brand-500: #74685b;
+  --color-brand-900: #321d1d;
+  --color-accent-300: #d3a574;
+  --color-accent-500: #a46c32;
 
   --spacing-section: 5rem;
+
+  /* Cormorant Garamond display scale (Figma 02. Typography) */
+  --text-display-xl: 5.125rem;
+  --text-display-xl--line-height: 0.96;
+  --text-display-lg: 3.25rem;
+  --text-display-lg--line-height: 1.1;
+  --text-display-md: 3rem;
+  --text-display-md--line-height: 1.02;
+  --text-display-sm: 2.25rem;
+  --text-display-sm--line-height: 1.17;
 }
 
 @custom-variant enter (&:hover, &:focus-visible);
@@ -30,7 +102,7 @@
   }
 
   body {
-    @apply bg-white font-sans text-neutral-900 antialiased;
+    @apply text-brand-900 bg-white font-sans antialiased;
   }
 
   :focus-visible {
@@ -49,7 +121,50 @@
     @apply mx-auto w-full max-w-3xl px-6;
   }
 
+  /* Figma canvas is 1512 wide with ~80px gutters */
   .container-wide {
-    @apply mx-auto w-full max-w-6xl px-6;
+    @apply mx-auto w-full max-w-[94.5rem] px-6 md:px-10 lg:px-20;
+  }
+
+  /* Figma 04. Buttons — pill, Cormorant Garamond 500 / 18px / lh 32px */
+  .btn {
+    @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-14 py-3 text-lg leading-8 font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-brand-50 text-brand-900 enter:bg-white;
+  }
+
+  .btn-secondary {
+    @apply bg-brand-500 enter:bg-brand-900 text-white;
+  }
+
+  .btn-dark {
+    @apply bg-brand-900 enter:bg-brand-500 text-white;
+  }
+
+  .btn-ghost {
+    @apply text-brand-900 border-brand-900/30 enter:border-brand-900 border;
+  }
+
+  .nav-link {
+    @apply font-display text-brand-900 enter:text-brand-500 text-lg leading-6 transition-colors;
+  }
+
+  .footer-link {
+    @apply enter:text-white text-xl leading-7 whitespace-nowrap text-white/90 transition-colors;
+  }
+
+  /* Eyebrow label — Inter 16px, uppercase, wide tracking (Figma) */
+  .eyebrow {
+    @apply text-accent-500 text-base leading-6 tracking-[0.3em] uppercase;
+  }
+
+  .section-title {
+    @apply font-display text-display-lg text-brand-900 font-light;
+  }
+
+  .body-copy {
+    @apply text-brand-900/80 text-lg leading-[1.67];
   }
 }

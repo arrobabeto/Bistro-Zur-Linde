@@ -30,6 +30,6 @@ test.describe("caching", () => {
     const response = await request.get("/")
     expect(response.status()).toBe(200)
     const body = await response.text()
-    expect(body).toContain('data-testid="section-welcome"')
+    expect(body).toContain('data-testid="section-hero"')
   })
 })

@@ -1,10 +1,11 @@
 import { z } from "zod"
 import { i18nStringSchema, orbiSchema } from "~/lib/section-schema-base"
 
-export const sectionHeroSchema = z.object({
+export const sectionChefProfileSchema = z.object({
+  eyebrow: i18nStringSchema,
   title: i18nStringSchema,
-  titleAccent: i18nStringSchema,
-  lead: i18nStringSchema,
+  text: i18nStringSchema,
+  stats: z.array(z.object({ label: i18nStringSchema })).optional(),
   ctaLabel: i18nStringSchema,
   ctaHref: z.string().optional(),
   img: z.string().optional(),
@@ -12,4 +13,4 @@ export const sectionHeroSchema = z.object({
   _orbi: orbiSchema,
 })
 
-export default sectionHeroSchema
+export default sectionChefProfileSchema

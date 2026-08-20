@@ -2,155 +2,149 @@
 
 const now = () => new Date().toISOString()
 
-const API_KEYS_URL = "https://app.orbitype.com/settings/api-keys"
+const RESERVATION_HREF = "/kontakt"
 
-export function buildSeedPages({
-  hasSqlKeyConfigured = false,
-  apiKeysUrl = API_KEYS_URL,
-} = {}) {
+export function buildSeedPages() {
   return [
     {
       id: "seed-home",
       slug: "home",
       title: {
-        en: "Welcome",
-        de: "Willkommen",
+        de: "Bistro zur Linde",
       },
       lead: {
-        en: "Get your Orbitype-powered Astro site running in a few steps.",
-        de: "Bringen Sie Ihre Orbitype-Astro-Site in wenigen Schritten zum Laufen.",
+        de: "Die Linde kehrt zurück — grösser, freier, an gleicher Stelle.",
       },
-      img: "",
-      keywords: ["welcome", "setup", "orbitype"],
+      img: "/images/hero.jpg",
+      keywords: ["bistro", "restaurant", "oftringen", "küngoldingen"],
       head: {},
       created_at: now(),
       updated_at: now(),
       sections: [
         {
-          title: {
-            en: "Welcome to your Astro + Orbitype site",
-            de: "Willkommen bei Ihrer Astro + Orbitype Site",
-          },
+          title: { de: "Ein Name mit Geschichte.\nEine Küche" },
+          titleAccent: { de: "mit Ruf." },
           lead: {
-            en: "This screen appears when the CMS is empty, unconfigured, or running in mock mode. Follow the steps below to connect Orbitype and publish real content.",
-            de: "Dieser Bildschirm erscheint, wenn das CMS leer, nicht konfiguriert oder im Mock-Modus ist. Folgen Sie den Schritten unten.",
+            de: "Die Linde kehrt zurück — grösser, freier, an gleicher Stelle. Mit einem der profiliertesten Köche der Region und vier Räumen für jeden Ihrer Anlässe.",
           },
-          capabilities: [
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          img: "/images/hero.jpg",
+          imgAlt: {
+            de: "Gäste im hellen Gastraum des Bistro zur Linde mit Blick ins Grüne",
+          },
+          _orbi: { component: "SectionHero" },
+        },
+        {
+          eyebrow: { de: "Küchenchef" },
+          title: { de: "Ruedi Zünd bringt seinen Ruf mit nach Küngoldingen" },
+          text: {
+            de: "Langjähriger Wirt des Restaurant Federal in Zofingen — jetzt am Herd im Bistro zur Linde. Gemeinsam mit seinem gesamten Team. Bekannt für Schweizer Küche und gehobene französische Handschrift.",
+          },
+          stats: [
+            { label: { de: "13\nGaultMillau\nPunkte" } },
+            { label: { de: "Falstaff\n89 Punkte" } },
+            { label: { de: "Team-Umzug\nkomplett" } },
+          ],
+          ctaLabel: { de: "Mehr über Ruedi Zünd" },
+          ctaHref: "/news",
+          img: "/images/chef.jpg",
+          imgAlt: { de: "Küchenchef Ruedi Zünd in seiner Küche" },
+          _orbi: { component: "SectionChefProfile" },
+        },
+        {
+          eyebrow: { de: "Vier Räume, eine Küche" },
+          title: { de: "Für jeden Anlass die richtige Tür" },
+          rooms: [
             {
-              title: { en: "Zero client JS by default", de: "Kein Client-JS" },
-              text: {
-                en: "Content pages ship HTML and CSS only — no framework runtime.",
-                de: "Inhaltsseiten liefern nur HTML und CSS — kein Framework-Runtime.",
-              },
-              badge: "perf",
+              name: { de: "Bistro" },
+              href: "/bistro",
+              img: "/images/room-bistro.jpg",
+              imgAlt: { de: "Gastraum des Bistros mit grossen Fenstern" },
             },
             {
-              title: { en: "Section-driven pages", de: "Abschnittsbasiert" },
-              text: {
-                en: "Compose pages from CMS JSON. Each section maps to one .astro file by name.",
-                de: "Seiten aus CMS-JSON zusammensetzen. Jeder Abschnitt entspricht einer .astro-Datei.",
-              },
+              name: { de: "Sääli" },
+              href: "/saali",
+              img: "/images/room-saali.jpg",
+              imgAlt: { de: "Festlich gedeckte Tafel im Sääli" },
             },
             {
-              title: { en: "MCP authoring", de: "MCP-Authoring" },
-              text: {
-                en: "Read and write content from Cursor via Orbitype MCP — never leave the editor.",
-                de: "Inhalte über Orbitype MCP in Cursor lesen und schreiben.",
-              },
+              name: { de: "Zigarrenlounge" },
+              href: "/zigarrenlounge",
+              img: "/images/room-zigarrenlounge.jpg",
+              imgAlt: { de: "Ledersessel in der Zigarrenlounge" },
+            },
+            {
+              name: { de: "Wine Room" },
+              href: "/wine-room",
+              img: "/images/room-wine-room.jpg",
+              imgAlt: { de: "Weinregale im Wine Room" },
             },
           ],
-          steps: [
+          _orbi: { component: "SectionRooms" },
+        },
+        {
+          eyebrow: { de: "Der Ort" },
+          title: {
+            de: "Neubau, Terrasse, Umgebung — einzigartig in der Region",
+          },
+          img: "/images/promo.jpg",
+          imgAlt: { de: "Terrasse des Bistro zur Linde im Abendlicht" },
+          href: "/bistro",
+          _orbi: { component: "SectionPromoBanner" },
+        },
+        {
+          eyebrow: { de: "Events" },
+          title: {
+            de: "Vier Räume. Eine Küche. Für jeden Anlass der richtige.",
+          },
+          items: [
             {
-              title: {
-                en: "Create a SQL connector",
-                de: "SQL-Connector erstellen",
-              },
+              date: { de: "03 FEB 2027" },
+              title: { de: "Eröffnung Bistro zur Linde" },
               text: {
-                en: "In Orbitype, create a SQL connector and point it at your Postgres database.",
-                de: "Erstellen Sie in Orbitype einen SQL-Connector und verbinden Sie Ihre Postgres-Datenbank.",
+                de: "Feiern Sie mit uns die Eröffnung und entdecken Sie die neue Linde zum ersten Mal.",
               },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "/news",
+              img: "/images/event-eroeffnung.jpg",
+              imgAlt: { de: "Gäste vor dem Eingang des Bistro zur Linde" },
             },
             {
-              title: {
-                en: "Create a connector-scoped API key",
-                de: "API-Schlüssel erstellen",
-              },
+              date: { de: "03 FEB 2027" },
+              title: { de: "Ruedi Zünd im Interview" },
               text: {
-                en: `Create a key scoped to that connector at ${apiKeysUrl}.`,
-                de: `Erstellen Sie einen Schlüssel für diesen Connector unter ${apiKeysUrl}.`,
+                de: "Erfahren Sie mehr über seine Philosophie, seine Küche und den Neustart in Küngoldingen.",
               },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "/news",
+              img: "/images/event-interview.jpg",
+              imgAlt: { de: "Ruedi Zünd richtet einen Teller an" },
             },
             {
-              title: {
-                en: "Add credentials to .env",
-                de: "Zugangsdaten in .env",
-              },
+              date: { de: "03 FEB 2027" },
+              title: { de: "Saisonkarte Herbst" },
               text: {
-                en: "Set ORBITYPE_API_SQL_URL, ORBITYPE_API_SQL_KEY, and ORBITYPE_MOCK=false.",
-                de: "Setzen Sie ORBITYPE_API_SQL_URL, ORBITYPE_API_SQL_KEY und ORBITYPE_MOCK=false.",
+                de: "Kulinarische Highlights der Saison – frisch, regional und mit viel Leidenschaft gekocht.",
               },
-              code: `ORBITYPE_MOCK=false
-ORBITYPE_API_SQL_URL=https://core.orbitype.com/api/sql/v1
-ORBITYPE_API_SQL_KEY=your-connector-key`,
-            },
-            {
-              title: {
-                en: "Install the CMS schema",
-                de: "CMS-Schema installieren",
-              },
-              text: {
-                en: "From an authorized machine run: pnpm run cms:install. Creates uid() and the CMS tables. Safe to re-run.",
-                de: "Auf einem autorisierten Rechner: pnpm run cms:install. Erstellt uid() und die CMS-Tabellen.",
-              },
-              kind: "cli",
-              code: "pnpm run cms:install",
-            },
-            {
-              title: {
-                en: "Seed starter content",
-                de: "Starter-Inhalte laden",
-              },
-              text: {
-                en: "Run: pnpm run cms:seed. Inserts the homepage and a sample post. Skips rows that already exist.",
-                de: "Ausführen: pnpm run cms:seed. Fügt Startseite und Beispielbeitrag ein.",
-              },
-              kind: "cli",
-              code: "pnpm run cms:seed",
-            },
-            {
-              title: {
-                en: "Wire Orbitype MCP",
-                de: "Orbitype MCP einrichten",
-              },
-              text: {
-                en: "Export ORBITYPE_SQL_API_KEY (run pnpm run mcp:env), reload MCP in Cursor, then call orbitype_get_context.",
-                de: "ORBITYPE_SQL_API_KEY exportieren (pnpm run mcp:env), MCP neu laden, dann orbitype_get_context aufrufen.",
-              },
-              code: `{
-  "mcpServers": {
-    "orbitype-sql": {
-      "url": "https://core.orbitype.com/api/mcp/v1",
-      "headers": {
-        "X-API-KEY": "\${env:ORBITYPE_SQL_API_KEY}"
-      }
-    }
-  }
-}`,
-            },
-            {
-              title: {
-                en: "Build your first section",
-                de: "Ersten Abschnitt bauen",
-              },
-              text: {
-                en: "Add src/components/sections/SectionName.astro, then append matching JSON to pages.sections via SQL.",
-                de: "SectionName.astro anlegen, dann passendes JSON per SQL anhängen.",
-              },
+              ctaLabel: { de: "Jetzt entdecken" },
+              href: "/news",
+              img: "/images/event-saisonkarte.jpg",
+              imgAlt: { de: "Herbstlich angerichteter Teller mit Weinglas" },
             },
           ],
-          hasSqlKeyConfigured,
-          apiKeysUrl,
-          _orbi: { component: "SectionWelcome" },
+          _orbi: { component: "SectionEvents" },
+        },
+        {
+          title: { de: "Wir freuen uns" },
+          titleAccent: { de: "auf Sie." },
+          text: {
+            de: "Reservieren Sie Ihren Tisch — im Bistro, Sääli, der Zigarrenlounge oder im Wine Room.",
+          },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
         },
       ],
     },
@@ -162,30 +156,24 @@ export function buildSeedPosts() {
     {
       id: "seed-post-1",
       title: {
-        en: "Getting started with sections",
-        de: "Erste Schritte mit Abschnitten",
+        de: "Eröffnung Bistro zur Linde",
       },
       lead: {
-        en: "<p>How CMS JSON becomes rendered HTML.</p>",
-        de: "<p>Wie CMS-JSON zu gerendertem HTML wird.</p>",
+        de: "<p>Feiern Sie mit uns die Eröffnung und entdecken Sie die neue Linde zum ersten Mal.</p>",
       },
-      img: "",
+      img: "/images/event-eroeffnung.jpg",
       status: {
         options: ["draft", "review", "published"],
         value: "published",
       },
-      keywords: ["sections", "orbitype"],
+      keywords: ["eröffnung", "events"],
       created_at: now(),
       updated_at: now(),
       sections: [
         {
-          title: {
-            en: "One file per section",
-            de: "Eine Datei pro Abschnitt",
-          },
+          title: { de: "Ein Abend für die Nachbarschaft" },
           content: {
-            en: "<p>Create <code>SectionName.astro</code> in <code>src/components/sections/</code>. The filename must match <code>_orbi.component</code> exactly.</p>",
-            de: "<p>Erstellen Sie <code>SectionName.astro</code>. Der Dateiname muss genau <code>_orbi.component</code> entsprechen.</p>",
+            de: "<p>Die Türen der neuen Linde öffnen sich zum ersten Mal. Lernen Sie das Team kennen, entdecken Sie die vier Räume und geniessen Sie einen ersten Vorgeschmack auf die Küche von Ruedi Zünd.</p>",
           },
           _orbi: { component: "SectionProse" },
         },

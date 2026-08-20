@@ -1,7 +1,14 @@
 {
   "requiredPages": {
     "home": {
-      "components": ["SectionWelcome"]
+      "components": [
+        "SectionHero",
+        "SectionChefProfile",
+        "SectionRooms",
+        "SectionPromoBanner",
+        "SectionEvents",
+        "SectionReservation"
+      ]
     }
   }
 }

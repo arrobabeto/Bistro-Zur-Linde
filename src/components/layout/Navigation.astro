@@ -3,6 +3,7 @@ import { phrases } from "~/lib/phrases"
 import { translate } from "~/lib/i18n"
 import type { Locale } from "~/config/locales"
 import { siteName } from "~/lib/site"
+import { PRIMARY_NAV, RESERVATION_HREF } from "~/config/navigation"
 
 interface Props {
   locale: Locale
@@ -11,25 +12,35 @@ interface Props {
 const { locale } = Astro.props
 ---
 
-<header class="border-b border-neutral-200">
+<header>
   <nav
-    class="container-wide flex items-center justify-between gap-6 py-4"
+    class="container-wide flex flex-wrap items-center gap-6 py-6"
     aria-label={translate(phrases.menu, locale)}
   >
-    <a href="/" class="text-lg font-semibold tracking-tight text-neutral-900">
-      {siteName()}
+    <a href="/" class="shrink-0">
+      <img
+        src="/images/logo.svg"
+        alt={siteName()}
+        class="h-[86px] w-[86px]"
+        width="86"
+        height="86"
+      />
     </a>
-    <ul class="flex items-center gap-6 text-sm text-neutral-600">
-      <li>
-        <a class="enter:text-brand-700 transition-colors" href="/">
-          {translate(phrases.homepage, locale)}
-        </a>
-      </li>
-      <li>
-        <a class="enter:text-brand-700 transition-colors" href="/posts">
-          {translate(phrases.posts, locale)}
-        </a>
-      </li>
+
+    <ul class="ml-8 hidden flex-wrap items-center gap-8 lg:flex">
+      {
+        PRIMARY_NAV.map((item) => (
+          <li>
+            <a class="nav-link" href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
+
+    <a class="btn btn-primary ml-auto shrink-0" href={RESERVATION_HREF}>
+      {translate(phrases.reserve_now, locale)}
+    </a>
   </nav>
 </header>

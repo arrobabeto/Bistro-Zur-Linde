@@ -1,15 +1,14 @@
 import { z } from "zod"
 import { i18nStringSchema, orbiSchema } from "~/lib/section-schema-base"
 
-export const sectionHeroSchema = z.object({
+export const sectionReservationSchema = z.object({
   title: i18nStringSchema,
   titleAccent: i18nStringSchema,
-  lead: i18nStringSchema,
+  text: i18nStringSchema,
   ctaLabel: i18nStringSchema,
   ctaHref: z.string().optional(),
-  img: z.string().optional(),
-  imgAlt: i18nStringSchema,
+  mark: z.string().optional(),
   _orbi: orbiSchema,
 })
 
-export default sectionHeroSchema
+export default sectionReservationSchema

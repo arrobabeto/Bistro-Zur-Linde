@@ -1,0 +1,69 @@
+---
+// SectionRooms.astro
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Vier Räume, eine Küche" },
+//   "title":   { "de": "Für jeden Anlass die richtige Tür" },
+//   "rooms":   [{ "name": { "de": "Bistro" }, "href": "/bistro", "img": "…" }],
+//   "_orbi":   { "component": "SectionRooms" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Room {
+  name?: I18nString
+  href?: string
+  img?: string
+  imgAlt?: I18nString
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  rooms?: Room[]
+  locale: Locale
+}
+
+const { eyebrow, title, rooms = [], locale } = Astro.props
+---
+
+<section class="py-section">
+  <div
+    class="container-wide mb-14 flex flex-col items-center gap-4 text-center"
+  >
+    <p class="eyebrow">{translate(eyebrow, locale)}</p>
+    <h2 class="section-title max-w-4xl text-balance">
+      {translate(title, locale)}
+    </h2>
+  </div>
+
+  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      rooms.map((room) => (
+        <li class="relative">
+          <a
+            href={room.href ?? "/"}
+            class="group block h-[600px] overflow-hidden"
+          >
+            {room.img && (
+              <img
+                src={room.img}
+                alt={translate(room.imgAlt, locale)}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="378"
+                height="600"
+                loading="lazy"
+              />
+            )}
+            <span class="bg-brand-900/20 absolute inset-0" aria-hidden="true" />
+            <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[2.5rem] leading-tight font-semibold">
+              {translate(room.name, locale)}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

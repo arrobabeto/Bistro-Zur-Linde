@@ -63,11 +63,7 @@ async function main() {
         continue
       }
 
-      // Strip runtime-only welcome props before insert.
-      const sections = page.sections.map((section) => {
-        const { hasSqlKeyConfigured: _h, apiKeysUrl: _a, ...rest } = section
-        return rest
-      })
+      const sections = page.sections
 
       await orbitypeSql(
         `INSERT INTO pages (title, slug, lead, img, sections, keywords, head)
@@ -84,7 +80,7 @@ async function main() {
         {
           title: JSON.stringify(page.title),
           slug: page.slug,
-          lead: JSON.stringify(page.lead ?? { en: "" }),
+          lead: JSON.stringify(page.lead ?? {}),
           img: page.img ?? "",
           sections: JSON.stringify(sections),
           keywords: JSON.stringify(page.keywords ?? []),
@@ -104,10 +100,13 @@ async function main() {
 
   for (const post of posts) {
     try {
-      const titleEn = post.title.en
+      // Dedupe on whichever locale the row is authored in — the template is
+      // not English-only, so `title->>'en'` would miss every existing row and
+      // re-insert duplicates on each run.
+      const [titleLocale, titleValue] = Object.entries(post.title)[0]
       const existing = await orbitypeSql(
-        `SELECT id FROM posts WHERE title->>'en' = :title LIMIT 1`,
-        { title: titleEn },
+        `SELECT id FROM posts WHERE title->>:locale = :title LIMIT 1`,
+        { locale: titleLocale, title: titleValue },
       )
       if (existing[0]) {
         results.push({ kind: "post", id: existing[0].id, status: "skipped" })
@@ -127,7 +126,7 @@ async function main() {
          RETURNING id`,
         {
           title: JSON.stringify(post.title),
-          lead: JSON.stringify(post.lead ?? { en: "" }),
+          lead: JSON.stringify(post.lead ?? {}),
           img: post.img ?? "",
           status: JSON.stringify(
             post.status ?? {
