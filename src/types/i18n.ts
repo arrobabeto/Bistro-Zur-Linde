@@ -1,9 +1,12 @@
+import type { Locale } from "~/config/locales"
+
 /**
- * Localized string. `en` is required and is the terminal fallback.
- * Other locales are optional so a row authored as `{ en, de }` still
- * renders on a single-locale site.
+ * Localized string. Every configured locale is required so a row cannot ship
+ * without the language the site actually renders. Extra locales stay optional,
+ * which keeps rows authored as `{ en, de }` valid on a single-locale site.
  */
 export type I18nString = {
-  en: string
+  [K in Locale]: string
+} & {
   [locale: string]: string | undefined
 }

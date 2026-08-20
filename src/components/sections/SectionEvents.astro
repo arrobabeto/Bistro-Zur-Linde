@@ -1,0 +1,90 @@
+---
+// SectionEvents.astro
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Events" },
+//   "title":   { "de": "…" },
+//   "items":   [{
+//     "date":     { "de": "03 FEB 2027" },
+//     "title":    { "de": "…" },
+//     "text":     { "de": "…" },
+//     "ctaLabel": { "de": "Mehr erfahren" },
+//     "href":     "/news",
+//     "img":      "/images/event-eroeffnung.jpg"
+//   }],
+//   "_orbi": { "component": "SectionEvents" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface EventItem {
+  date?: I18nString
+  title?: I18nString
+  text?: I18nString
+  ctaLabel?: I18nString
+  href?: string
+  img?: string
+  imgAlt?: I18nString
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  items?: EventItem[]
+  locale: Locale
+}
+
+const { eyebrow, title, items = [], locale } = Astro.props
+---
+
+<section class="container-wide py-section">
+  <div class="mb-12 flex flex-col gap-4">
+    <p class="eyebrow">{translate(eyebrow, locale)}</p>
+    <h2
+      class="font-display text-brand-900 max-w-5xl text-[3rem] leading-[1.15] font-medium text-balance"
+    >
+      {translate(title, locale)}
+    </h2>
+  </div>
+
+  <ul class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+    {
+      items.map((item) => (
+        <li class="flex flex-col">
+          <div class="relative">
+            {item.img && (
+              <img
+                src={item.img}
+                alt={translate(item.imgAlt, locale)}
+                class="aspect-[620/480] w-full object-cover"
+                width="620"
+                height="480"
+                loading="lazy"
+              />
+            )}
+            <p class="bg-brand-50 text-brand-900 absolute top-5 right-5 px-5 py-3 text-base leading-6">
+              {translate(item.date, locale)}
+            </p>
+          </div>
+
+          <h3 class="font-display text-brand-900 mt-6 text-[2.25rem] leading-tight font-medium">
+            {translate(item.title, locale)}
+          </h3>
+
+          <span class="bg-brand-900 mt-6 h-0.5 w-8" aria-hidden="true" />
+          <p class="text-brand-900/80 mt-4 text-lg leading-6">
+            {translate(item.text, locale)}
+          </p>
+
+          {item.href && translate(item.ctaLabel, locale) && (
+            <a href={item.href} class="btn btn-secondary mt-6 self-start">
+              {translate(item.ctaLabel, locale)}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>

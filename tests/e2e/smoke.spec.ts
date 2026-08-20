@@ -1,26 +1,23 @@
 import { expect, test } from "@playwright/test"
 
 test.describe("smoke", () => {
-  test("home renders welcome section", async ({ page }) => {
+  test("home renders the hero section", async ({ page }) => {
     const response = await page.goto("/")
     expect(response?.status()).toBe(200)
-    await expect(page.getByTestId("section-welcome")).toBeVisible()
-    await expect(page.getByTestId("welcome-heading")).toBeVisible()
+    await expect(page.getByTestId("section-hero")).toBeVisible()
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
   })
 
-  test("welcome accordion expands the second step", async ({ page }) => {
+  test("home renders every CMS section from the manifest", async ({ page }) => {
     await page.goto("/")
-    const details = page.getByTestId("welcome-step")
-    await expect(details.first()).toHaveAttribute("open", "")
-    await details.nth(1).locator("summary").click()
-    await expect(details.nth(1)).toHaveAttribute("open", "")
+    await expect(page.locator("main > section")).toHaveCount(6)
   })
 
   test("unknown slug returns HTTP 404 in mock mode", async ({ page }) => {
     const response = await page.goto("/definitely-not-a-real-page-xyz")
     expect(response?.status()).toBe(404)
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /not found/i,
+      /not found|nicht gefunden/i,
     )
   })
 

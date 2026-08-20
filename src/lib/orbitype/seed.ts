@@ -1,4 +1,3 @@
-import { ORBITYPE_API_KEYS_URL, hasSqlConfigured } from "./config"
 import { buildSeedPages, buildSeedPosts } from "./seed-data.mjs"
 import type { Page } from "~/types/page"
 import type { Post } from "~/types/post"
@@ -9,10 +8,7 @@ import type { Post } from "~/types/post"
  * slugs so FR-07 holds in mock mode.
  */
 export function seedPages(): Page[] {
-  return buildSeedPages({
-    hasSqlKeyConfigured: hasSqlConfigured(),
-    apiKeysUrl: ORBITYPE_API_KEYS_URL,
-  }) as Page[]
+  return buildSeedPages() as Page[]
 }
 
 export function seedPosts(): Post[] {

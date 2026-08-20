@@ -1,0 +1,54 @@
+---
+// SectionPromoBanner.astro
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Der Ort" },
+//   "title":   { "de": "Neubau, Terrasse, Umgebung — einzigartig in der Region" },
+//   "img":     "/images/promo.jpg",
+//   "imgAlt":  { "de": "…" },
+//   "href":    "/kontakt",
+//   "_orbi":   { "component": "SectionPromoBanner" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  img?: string
+  imgAlt?: I18nString
+  href?: string
+  locale: Locale
+}
+
+const { eyebrow, title, img, imgAlt, href, locale } = Astro.props
+const heading = translate(title, locale)
+---
+
+<section class="container-wide py-section">
+  <div class="relative overflow-hidden">
+    {
+      img && (
+        <img
+          src={img}
+          alt={translate(imgAlt, locale)}
+          class="h-[670px] w-full object-cover"
+          width="1280"
+          height="670"
+          loading="lazy"
+        />
+      )
+    }
+
+    <div class="bg-brand-50 absolute top-10 left-10 max-w-2xl px-8 py-7">
+      <p class="eyebrow text-accent-300">{translate(eyebrow, locale)}</p>
+      <h2
+        class="font-display text-brand-900 mt-2 text-[3rem] leading-[1.02] font-medium text-balance"
+      >
+        {href ? <a href={href}>{heading}</a> : heading}
+      </h2>
+    </div>
+  </div>
+</section>

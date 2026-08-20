@@ -1,0 +1,64 @@
+---
+// SectionReservation.astro
+//
+// CMS JSON:
+// {
+//   "title":       { "de": "Wir freuen uns" },
+//   "titleAccent": { "de": "auf Sie." },
+//   "text":        { "de": "…" },
+//   "ctaLabel":    { "de": "Tisch reservieren" },
+//   "ctaHref":     "/kontakt",
+//   "mark":        "/images/logo.svg",
+//   "_orbi":       { "component": "SectionReservation" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  titleAccent?: I18nString
+  text?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  mark?: string
+  locale: Locale
+}
+
+const { title, titleAccent, text, ctaLabel, ctaHref, mark, locale } =
+  Astro.props
+
+const heading = translate(title, locale)
+const accent = translate(titleAccent, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section class="bg-brand-50 py-section">
+  <div class="container-wide flex flex-col items-center gap-6 text-center">
+    {mark && <img src={mark} alt="" class="h-[86px] w-[86px]" loading="lazy" />}
+
+    {
+      heading && (
+        <h2 class="font-display text-brand-900 text-display-md font-semibold">
+          {heading}
+          {accent && (
+            <>
+              {" "}
+              <em class="italic">{accent}</em>
+            </>
+          )}
+        </h2>
+      )
+    }
+
+    <p class="body-copy max-w-3xl">{translate(text, locale)}</p>
+
+    {
+      cta && ctaHref && (
+        <a href={ctaHref} class="btn btn-ghost mt-2">
+          {cta}
+        </a>
+      )
+    }
+  </div>
+</section>
