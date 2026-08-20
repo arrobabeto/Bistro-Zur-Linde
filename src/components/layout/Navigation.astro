@@ -12,16 +12,16 @@ interface Props {
 const { locale } = Astro.props
 ---
 
-<header>
+<header class="relative">
   <nav
-    class="container-wide flex flex-wrap items-center gap-6 py-6"
+    class="container-wide flex flex-wrap items-center gap-4 py-6 lg:gap-6"
     aria-label={translate(phrases.menu, locale)}
   >
     <a href="/" class="shrink-0">
       <img
         src="/images/logo.svg"
         alt={siteName()}
-        class="h-[86px] w-[86px]"
+        class="h-16 w-16 lg:h-[86px] lg:w-[86px]"
         width="86"
         height="86"
       />
@@ -39,8 +39,56 @@ const { locale } = Astro.props
       }
     </ul>
 
-    <a class="btn btn-primary ml-auto shrink-0" href={RESERVATION_HREF}>
+    <a
+      class="btn btn-primary ml-auto shrink-0 text-base lg:text-lg"
+      href={RESERVATION_HREF}
+    >
       {translate(phrases.reserve_now, locale)}
     </a>
+
+    {
+      /* Native disclosure: the zero-client-JS e2e guard forbids a scripted menu */
+    }
+    <details class="group shrink-0 lg:hidden">
+      <summary
+        class="text-brand-900 enter:border-brand-900 border-brand-900/30 flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full border transition-colors [&::-webkit-details-marker]:hidden"
+      >
+        <span class="sr-only">{translate(phrases.menu, locale)}</span>
+        <svg
+          class="h-5 w-5 group-open:hidden"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="M2 5h16M2 10h16M2 15h16" stroke-linecap="round"></path>
+        </svg>
+        <svg
+          class="hidden h-5 w-5 group-open:block"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="M4 4l12 12M16 4L4 16" stroke-linecap="round"></path>
+        </svg>
+      </summary>
+
+      <ul
+        class="border-brand-900/10 absolute inset-x-0 top-full z-30 flex flex-col border-t bg-white px-6 pb-6 shadow-lg"
+      >
+        {
+          PRIMARY_NAV.map((item) => (
+            <li>
+              <a class="nav-link block py-3" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
   </nav>
 </header>
