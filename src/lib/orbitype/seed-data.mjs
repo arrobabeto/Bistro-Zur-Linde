@@ -84,13 +84,25 @@ export function buildSeedPages() {
           _orbi: { component: "SectionRooms" },
         },
         {
-          eyebrow: { de: "Der Ort" },
-          title: {
-            de: "Neubau, Terrasse, Umgebung — einzigartig in der Region",
-          },
-          img: "/images/promo.jpg",
-          imgAlt: { de: "Terrasse des Bistro zur Linde im Abendlicht" },
-          href: "/bistro",
+          slides: [
+            {
+              img: "/images/promo-1.jpg",
+              imgAlt: { de: "Terrasse des Bistro zur Linde im Abendlicht" },
+              eyebrow: { de: "Der Ort" },
+              title: {
+                de: "Neubau, Terrasse, Umgebung — einzigartig in der Region",
+              },
+              href: "/bistro",
+            },
+            {
+              img: "/images/promo-2.jpg",
+              imgAlt: { de: "Eingangsbereich des Neubaus" },
+            },
+            {
+              img: "/images/promo-3.jpg",
+              imgAlt: { de: "Gartenanlage mit Gräsern vor dem Lindenpark" },
+            },
+          ],
           _orbi: { component: "SectionPromoBanner" },
         },
         {

@@ -49,13 +49,13 @@ const cta = translate(ctaLabel, locale)
 ---
 
 <section class="container-wide py-section">
-  <div class="grid items-center gap-12 lg:grid-cols-[432px_1fr] lg:gap-24">
+  <div class="grid items-center gap-10 lg:grid-cols-[432px_1fr] lg:gap-24">
     {
       img && (
         <img
           src={img}
           alt={translate(imgAlt, locale)}
-          class="h-[720px] w-full rounded-[16rem] object-cover"
+          class="mx-auto aspect-[3/4] w-full max-w-md rounded-[12rem] object-cover lg:aspect-auto lg:h-[720px] lg:max-w-none lg:rounded-[16rem]"
           width="432"
           height="720"
           loading="lazy"
@@ -72,7 +72,7 @@ const cta = translate(ctaLabel, locale)
 
       {
         stats.length > 0 && (
-          <ul class="mt-4 grid gap-8 sm:grid-cols-3">
+          <ul class="mt-4 grid gap-6 sm:grid-cols-3 sm:gap-8">
             {stats.map((stat) => (
               <li class="text-brand-900 text-base leading-6 tracking-[0.15em] whitespace-pre-line uppercase">
                 {translate(stat.label, locale)}

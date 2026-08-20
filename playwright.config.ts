@@ -41,5 +41,14 @@ export default defineConfig({
       PUBLIC_ORGANIZATION_NAME: "E2E Org",
     },
   },
-  projects: [{ name: "chromium" }],
+  projects: [
+    { name: "chromium", testIgnore: /mobile\.spec\.ts/ },
+    {
+      // Hand-rolled instead of devices["iPhone 13"]: that profile defaults to
+      // webkit, which is not part of the installed browser set.
+      name: "mobile",
+      testMatch: /mobile\.spec\.ts/,
+      use: { viewport: { width: 390, height: 844 }, hasTouch: true },
+    },
+  ],
 })

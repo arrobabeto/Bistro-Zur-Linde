@@ -37,7 +37,7 @@ const cta = translate(ctaLabel, locale)
 
 <section data-testid="section-hero">
   <div
-    class="container-wide grid gap-10 pt-12 pb-16 lg:grid-cols-[794fr_547fr] lg:gap-16"
+    class="container-wide grid gap-8 pt-8 pb-10 lg:grid-cols-[794fr_547fr] lg:gap-16 lg:pt-12 lg:pb-16"
   >
     {
       heading && (
@@ -71,7 +71,7 @@ const cta = translate(ctaLabel, locale)
       <img
         src={img}
         alt={translate(imgAlt, locale)}
-        class="h-[600px] w-full object-cover"
+        class="aspect-[4/3] w-full object-cover sm:aspect-[16/9] lg:aspect-auto lg:h-[600px]"
         width="1512"
         height="600"
         loading="eager"

@@ -14,6 +14,8 @@ export const phrases = {
   load_more: { en: "Load more", de: "Mehr laden" },
   menu: { en: "Menu", de: "Menü" },
   message: { en: "Message", de: "Mitteilung" },
+  next: { en: "Next", de: "Weiter" },
+  previous: { en: "Previous", de: "Zurück" },
   page_not_found: { en: "Page not found", de: "Seite nicht gefunden" },
   page_not_found_description: {
     en: "The page you requested does not exist.",
