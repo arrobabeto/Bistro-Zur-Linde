@@ -30,6 +30,15 @@ peerDependencyRules:
     # See docs/DEVIATIONS.md D-24.
     eslint-plugin-jsx-a11y>eslint: "10"
 
+# sanitize-html is CommonJS and does `require("htmlparser2")`. htmlparser2@10+
+# is ESM-only, which crashes the Vercel Node serverless runtime with
+# ERR_REQUIRE_ESM on every page that imports ~/lib/sanitize (via Seo).
+# Pin to the last dual-package release until sanitize-html ships ESM.
+# See https://github.com/apostrophecms/sanitize-html/issues/704
+overrides:
+  sanitize-html>htmlparser2: "9.1.0"
+
 minimumReleaseAgeExclude:
   - "@astrojs/check@0.9.10"
   - astro@7.1.4
+  - htmlparser2@9.1.0
