@@ -37,7 +37,7 @@ const cta = translate(ctaLabel, locale)
 
 <section data-testid="section-hero">
   <div
-    class="container-wide grid gap-8 pt-8 pb-10 lg:grid-cols-[794fr_547fr] lg:gap-16 lg:pt-12 lg:pb-16"
+    class="container-wide grid gap-[22px] pt-8 pb-[26px] lg:grid-cols-[794fr_547fr] lg:gap-16 lg:pt-12 lg:pb-16"
   >
     {
       heading && (
@@ -46,15 +46,17 @@ const cta = translate(ctaLabel, locale)
           {accent && (
             <>
               {" "}
-              <em class="italic">{accent}</em>
+              <em class="font-medium italic">{accent}</em>
             </>
           )}
         </h1>
       )
     }
 
-    <div class="flex flex-col items-start gap-8 lg:pt-16">
-      <p class="body-copy max-w-xl">{translate(lead, locale)}</p>
+    <div class="flex flex-col items-start gap-8 lg:gap-8 lg:pt-16">
+      <p class="body-copy max-w-[330px] lg:max-w-xl">
+        {translate(lead, locale)}
+      </p>
       {
         cta && ctaHref && (
           <a href={ctaHref} class="btn btn-secondary">
@@ -71,7 +73,7 @@ const cta = translate(ctaLabel, locale)
       <img
         src={img}
         alt={translate(imgAlt, locale)}
-        class="aspect-[4/3] w-full object-cover sm:aspect-[16/9] lg:aspect-auto lg:h-[600px]"
+        class="h-[309px] w-full object-cover lg:h-[600px]"
         width="1512"
         height="600"
         loading="eager"

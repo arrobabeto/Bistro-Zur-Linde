@@ -15,6 +15,7 @@ export default [
       "test-results/**",
       ".agents/**",
       "artifacts/**",
+      ".backups/**",
     ],
   },
 

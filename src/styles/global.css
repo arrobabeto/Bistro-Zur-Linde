@@ -80,22 +80,36 @@
   --color-accent-300: #d3a574;
   --color-accent-500: #a46c32;
 
-  --spacing-section: clamp(3rem, 7.8vw, 5rem);
+  --spacing-section: 5rem;
 
-  /*
-   * Cormorant Garamond display scale (Figma 02. Typography).
-   * Each clamp() reaches its Figma value at 1024px and holds it above, so
-   * desktop matches the design while narrow viewports get a size that does not
-   * force horizontal scroll on long unbreakable German words.
-   */
-  --text-display-xl: clamp(2.75rem, 8vw, 5.125rem);
+  /* Cormorant Garamond display scale — desktop (Figma 02. Typography) */
+  --text-display-xl: 5.125rem;
   --text-display-xl--line-height: 0.96;
-  --text-display-lg: clamp(2.125rem, 5.1vw, 3.25rem);
+  --text-display-lg: 3.25rem;
   --text-display-lg--line-height: 1.1;
-  --text-display-md: clamp(2rem, 4.7vw, 3rem);
+  --text-display-md: 3rem;
   --text-display-md--line-height: 1.02;
-  --text-display-sm: clamp(1.625rem, 3.5vw, 2.25rem);
+  --text-display-sm: 2.25rem;
   --text-display-sm--line-height: 1.17;
+}
+
+/*
+ * Mobile type scale (Figma frame 2075:64, 375px). Utilities emit
+ * font-size/line-height via these vars, so one override covers every
+ * text-display-* / section-title usage without touching desktop.
+ */
+@media (width < 64rem) {
+  :root {
+    --spacing-section: 3rem;
+    --text-display-xl: 2.5rem;
+    --text-display-xl--line-height: calc(49 / 40);
+    --text-display-lg: 2rem;
+    --text-display-lg--line-height: 1.22;
+    --text-display-md: 2.25rem;
+    --text-display-md--line-height: 1.15;
+    --text-display-sm: 1.75rem;
+    --text-display-sm--line-height: 1.2;
+  }
 }
 
 @custom-variant enter (&:hover, &:focus-visible);
@@ -131,10 +145,9 @@
     @apply mx-auto w-full max-w-[94.5rem] px-6 md:px-10 lg:px-20;
   }
 
-  /* Figma 04. Buttons — pill, Cormorant Garamond 500 / 18px / lh 32px.
-     Narrow viewports drop to px-8 so a button never spans the whole screen. */
+  /* Figma 04. Buttons — mobile 14px/py-2, desktop 18px/py-3 (frame 2075:197) */
   .btn {
-    @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-lg leading-8 font-medium transition-colors sm:px-14;
+    @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-2 text-sm leading-8 font-medium transition-colors lg:px-14 lg:py-3 lg:text-lg;
   }
 
   .btn-primary {
@@ -170,8 +183,9 @@
     @apply font-display text-display-lg text-brand-900 font-light;
   }
 
+  /* Mobile body: Inter 16/30 at 70% (Figma 2075:196); desktop 18/1.67 at 80% */
   .body-copy {
-    @apply text-brand-900/80 text-lg leading-[1.67];
+    @apply text-brand-900/70 lg:text-brand-900/80 text-base leading-[1.875] lg:text-lg lg:leading-[1.67];
   }
 
   /*

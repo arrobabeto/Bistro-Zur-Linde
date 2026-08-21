@@ -43,13 +43,13 @@ const { eyebrow, title, items = [], locale } = Astro.props
   <div class="mb-10 flex flex-col gap-4 lg:mb-12">
     <p class="eyebrow">{translate(eyebrow, locale)}</p>
     <h2
-      class="font-display text-brand-900 max-w-5xl text-[2rem] leading-[1.15] font-medium text-balance lg:text-[3rem]"
+      class="font-display text-brand-900 max-w-5xl text-[2rem] leading-9 font-medium text-balance lg:text-[3rem] lg:leading-[1.15]"
     >
       {translate(title, locale)}
     </h2>
   </div>
 
-  <ul class="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+  <ul class="grid gap-[52px] md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
     {
       items.map((item) => (
         <li class="flex flex-col">
@@ -58,7 +58,7 @@ const { eyebrow, title, items = [], locale } = Astro.props
               <img
                 src={item.img}
                 alt={translate(item.imgAlt, locale)}
-                class="aspect-[620/480] w-full object-cover"
+                class="aspect-[323/480] w-full object-cover lg:aspect-[620/480]"
                 width="620"
                 height="480"
                 loading="lazy"
@@ -69,12 +69,12 @@ const { eyebrow, title, items = [], locale } = Astro.props
             </p>
           </div>
 
-          <h3 class="font-display text-brand-900 mt-6 text-[1.75rem] leading-tight font-medium lg:text-[2.25rem]">
+          <h3 class="font-display text-brand-900 mt-5 text-[2rem] leading-9 font-medium lg:mt-6 lg:text-[2.25rem] lg:leading-tight">
             {translate(item.title, locale)}
           </h3>
 
           <span class="bg-brand-900 mt-6 h-0.5 w-8" aria-hidden="true" />
-          <p class="text-brand-900/80 mt-4 text-lg leading-6">
+          <p class="text-brand-900/80 mt-4 text-base leading-6 lg:text-lg">
             {translate(item.text, locale)}
           </p>
 
