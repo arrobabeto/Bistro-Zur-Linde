@@ -27,8 +27,10 @@ const columns = [
 ---
 
 <footer class="bg-brand-900 mt-auto text-white">
-  <div class="container-wide grid gap-12 py-14 lg:grid-cols-2 lg:py-20">
-    <div class="flex flex-col gap-8">
+  <div
+    class="container-wide grid justify-items-center gap-12 py-14 text-center lg:grid-cols-2 lg:justify-items-stretch lg:py-20 lg:text-left"
+  >
+    <div class="flex flex-col items-center gap-8 lg:items-start">
       <a href="/">
         <img
           src="/images/logo-light.svg"
@@ -64,11 +66,13 @@ const columns = [
       <p class="text-lg leading-7">© {year}</p>
     </div>
 
-    <div class="grid gap-10 sm:grid-cols-3">
+    <div
+      class="flex flex-col items-center gap-10 sm:grid sm:grid-cols-3 sm:items-start lg:justify-items-start"
+    >
       {
         columns.map((column) => (
           <nav aria-label={translate(phrases.menu, locale)}>
-            <ul class="flex flex-col gap-6">
+            <ul class="flex flex-col items-center gap-6 lg:items-start">
               {column.items.map((item) => (
                 <li>
                   <a class="footer-link" href={item.href}>

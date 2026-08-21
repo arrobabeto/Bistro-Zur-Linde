@@ -55,7 +55,7 @@ const cta = translate(ctaLabel, locale)
         <img
           src={img}
           alt={translate(imgAlt, locale)}
-          class="mx-auto aspect-[3/4] w-full max-w-md rounded-[12rem] object-cover lg:aspect-auto lg:h-[720px] lg:max-w-none lg:rounded-[16rem]"
+          class="order-last mx-auto aspect-[327/547] w-full max-w-[327px] rounded-[12rem] object-cover lg:order-first lg:aspect-auto lg:h-[720px] lg:max-w-none lg:rounded-[16rem]"
           width="432"
           height="720"
           loading="lazy"
@@ -63,7 +63,9 @@ const cta = translate(ctaLabel, locale)
       )
     }
 
-    <div class="flex flex-col gap-6">
+    <div
+      class="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left"
+    >
       <p class="eyebrow">{translate(eyebrow, locale)}</p>
       <h2 class="section-title max-w-2xl text-balance">
         {translate(title, locale)}
@@ -72,7 +74,7 @@ const cta = translate(ctaLabel, locale)
 
       {
         stats.length > 0 && (
-          <ul class="mt-4 grid gap-6 sm:grid-cols-3 sm:gap-8">
+          <ul class="mt-4 flex flex-col items-center gap-6 sm:grid sm:grid-cols-3 sm:gap-8 lg:items-stretch">
             {stats.map((stat) => (
               <li class="text-brand-900 text-base leading-6 tracking-[0.15em] whitespace-pre-line uppercase">
                 {translate(stat.label, locale)}
@@ -84,7 +86,10 @@ const cta = translate(ctaLabel, locale)
 
       {
         cta && ctaHref && (
-          <a href={ctaHref} class="btn btn-secondary mt-4 self-start">
+          <a
+            href={ctaHref}
+            class="btn btn-secondary mt-4 self-center lg:self-start"
+          >
             {cta}
           </a>
         )

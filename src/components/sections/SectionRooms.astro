@@ -45,7 +45,7 @@ const { eyebrow, title, rooms = [], locale } = Astro.props
         <li class="relative">
           <a
             href={room.href ?? "/"}
-            class="group block h-[280px] overflow-hidden sm:h-[420px] lg:h-[600px]"
+            class="group block h-[395px] overflow-hidden sm:h-[420px] lg:h-[600px]"
           >
             {room.img && (
               <img
@@ -58,12 +58,7 @@ const { eyebrow, title, rooms = [], locale } = Astro.props
               />
             )}
             <span class="bg-brand-900/20 absolute inset-0" aria-hidden="true" />
-            {/*
-              Size is pinned rather than responsive on purpose: room-*.jpg have
-              this same name burned into the pixels, so the live text has to
-              keep overlapping it until the images are re-exported clean.
-            */}
-            <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-tight font-semibold">
+            <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
               {translate(room.name, locale)}
             </span>
           </a>

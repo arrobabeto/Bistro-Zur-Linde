@@ -35,7 +35,18 @@ const cta = translate(ctaLabel, locale)
 
 <section class="bg-brand-50 py-section">
   <div class="container-wide flex flex-col items-center gap-6 text-center">
-    {mark && <img src={mark} alt="" class="h-[86px] w-[86px]" loading="lazy" />}
+    {
+      mark && (
+        <img
+          src={mark}
+          alt=""
+          class="h-[86px] w-[86px]"
+          width="86"
+          height="86"
+          loading="lazy"
+        />
+      )
+    }
 
     {
       heading && (
@@ -55,7 +66,7 @@ const cta = translate(ctaLabel, locale)
 
     {
       cta && ctaHref && (
-        <a href={ctaHref} class="btn btn-ghost mt-2">
+        <a href={ctaHref} class="btn btn-ghost mt-2 min-w-[233px]">
           {cta}
         </a>
       )

@@ -35,7 +35,7 @@ test.describe("mobile home", () => {
     ).toBeVisible()
   })
 
-  for (const width of [320, 390, 430, 768]) {
+  for (const width of [320, 375, 390, 430, 768]) {
     test(`home does not scroll horizontally at ${width}px`, async ({
       page,
     }) => {

@@ -60,7 +60,7 @@ const id = `promo-${crypto.randomUUID().slice(0, 8)}`
               <img
                 src={slide.img}
                 alt={translate(slide.imgAlt, locale)}
-                class="h-[670px] w-full object-cover"
+                class="aspect-[324/582] w-full object-cover lg:aspect-auto lg:h-[670px]"
                 width="1280"
                 height="670"
                 loading="lazy"
@@ -68,11 +68,11 @@ const id = `promo-${crypto.randomUUID().slice(0, 8)}`
             )}
 
             {translate(slide.title, locale) && (
-              <div class="bg-brand-50 absolute top-10 left-10 max-w-2xl px-8 py-7">
+              <div class="bg-brand-50 absolute top-6 left-4 max-w-[255px] px-6 pt-7 pb-8 sm:top-10 sm:left-10 sm:max-w-md lg:max-w-2xl lg:px-8 lg:py-7">
                 <p class="eyebrow text-accent-300">
                   {translate(slide.eyebrow, locale)}
                 </p>
-                <h2 class="font-display text-brand-900 mt-2 text-[3rem] leading-[1.02] font-medium text-balance">
+                <h2 class="font-display text-brand-900 mt-2 text-[1.75rem] leading-8 font-medium text-balance lg:text-[3rem] lg:leading-[1.02]">
                   {slide.href ? (
                     <a href={slide.href}>{translate(slide.title, locale)}</a>
                   ) : (
