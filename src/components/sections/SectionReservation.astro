@@ -62,7 +62,11 @@ const cta = translate(ctaLabel, locale)
       )
     }
 
-    <p class="body-copy max-w-3xl">{translate(text, locale)}</p>
+    {
+      translate(text, locale) && (
+        <p class="body-copy max-w-3xl">{translate(text, locale)}</p>
+      )
+    }
 
     {
       cta && ctaHref && (

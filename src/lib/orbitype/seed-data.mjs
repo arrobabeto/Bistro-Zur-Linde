@@ -4,6 +4,10 @@ const now = () => new Date().toISOString()
 
 const RESERVATION_HREF = "/kontakt"
 
+/** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
+const MENU_ANCHOR = "speisekarte"
+const MENU_HREF = `#${MENU_ANCHOR}`
+
 export function buildSeedPages() {
   return [
     {
@@ -153,6 +157,95 @@ export function buildSeedPages() {
           text: {
             de: "Reservieren Sie Ihren Tisch — im Bistro, Sääli, der Zigarrenlounge oder im Wine Room.",
           },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-bistro",
+      slug: "bistro",
+      title: {
+        de: "Bistro",
+      },
+      lead: {
+        de: "Gut essen und sich einfach wohlfühlen — im Bistro zur Linde in Oftringen.",
+      },
+      img: "/images/bistro-hero.jpg",
+      keywords: ["bistro", "restaurant", "oftringen", "mittagsmenü"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          title: { de: "Gut essen und sich\neinfach" },
+          titleAccent: { de: "wohlfühlen." },
+          lead: {
+            de: "Mittagessen zwischen zwei Terminen, ein Abendessen zu zweit, ein Tisch für die ganze Familie — im Bistro zur Linde kocht Ruedi Zünd mit der Erfahrung vieler Jahre Gastronomie, serviert für jeden Tag in Oftringen.",
+          },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          ctaSecondaryLabel: { de: "Speisekarte ansehen" },
+          ctaSecondaryHref: MENU_HREF,
+          img: "/images/bistro-hero.jpg",
+          imgAlt: {
+            de: "Gedeckte Tische vor dem beleuchteten Weinregal im Bistro zur Linde",
+          },
+          _orbi: { component: "SectionPageHero" },
+        },
+        {
+          title: { de: "Für jeden" },
+          titleAccent: { de: "Tag" },
+          text: {
+            de: "Handwerker beim Mittagessen. Geschäftsleute zwischen zwei Meetings. Freunde am Feierabend. Familien am Sonntag. Vereine, die ihren Ausflug hier ausklingen lassen. Gäste, die einfach vorbeikommen, weil sie Lust auf ein gutes Essen haben.\nDas Bistro ist an jedem dieser Tische zu Hause.",
+          },
+          img: "/images/bistro-story.jpg",
+          imgAlt: {
+            de: "Servicemitarbeiterin berät Gäste an einem Tisch im Bistro",
+          },
+          mediaPosition: "right",
+          _orbi: { component: "SectionStory" },
+        },
+        {
+          eyebrow: { de: "Küchenchef" },
+          title: { de: "Die Küche" },
+          text: {
+            de: "Ruedi Zünd bringt sein Handwerk aus vielen Jahren Gastronomie ins Bistro zur Linde — Schweizer Küche mit einer feinen Handschrift, ehrlich gekocht und ohne Umwege auf den Teller gebracht.",
+          },
+          ctaLabel: { de: "Mehr über Ruedi Zünd" },
+          ctaHref: "/news",
+          img: "/images/bistro-kueche.jpg",
+          imgAlt: { de: "Ruedi Zünd richtet in der Küche einen Teller an" },
+          _orbi: { component: "SectionShowcase" },
+        },
+        {
+          title: { de: "Mittag- und\nAbendkarte" },
+          text: {
+            de: "Saisonal, mit frischen Produkten, vom Tagesmenü bis zum sorgfältig komponierten Abendessen. Die Speisekarte inklusive Preisen finden Sie direkt hier.",
+          },
+          ctaLabel: { de: "Speisekarte entdecken" },
+          ctaHref: MENU_HREF,
+          img: "/images/bistro-menu.jpg",
+          imgAlt: { de: "Angerichteter Teller mit Fleisch, Gemüse und Jus" },
+          mediaPosition: "left",
+          anchor: MENU_ANCHOR,
+          _orbi: { component: "SectionSplitPanel" },
+        },
+        {
+          title: { de: "Terrasse" },
+          text: {
+            de: "Idyllisch gelegen, mit einem weiten Blick, der sich grosszügig über die Umgebung öffnet — die Terrasse ist der ideale Platz für ein Mittagessen in der Sonne oder ein Glas Wein am Abend.",
+          },
+          img: "/images/bistro-terrasse.jpg",
+          imgAlt: {
+            de: "Terrasse mit Sonnenschirmen und Blick über die Umgebung",
+          },
+          _orbi: { component: "SectionImageBanner" },
+        },
+        {
+          title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
           mark: "/images/logo.svg",

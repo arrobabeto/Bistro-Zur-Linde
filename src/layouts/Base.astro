@@ -15,9 +15,11 @@ import "~/styles/global.css"
 
 interface Props {
   locale: Locale
+  /** Render the header over the first section instead of above it. */
+  overlayHeader?: boolean
 }
 
-const { locale } = Astro.props
+const { locale, overlayHeader = false } = Astro.props
 
 const orgGraph = {
   "@context": "https://schema.org",
@@ -50,7 +52,7 @@ const orgGraph = {
     <ConsentScripts />
   </head>
   <body class="flex min-h-screen flex-col">
-    <Navigation locale={locale} />
+    <Navigation locale={locale} overlay={overlayHeader} />
     <slot />
     <Footer locale={locale} />
   </body>

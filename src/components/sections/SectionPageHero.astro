@@ -1,0 +1,119 @@
+---
+// SectionPageHero.astro
+//
+// Full-bleed opening hero for room pages. The site header overlays it, so
+// `[...slug].astro` switches Navigation to its light variant when a page
+// starts with this section.
+//
+// CMS JSON:
+// {
+//   "title":             { "de": "Gut essen und sich\neinfach" },
+//   "titleAccent":       { "de": "wohlfühlen." },
+//   "lead":              { "de": "…" },
+//   "ctaLabel":          { "de": "Tisch reservieren" },
+//   "ctaHref":           "/kontakt",
+//   "ctaSecondaryLabel": { "de": "Speisekarte ansehen" },
+//   "ctaSecondaryHref":  "#speisekarte",
+//   "img":               "/images/bistro-hero.jpg",
+//   "imgAlt":            { "de": "…" },
+//   "_orbi":             { "component": "SectionPageHero" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  titleAccent?: I18nString
+  lead?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  ctaSecondaryLabel?: I18nString
+  ctaSecondaryHref?: string
+  img?: string
+  imgAlt?: I18nString
+  locale: Locale
+}
+
+const {
+  title,
+  titleAccent,
+  lead,
+  ctaLabel,
+  ctaHref,
+  ctaSecondaryLabel,
+  ctaSecondaryHref,
+  img,
+  imgAlt,
+  locale,
+} = Astro.props
+
+const heading = translate(title, locale)
+const accent = translate(titleAccent, locale)
+const cta = translate(ctaLabel, locale)
+const ctaSecondary = translate(ctaSecondaryLabel, locale)
+---
+
+<section
+  class="relative isolate mb-12 flex min-h-[520px] items-center justify-center overflow-hidden pt-24 pb-16 lg:mb-[62px] lg:min-h-[792px] lg:pt-32"
+  data-testid="section-page-hero"
+>
+  {
+    img && (
+      <img
+        src={img}
+        alt={translate(imgAlt, locale)}
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        width="1512"
+        height="792"
+        loading="eager"
+      />
+    )
+  }
+  <div class="absolute inset-0 -z-10 bg-black/40"></div>
+
+  <div
+    class="container-wide flex flex-col items-center gap-8 text-center lg:gap-[45px]"
+  >
+    <div class="flex flex-col items-center gap-4 lg:gap-[10px]">
+      {
+        heading && (
+          <h1 class="font-display text-display-xl text-brand-50 max-w-[620px] font-medium lg:leading-[93px] lg:whitespace-pre-line">
+            {heading}
+            {accent && (
+              <>
+                {" "}
+                <em class="font-semibold italic">{accent}</em>
+              </>
+            )}
+          </h1>
+        )
+      }
+
+      <p
+        class="text-brand-50 max-w-[710px] text-base leading-[1.67] lg:text-lg"
+      >
+        {translate(lead, locale)}
+      </p>
+    </div>
+
+    <div class="flex flex-col items-center gap-4 sm:flex-row lg:gap-8">
+      {
+        cta && ctaHref && (
+          <a href={ctaHref} class="btn btn-primary">
+            {cta}
+            <span aria-hidden="true">→</span>
+          </a>
+        )
+      }
+      {
+        ctaSecondary && ctaSecondaryHref && (
+          <a href={ctaSecondaryHref} class="btn btn-outline-light">
+            {ctaSecondary}
+            <span aria-hidden="true">→</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>

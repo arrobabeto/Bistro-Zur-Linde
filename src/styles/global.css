@@ -145,6 +145,11 @@
     @apply mx-auto w-full max-w-[94.5rem] px-6 md:px-10 lg:px-20;
   }
 
+  /* Sections Figma nests in a 1440 frame sit 36px further in on each side */
+  .container-inset {
+    @apply mx-auto w-full max-w-[90rem] px-6 md:px-10 lg:px-20;
+  }
+
   /* Figma 04. Buttons — mobile 14px/py-2, desktop 18px/py-3 (frame 2075:197) */
   .btn {
     @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-2 text-sm leading-8 font-medium transition-colors lg:px-14 lg:py-3 lg:text-lg;
@@ -164,6 +169,11 @@
 
   .btn-ghost {
     @apply text-brand-900 border-brand-900/30 enter:border-brand-900 border;
+  }
+
+  /* Outlined button on photography — Figma 2032:545 (1px #fbf8f4) */
+  .btn-outline-light {
+    @apply text-brand-50 border-brand-50 enter:bg-brand-50 enter:text-brand-900 border;
   }
 
   .nav-link {

@@ -7,19 +7,21 @@ import { PRIMARY_NAV, RESERVATION_HREF } from "~/config/navigation"
 
 interface Props {
   locale: Locale
+  /** Lay the header over a full-bleed hero instead of stacking above it. */
+  overlay?: boolean
 }
 
-const { locale } = Astro.props
+const { locale, overlay = false } = Astro.props
 ---
 
-<header class="relative">
+<header class:list={[overlay ? "absolute inset-x-0 top-0 z-20" : "relative"]}>
   <nav
     class="container-wide flex items-center gap-3 py-6 lg:gap-6"
     aria-label={translate(phrases.menu, locale)}
   >
     <a href="/" class="shrink-0">
       <img
-        src="/images/logo.svg"
+        src={overlay ? "/images/logo-light.svg" : "/images/logo.svg"}
         alt={siteName()}
         class="h-12 w-12 lg:h-[86px] lg:w-[86px]"
         width="86"
@@ -31,7 +33,13 @@ const { locale } = Astro.props
       {
         PRIMARY_NAV.map((item) => (
           <li>
-            <a class="nav-link" href={item.href}>
+            <a
+              class:list={[
+                "nav-link",
+                overlay && "enter:!text-white/70 !text-white",
+              ]}
+              href={item.href}
+            >
               {item.label}
             </a>
           </li>
@@ -54,16 +62,32 @@ const { locale } = Astro.props
         class="flex h-[30.5px] w-[30.5px] cursor-pointer list-none items-center justify-center [&::-webkit-details-marker]:hidden"
       >
         <span class="sr-only">{translate(phrases.menu, locale)}</span>
-        <img
-          src="/images/menu-icon.svg"
-          alt=""
-          class="h-[30.5px] w-[30.5px] group-open:hidden"
-          width="31"
-          height="31"
-          aria-hidden="true"
-        />
         <svg
-          class="text-brand-900 hidden h-[30.5px] w-[30.5px] group-open:block"
+          class:list={[
+            "h-[30.5px] w-[30.5px] group-open:hidden",
+            overlay ? "text-white" : "text-brand-900",
+          ]}
+          viewBox="0 0 30.502 30.502"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M8.855 15.251h12.546M8.855 10.823h12.546M8.855 19.679h12.546"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <circle
+            cx="15.251"
+            cy="15.251"
+            r="15.001"
+            stroke="currentColor"
+            stroke-width="0.5"></circle>
+        </svg>
+        <svg
+          class:list={[
+            "hidden h-[30.5px] w-[30.5px] group-open:block",
+            overlay ? "text-white" : "text-brand-900",
+          ]}
           viewBox="0 0 30.502 30.502"
           fill="none"
           aria-hidden="true"
