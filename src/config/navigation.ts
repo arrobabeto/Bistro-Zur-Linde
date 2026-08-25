@@ -10,8 +10,6 @@ export interface NavItem {
 export const PRIMARY_NAV: readonly NavItem[] = [
   { label: "Bistro", href: "/bistro" },
   { label: "Sääli", href: "/saali" },
-  { label: "Zigarrenlounge", href: "/zigarrenlounge" },
-  { label: "Wine Room", href: "/wine-room" },
   { label: "News", href: "/news" },
   { label: "Kontakt", href: "/kontakt" },
 ]
@@ -19,8 +17,6 @@ export const PRIMARY_NAV: readonly NavItem[] = [
 export const FOOTER_ROOMS: readonly NavItem[] = [
   { label: "Bistro", href: "/bistro" },
   { label: "Sääli", href: "/saali" },
-  { label: "Zigarrenlounge", href: "/zigarrenlounge" },
-  { label: "Wine Room", href: "/wine-room" },
 ]
 
 export const FOOTER_SERVICE: readonly NavItem[] = [
