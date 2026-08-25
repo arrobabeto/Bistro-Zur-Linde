@@ -1,0 +1,96 @@
+---
+// SectionSplitPanel.astro
+//
+// Edge-to-edge photo beside a dark panel carrying the copy (Figma 2033:712).
+//
+// CMS JSON:
+// {
+//   "title":         { "de": "Mittag- und\nAbendkarte" },
+//   "text":          { "de": "…" },
+//   "ctaLabel":      { "de": "Speisekarte entdecken" },
+//   "ctaHref":       "/speisekarte",
+//   "img":           "/images/bistro-menu.jpg",
+//   "imgAlt":        { "de": "…" },
+//   "mediaPosition": "left",
+//   "anchor":        "speisekarte",
+//   "_orbi":         { "component": "SectionSplitPanel" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  text?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  img?: string
+  imgAlt?: I18nString
+  mediaPosition?: "left" | "right"
+  /** Makes the section a scroll target for links elsewhere on the page. */
+  anchor?: string
+  locale: Locale
+}
+
+const {
+  title,
+  text,
+  ctaLabel,
+  ctaHref,
+  img,
+  imgAlt,
+  mediaPosition = "left",
+  anchor,
+  locale,
+} = Astro.props
+
+const heading = translate(title, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section
+  id={anchor}
+  class="mt-12 grid scroll-mt-24 lg:mt-[70px] lg:grid-cols-2"
+  data-testid="section-split-panel"
+>
+  {
+    img && (
+      <img
+        src={img}
+        alt={translate(imgAlt, locale)}
+        class:list={[
+          "h-[280px] w-full object-cover lg:h-[529px]",
+          mediaPosition === "right" && "lg:order-last",
+        ]}
+        width="764"
+        height="529"
+        loading="lazy"
+      />
+    )
+  }
+
+  <div
+    class="bg-brand-900 flex flex-col justify-center px-6 py-14 md:px-10 lg:px-[72px] lg:py-[91px]"
+  >
+    <div class="flex max-w-[418px] flex-col gap-6">
+      {
+        heading && (
+          <h2 class="font-display text-display-lg text-brand-50 font-medium lg:leading-[1.27] lg:whitespace-pre-line">
+            {heading}
+          </h2>
+        )
+      }
+      <p class="text-brand-50 text-base leading-[1.67] lg:text-lg">
+        {translate(text, locale)}
+      </p>
+      {
+        cta && ctaHref && (
+          <a href={ctaHref} class="btn btn-primary mt-2 self-start">
+            {cta}
+            <span aria-hidden="true">→</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,87 @@
+---
+// SectionStory.astro
+//
+// Editorial paragraph beside an arched photo (Figma "Story Section").
+//
+// CMS JSON:
+// {
+//   "title":         { "de": "Für jeden" },
+//   "titleAccent":   { "de": "Tag" },
+//   "text":          { "de": "…" },
+//   "img":           "/images/bistro-story.jpg",
+//   "imgAlt":        { "de": "…" },
+//   "mediaPosition": "right",
+//   "_orbi":         { "component": "SectionStory" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  titleAccent?: I18nString
+  text?: I18nString
+  img?: string
+  imgAlt?: I18nString
+  mediaPosition?: "left" | "right"
+  locale: Locale
+}
+
+const {
+  title,
+  titleAccent,
+  text,
+  img,
+  imgAlt,
+  mediaPosition = "right",
+  locale,
+} = Astro.props
+
+const heading = translate(title, locale)
+const accent = translate(titleAccent, locale)
+---
+
+<section class="container-inset py-12 lg:py-[62px]" data-testid="section-story">
+  <div
+    class="grid items-center gap-10 lg:grid-cols-[minmax(0,758px)_413px] lg:gap-[88px]"
+  >
+    <div
+      class:list={[
+        "flex flex-col gap-8 lg:gap-12 lg:pl-10",
+        mediaPosition === "left" && "lg:order-last lg:pr-10 lg:pl-0",
+      ]}
+    >
+      {
+        heading && (
+          <h2 class="font-display text-display-lg text-brand-900 font-semibold lg:leading-[72px]">
+            {heading}
+            {accent && (
+              <>
+                {" "}
+                <em class="italic">{accent}</em>
+              </>
+            )}
+          </h2>
+        )
+      }
+      <p
+        class="text-brand-900 max-w-[510px] text-base leading-[1.5] whitespace-pre-line lg:mx-auto lg:text-xl"
+      >
+        {translate(text, locale)}
+      </p>
+    </div>
+
+    {
+      img && (
+        <img
+          src={img}
+          alt={translate(imgAlt, locale)}
+          class="h-[420px] w-full rounded-[12rem] object-cover lg:h-[656px] lg:rounded-[18.75rem]"
+          width="413"
+          height="656"
+          loading="lazy"
+        />
+      )
+    }
+  </div>
+</section>

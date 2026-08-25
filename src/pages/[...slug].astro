@@ -68,6 +68,10 @@ const sections = [
   ...(template?.sections_after ?? []),
 ]
 
+// SectionPageHero is full-bleed and reserves room for the header, so pages
+// opening with it get the overlaid light header instead of the stacked one.
+const overlayHeader = sections[0]?._orbi?.component === "SectionPageHero"
+
 if (Astro.cache.enabled) {
   Astro.cache.set({
     tags: [`page:${page.id}`, `page-slug:${page.slug}`],
@@ -82,7 +86,7 @@ const seo = buildPageSeo({
 })
 ---
 
-<Base locale={locale}>
+<Base locale={locale} overlayHeader={overlayHeader}>
   <Fragment slot="head">
     <Seo {...seo} />
     <JsonLd data={seo.jsonLd} />

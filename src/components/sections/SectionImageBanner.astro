@@ -1,0 +1,66 @@
+---
+// SectionImageBanner.astro
+//
+// Full-bleed photo with copy set into the darkened top edge (Figma 2033:800).
+//
+// CMS JSON:
+// {
+//   "title":  { "de": "Terrasse" },
+//   "text":   { "de": "…" },
+//   "img":    "/images/bistro-terrasse.jpg",
+//   "imgAlt": { "de": "…" },
+//   "_orbi":  { "component": "SectionImageBanner" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  text?: I18nString
+  img?: string
+  imgAlt?: I18nString
+  locale: Locale
+}
+
+const { title, text, img, imgAlt, locale } = Astro.props
+
+const heading = translate(title, locale)
+---
+
+<section
+  class="relative isolate mt-12 flex min-h-[420px] flex-col overflow-hidden py-12 lg:mt-[140px] lg:min-h-[618px] lg:py-16"
+  data-testid="section-image-banner"
+>
+  {
+    img && (
+      <img
+        src={img}
+        alt={translate(imgAlt, locale)}
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        width="1512"
+        height="618"
+        loading="lazy"
+      />
+    )
+  }
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-b from-black/65 to-transparent"
+  >
+  </div>
+
+  <div class="container-wide">
+    {
+      heading && (
+        <h2 class="font-display text-display-lg text-brand-50 font-medium lg:leading-[1.7]">
+          {heading}
+        </h2>
+      )
+    }
+    <p
+      class="text-brand-50 max-w-[923px] text-base leading-[1.5] lg:text-2xl lg:leading-[1.42]"
+    >
+      {translate(text, locale)}
+    </p>
+  </div>
+</section>
