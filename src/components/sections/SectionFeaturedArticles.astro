@@ -1,0 +1,166 @@
+---
+// SectionFeaturedArticles.astro
+//
+// Large photo carousel with a centred badge, overlaid arrows, and the
+// title / author / date set underneath (Figma "Articles 2 Section").
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Ausgewählte Artikel" },
+//   "slides":  [{
+//     "title":  { "de": "Wo Geschmack entsteht" },
+//     "author": { "de": "Bistro zur Linde" },
+//     "date":   { "de": "16 September 2026" },
+//     "href":   "/posts",
+//     "img":    "/images/news-featured.jpg",
+//     "imgAlt": { "de": "…" }
+//   }],
+//   "_orbi": { "component": "SectionFeaturedArticles" }
+// }
+import { translate } from "~/lib/i18n"
+import { phrases } from "~/lib/phrases"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Slide {
+  title?: I18nString
+  author?: I18nString
+  date?: I18nString
+  href?: string
+  img?: string
+  imgAlt?: I18nString
+}
+
+interface Props {
+  eyebrow?: I18nString
+  slides?: Slide[]
+  /** `tall` matches the Sääli "DER RAHMEN" frame (658px); default is News (560px). */
+  mediaSize?: "default" | "tall"
+  locale: Locale
+}
+
+const { eyebrow, slides = [], mediaSize = "default", locale } = Astro.props
+const id = `featured-${crypto.randomUUID().slice(0, 8)}`
+const label = translate(eyebrow, locale)
+const multi = slides.length > 1
+const imgHeight = mediaSize === "tall" ? "lg:h-[658px]" : "lg:h-[560px]"
+const imgH = mediaSize === "tall" ? 658 : 560
+---
+
+<section
+  data-carousel
+  data-testid="section-featured-articles"
+  class="mx-auto w-full max-w-[90rem] px-6 py-12 md:px-10 lg:px-[59px] lg:py-[70px]"
+>
+  <div class="relative">
+    <ul
+      data-carousel-track
+      class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+    >
+      {
+        slides.map((slide, index) => {
+          const title = translate(slide.title, locale)
+          const author = translate(slide.author, locale)
+          const date = translate(slide.date, locale)
+          return (
+            <li
+              id={`${id}-${index}`}
+              class="relative w-full shrink-0 snap-center"
+            >
+              <div class="relative">
+                {slide.img &&
+                  (slide.href ? (
+                    <a href={slide.href}>
+                      <img
+                        src={slide.img}
+                        alt={translate(slide.imgAlt, locale)}
+                        class:list={[
+                          "h-[280px] w-full object-cover",
+                          imgHeight,
+                        ]}
+                        width="1322"
+                        height={imgH}
+                        loading="lazy"
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={slide.img}
+                      alt={translate(slide.imgAlt, locale)}
+                      class:list={["h-[280px] w-full object-cover", imgHeight]}
+                      width="1322"
+                      height={imgH}
+                      loading="lazy"
+                    />
+                  ))}
+                {label && (
+                  <p class="bg-brand-50 text-brand-900 absolute top-5 left-1/2 max-w-[min(100%-2rem,20rem)] -translate-x-1/2 px-3 py-2 text-center text-xs leading-5 tracking-[0.12em] uppercase lg:top-10 lg:px-5 lg:py-3 lg:text-base lg:leading-6 lg:tracking-[0.2em]">
+                    {label}
+                  </p>
+                )}
+              </div>
+
+              {(title || author || date) && (
+                <div class="mt-6 flex flex-col items-center gap-4 text-center lg:mt-8 lg:gap-6">
+                  {title && (
+                    <h2
+                      class:list={[
+                        "font-display text-brand-900 font-medium",
+                        mediaSize === "tall"
+                          ? "max-w-[834px] text-[1.5rem] leading-[1.3] lg:text-[2rem] lg:leading-[1.31]"
+                          : "text-[1.75rem] leading-tight lg:text-[2.25rem] lg:leading-[1.17]",
+                      ]}
+                    >
+                      {slide.href ? <a href={slide.href}>{title}</a> : title}
+                    </h2>
+                  )}
+                  {(author || date) && (
+                    <p class="text-brand-900 flex items-center gap-4 text-base leading-6">
+                      {author && <span class="font-semibold">{author}</span>}
+                      {author && date && (
+                        <span
+                          class="bg-brand-900 h-7 w-px"
+                          aria-hidden="true"
+                        />
+                      )}
+                      {date && <span>{date}</span>}
+                    </p>
+                  )}
+                </div>
+              )}
+            </li>
+          )
+        })
+      }
+    </ul>
+
+    {
+      multi && (
+        <>
+          <button
+            type="button"
+            data-carousel-prev
+            class="carousel-arrow carousel-arrow-on-media absolute top-[120px] left-4 z-10 lg:top-[248px]"
+            aria-label={translate(phrases.previous, locale)}
+          >
+            <span aria-hidden="true">&#8592;</span>
+          </button>
+          <button
+            type="button"
+            data-carousel-next
+            class="carousel-arrow carousel-arrow-on-media absolute top-[120px] right-4 z-10 lg:top-[248px]"
+            aria-label={translate(phrases.next, locale)}
+          >
+            <span aria-hidden="true">&#8594;</span>
+          </button>
+        </>
+      )
+    }
+  </div>
+</section>
+
+<script>
+  import { initCarousels } from "~/scripts/carousel"
+
+  initCarousels()
+</script>

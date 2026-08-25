@@ -207,6 +207,11 @@
     @apply text-brand-900 border-brand-900/20 enter:border-brand-900 hidden h-12 w-12 shrink-0 items-center justify-center rounded-full border text-xl transition-colors;
   }
 
+  /* White ring for arrows sitting on photography (Figma News Articles 2). */
+  .carousel-arrow-on-media {
+    @apply text-brand-50 border-brand-50 enter:bg-brand-50/15 h-16 w-16 border;
+  }
+
   .carousel-ready .carousel-arrow {
     @apply sm:flex;
   }

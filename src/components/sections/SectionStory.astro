@@ -47,13 +47,18 @@ const accent = translate(titleAccent, locale)
   >
     <div
       class:list={[
-        "flex flex-col gap-8 lg:gap-12 lg:pl-10",
+        "flex flex-col items-center gap-8 text-center lg:items-start lg:gap-12 lg:pl-10 lg:text-left",
         mediaPosition === "left" && "lg:order-last lg:pr-10 lg:pl-0",
       ]}
     >
       {
         heading && (
-          <h2 class="font-display text-display-lg text-brand-900 font-semibold lg:leading-[72px]">
+          <h2
+            class:list={[
+              "font-display text-display-lg text-brand-900 font-semibold lg:leading-[72px]",
+              !accent && "lg:max-w-[445px]",
+            ]}
+          >
             {heading}
             {accent && (
               <>
@@ -65,7 +70,7 @@ const accent = translate(titleAccent, locale)
         )
       }
       <p
-        class="text-brand-900 max-w-[510px] text-base leading-[1.5] whitespace-pre-line lg:mx-auto lg:text-xl"
+        class="text-brand-900 max-w-[510px] text-base leading-[1.5] whitespace-pre-line lg:text-xl"
       >
         {translate(text, locale)}
       </p>
@@ -76,7 +81,7 @@ const accent = translate(titleAccent, locale)
         <img
           src={img}
           alt={translate(imgAlt, locale)}
-          class="h-[420px] w-full rounded-[12rem] object-cover lg:h-[656px] lg:rounded-[18.75rem]"
+          class="mx-auto aspect-[327/547] w-full max-w-[327px] rounded-[12rem] object-cover lg:aspect-auto lg:h-[656px] lg:max-w-none lg:rounded-[18.75rem]"
           width="413"
           height="656"
           loading="lazy"

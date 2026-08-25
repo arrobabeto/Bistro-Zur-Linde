@@ -1,0 +1,87 @@
+---
+// SectionMediaCta.astro
+//
+// Inset photo band with a headline and a single CTA (Figma Kontakt reservation
+// banner). Title accent is rendered in italic to match character overrides.
+//
+// CMS JSON:
+// {
+//   "title":      { "de": "Möchten Sie einen" },
+//   "titleAccent":{ "de": "Tisch reservieren?" },
+//   "ctaLabel":   { "de": "Tisch reservieren" },
+//   "ctaHref":    "#schreiben",
+//   "img":        "/images/kontakt-banner.jpg",
+//   "imgAlt":     { "de": "…" },
+//   "_orbi":      { "component": "SectionMediaCta" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  titleAccent?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  img?: string
+  imgAlt?: I18nString
+  locale: Locale
+}
+
+const { title, titleAccent, ctaLabel, ctaHref, img, imgAlt, locale } =
+  Astro.props
+
+const heading = translate(title, locale)
+const accent = translate(titleAccent, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section
+  class="mx-auto my-12 w-full max-w-[90rem] overflow-hidden lg:my-16"
+  data-testid="section-media-cta"
+>
+  <div class="relative isolate min-h-[280px] overflow-hidden lg:min-h-[455px]">
+    {
+      img && (
+        <img
+          src={img}
+          alt={translate(imgAlt, locale)}
+          class="absolute inset-0 -z-20 h-full w-full object-cover"
+          width="1440"
+          height="455"
+          loading="lazy"
+        />
+      )
+    }
+    <div class="absolute inset-0 -z-10 bg-black/35"></div>
+
+    <div
+      class="relative flex min-h-[inherit] flex-col justify-between gap-8 px-6 py-12 md:px-10 lg:px-20 lg:py-16"
+    >
+      {
+        heading && (
+          <h2 class="font-display text-brand-50 max-w-[730px] text-[2rem] leading-tight font-medium lg:text-[3.25rem] lg:leading-[88px]">
+            {heading}
+            {accent && (
+              <>
+                {" "}
+                <em class="italic">{accent}</em>
+              </>
+            )}
+          </h2>
+        )
+      }
+
+      {
+        cta && ctaHref && (
+          <div class="flex justify-center lg:justify-end">
+            <a href={ctaHref} class="btn btn-primary">
+              {cta}
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

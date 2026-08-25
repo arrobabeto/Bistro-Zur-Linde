@@ -12,6 +12,7 @@
 //   "img":           "/images/bistro-menu.jpg",
 //   "imgAlt":        { "de": "…" },
 //   "mediaPosition": "left",
+//   "panelTone":     "muted",
 //   "anchor":        "speisekarte",
 //   "_orbi":         { "component": "SectionSplitPanel" }
 // }
@@ -27,6 +28,8 @@ interface Props {
   img?: string
   imgAlt?: I18nString
   mediaPosition?: "left" | "right"
+  /** `muted` = taupe panel (Sääli); default is the dark coffee panel. */
+  panelTone?: "dark" | "muted"
   /** Makes the section a scroll target for links elsewhere on the page. */
   anchor?: string
   locale: Locale
@@ -40,11 +43,13 @@ const {
   img,
   imgAlt,
   mediaPosition = "left",
+  panelTone = "dark",
   anchor,
   locale,
 } = Astro.props
 
 const heading = translate(title, locale)
+const body = translate(text, locale)
 const cta = translate(ctaLabel, locale)
 ---
 
@@ -70,7 +75,10 @@ const cta = translate(ctaLabel, locale)
   }
 
   <div
-    class="bg-brand-900 flex flex-col justify-center px-6 py-14 md:px-10 lg:px-[72px] lg:py-[91px]"
+    class:list={[
+      "flex flex-col justify-center px-6 py-14 md:px-10 lg:px-[72px] lg:py-[91px]",
+      panelTone === "muted" ? "bg-brand-500" : "bg-brand-900",
+    ]}
   >
     <div class="flex max-w-[418px] flex-col gap-6">
       {
@@ -80,9 +88,13 @@ const cta = translate(ctaLabel, locale)
           </h2>
         )
       }
-      <p class="text-brand-50 text-base leading-[1.67] lg:text-lg">
-        {translate(text, locale)}
-      </p>
+      {
+        body && (
+          <p class="text-brand-50 text-base leading-[1.67] lg:text-lg">
+            {body}
+          </p>
+        )
+      }
       {
         cta && ctaHref && (
           <a href={ctaHref} class="btn btn-primary mt-2 self-start">

@@ -253,6 +253,268 @@ export function buildSeedPages() {
         },
       ],
     },
+    {
+      id: "seed-news",
+      slug: "news",
+      title: {
+        de: "News",
+      },
+      lead: {
+        de: "Neuigkeiten, Eindrücke aus der Küche und alles, was sich im Bistro zur Linde gerade tut.",
+      },
+      img: "/images/news-hero.jpg",
+      keywords: ["news", "bistro", "events", "oftringen"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          title: { de: "Was in der Linde passiert." },
+          lead: {
+            de: "Neuigkeiten, Eindrücke aus der Küche und alles, was sich im Bistro zur Linde gerade tut.",
+          },
+          img: "/images/news-hero.jpg",
+          imgAlt: {
+            de: "Küchenchef richtet einen frischen Salat in einer Edelstahlschüssel an",
+          },
+          _orbi: { component: "SectionSplitHero" },
+        },
+        {
+          title: {
+            de: "Vier Räume. Eine Küche. Für jeden Anlass der richtige.",
+          },
+          columns: 2,
+          items: [
+            {
+              date: { de: "27 - August - 2026" },
+              title: { de: "Neueröffnung Bistro zur Linde" },
+              text: {
+                de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
+              },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "/posts",
+              img: "/images/news-card-1.jpg",
+              imgAlt: {
+                de: "Ankündigung der Neueröffnung vor dem Gebäude des Lindenparks",
+              },
+            },
+            {
+              date: { de: "22- August -2026" },
+              title: { de: "Bistro zur Linde im Zofinger Tagblatt" },
+              text: {
+                de: "Das Zofinger Tagblatt berichtet über das Bistro zur Linde und die Neueröffnung in Küngoldingen.",
+              },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "/posts",
+              img: "/images/news-card-2.jpg",
+              imgAlt: { de: "Ruedi Zünd richtet in der Küche einen Teller an" },
+            },
+            {
+              date: { de: "August 2026" },
+              title: { de: "Ein Blick hinter die Kulissen des Lindenparks" },
+              text: {
+                de: "Von der Baustelle zum neuen Treffpunkt: Die Baureportage zeigt, wie der Lindenpark und das Bistro zur Linde Schritt für Schritt entstanden sind.",
+              },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "/posts",
+              img: "/images/news-card-3.jpg",
+              imgAlt: {
+                de: "Zeitungsausschnitt über den Bau des Lindenparks",
+              },
+            },
+            {
+              date: { de: "August 2026" },
+              title: { de: "Ein Raum für besondere Momente" },
+              text: {
+                de: "Geburtstag, Firmenessen oder Familienfeier: Im Sääli wird aus einem gemeinsamen Essen ein Anlass, bei dem Ihre Gesellschaft ganz unter sich bleiben kann.",
+              },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "/posts",
+              img: "/images/news-card-4.jpg",
+              imgAlt: {
+                de: "Gäste an einer festlich gedeckten Tafel im Sääli",
+              },
+            },
+          ],
+          _orbi: { component: "SectionEvents" },
+        },
+        {
+          eyebrow: { de: "Ausgewählte Artikel" },
+          slides: [
+            {
+              title: { de: "Wo Geschmack entsteht" },
+              author: { de: "Bistro zur Linde" },
+              date: { de: "16 September 2026" },
+              href: "/posts",
+              img: "/images/news-featured.jpg",
+              imgAlt: {
+                de: "Küchenchef träufelt Dressing über einen frischen Salat",
+              },
+            },
+          ],
+          _orbi: { component: "SectionFeaturedArticles" },
+        },
+        {
+          title: { de: "Kommen Sie, wie Sie sind." },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-saali",
+      slug: "saali",
+      title: {
+        de: "Sääli",
+      },
+      lead: {
+        de: "Feiern und sich ganz unter sich fühlen — im Sääli der Linde.",
+      },
+      img: "/images/saali-hero.jpg",
+      keywords: ["sääli", "feier", "anlass", "oftringen"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          title: { de: "Feiern und sich ganz\nunter sich fühlen." },
+          lead: {
+            de: "Ob runder Geburtstag, Firmenessen, Vereinsanlass oder Familienfeier — das Sääli ist Ihr eigener Raum in der Linde, ganz für Ihre Gesellschaft.",
+          },
+          ctaLabel: { de: "Sääli anfragen" },
+          ctaHref: RESERVATION_HREF,
+          align: "start",
+          img: "/images/saali-hero.jpg",
+          imgAlt: {
+            de: "Festlich gedeckte Tafeln im Sääli mit Blick auf die Berge",
+          },
+          _orbi: { component: "SectionPageHero" },
+        },
+        {
+          title: { de: "Für besondere anlässe" },
+          text: {
+            de: "Runde Geburtstage. Firmenessen und Weihnachtsfeiern. Vereinsanlässe. Familienfeiern und Apéros.\nDas Sääli macht daraus einen eigenen Rahmen, abseits vom Bistro-Trubel.",
+          },
+          img: "/images/saali-story.jpg",
+          imgAlt: { de: "Weinregal im Sääli" },
+          mediaPosition: "right",
+          _orbi: { component: "SectionStory" },
+        },
+        {
+          eyebrow: { de: "Der Rahmen" },
+          mediaSize: "tall",
+          slides: [
+            {
+              title: {
+                de: "Ein eigener Raum mit Platz für Ihre Gesellschaft und einer Menüauswahl, die wir gemeinsam auf Ihren Anlass abstimmen.",
+              },
+              img: "/images/saali-rahmen.jpg",
+              imgAlt: {
+                de: "Küchenchef richtet einen frischen Salat für den Anlass an",
+              },
+            },
+          ],
+          _orbi: { component: "SectionFeaturedArticles" },
+        },
+        {
+          title: { de: "Ihr Anlass,\nunser Rahmen." },
+          ctaLabel: { de: "Sääli anfragen" },
+          ctaHref: RESERVATION_HREF,
+          img: "/images/saali-split.jpg",
+          imgAlt: { de: "Zwei Gäste stossen mit Rotwein an" },
+          mediaPosition: "left",
+          panelTone: "muted",
+          _orbi: { component: "SectionSplitPanel" },
+        },
+        {
+          title: { de: "Kommen Sie, wie Sie sind." },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-kontakt",
+      slug: "kontakt",
+      title: {
+        de: "Kontakt",
+      },
+      lead: {
+        de: "Für Fragen, Anregungen oder alles, was sonst noch auf dem Herzen liegt — schreiben Sie uns.",
+      },
+      img: "/images/kontakt-banner.jpg",
+      keywords: ["kontakt", "reservation", "oftringen"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          title: { de: "Wir sind" },
+          titleAccent: { de: "für Sie da." },
+          lead: {
+            de: "Für Fragen, Anregungen oder alles, was sonst noch auf dem Herzen liegt — schreiben Sie uns.",
+          },
+          leftLabel: { de: "Adresse" },
+          leftText: {
+            de: "Bistro zur Linde\nUntere Hauptstrasse 15B",
+          },
+          rightLabel: { de: "Öffnungszeiten" },
+          rightText: {
+            de: "Mo–Fr: 11:00–14:00 & 18:00–23:30\nSa: 18:00–23:30\nSo: Geschlossen",
+          },
+          _orbi: { component: "SectionContactHero" },
+        },
+        {
+          title: { de: "Möchten Sie einen" },
+          titleAccent: { de: "Tisch reservieren?" },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: "#schreiben",
+          img: "/images/kontakt-banner.jpg",
+          imgAlt: {
+            de: "Küchenchef richtet mit einer Pinzette einen Teller an",
+          },
+          _orbi: { component: "SectionMediaCta" },
+        },
+        {
+          title: { de: "Schreiben Sie uns" },
+          submitLabel: { de: "Nachricht senden" },
+          privacyLabel: { de: "Ich akzeptiere die" },
+          privacyHref: "/datenschutz",
+          _orbi: { component: "SectionContactForm" },
+        },
+        {
+          title: { de: "Adresse & Erreichbarkeit" },
+          leftLabel: { de: "Adresse" },
+          leftText: {
+            de: "Bistro zur Linde\nUntere Hauptstrasse 15B",
+          },
+          rightLabel: { de: "Erreichbarkeit" },
+          rightText: {
+            de: "+41 62 788 60 69\nreservation@bistrozurlinde.ch",
+          },
+          ctaLabel: { de: "Route anzeigen" },
+          ctaHref:
+            "https://www.google.com/maps/search/?api=1&query=Untere+Hauptstrasse+15B,+4665+Oftringen",
+          mapEmbedSrc:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2705.392567757981!2d7.940544176604083!3d47.30666890864074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479025e9d6c4f927%3A0xdad824867b2c5044!2sBistro%20zur%20Linde!5e0!3m2!1sen!2smx!4v1787643686376!5m2!1sen!2smx",
+          imgAlt: {
+            de: "Kartenausschnitt mit dem Standort des Bistro zur Linde",
+          },
+          _orbi: { component: "SectionLocationMap" },
+        },
+        {
+          title: { de: "Kommen Sie, wie Sie sind." },
+          ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
   ]
 }
 

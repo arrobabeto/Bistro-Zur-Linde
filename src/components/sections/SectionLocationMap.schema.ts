@@ -1,17 +1,18 @@
 import { z } from "zod"
 import { i18nStringSchema, orbiSchema } from "~/lib/section-schema-base"
 
-export const sectionSplitPanelSchema = z.object({
+export const sectionLocationMapSchema = z.object({
   title: i18nStringSchema,
-  text: i18nStringSchema,
+  leftLabel: i18nStringSchema,
+  leftText: i18nStringSchema,
+  rightLabel: i18nStringSchema,
+  rightText: i18nStringSchema,
   ctaLabel: i18nStringSchema,
   ctaHref: z.string().optional(),
+  mapEmbedSrc: z.string().optional(),
   img: z.string().optional(),
   imgAlt: i18nStringSchema,
-  mediaPosition: z.enum(["left", "right"]).optional(),
-  panelTone: z.enum(["dark", "muted"]).optional(),
-  anchor: z.string().optional(),
   _orbi: orbiSchema,
 })
 
-export default sectionSplitPanelSchema
+export default sectionLocationMapSchema

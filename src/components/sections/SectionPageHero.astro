@@ -14,6 +14,7 @@
 //   "ctaHref":           "/kontakt",
 //   "ctaSecondaryLabel": { "de": "Speisekarte ansehen" },
 //   "ctaSecondaryHref":  "#speisekarte",
+//   "align":             "center",
 //   "img":               "/images/bistro-hero.jpg",
 //   "imgAlt":            { "de": "…" },
 //   "_orbi":             { "component": "SectionPageHero" }
@@ -30,6 +31,8 @@ interface Props {
   ctaHref?: string
   ctaSecondaryLabel?: I18nString
   ctaSecondaryHref?: string
+  /** `start` = left-aligned compact hero (Sääli); default centres like Bistro. */
+  align?: "center" | "start"
   img?: string
   imgAlt?: I18nString
   locale: Locale
@@ -43,6 +46,7 @@ const {
   ctaHref,
   ctaSecondaryLabel,
   ctaSecondaryHref,
+  align = "center",
   img,
   imgAlt,
   locale,
@@ -52,10 +56,16 @@ const heading = translate(title, locale)
 const accent = translate(titleAccent, locale)
 const cta = translate(ctaLabel, locale)
 const ctaSecondary = translate(ctaSecondaryLabel, locale)
+const inset = align === "start"
 ---
 
 <section
-  class="relative isolate mb-12 flex min-h-[520px] items-center justify-center overflow-hidden pt-24 pb-16 lg:mb-[62px] lg:min-h-[792px] lg:pt-32"
+  class:list={[
+    "relative isolate mb-12 flex overflow-hidden pt-24 pb-16 lg:mb-[62px] lg:pt-32",
+    inset
+      ? "min-h-[420px] items-end lg:min-h-[567px] lg:items-center lg:pb-16"
+      : "min-h-[520px] items-center justify-center lg:min-h-[792px]",
+  ]}
   data-testid="section-page-hero"
 >
   {
@@ -65,7 +75,7 @@ const ctaSecondary = translate(ctaSecondaryLabel, locale)
         alt={translate(imgAlt, locale)}
         class="absolute inset-0 -z-20 h-full w-full object-cover"
         width="1512"
-        height="792"
+        height={inset ? 567 : 792}
         loading="eager"
       />
     )
@@ -73,12 +83,27 @@ const ctaSecondary = translate(ctaSecondaryLabel, locale)
   <div class="absolute inset-0 -z-10 bg-black/40"></div>
 
   <div
-    class="container-wide flex flex-col items-center gap-8 text-center lg:gap-[45px]"
+    class:list={[
+      "flex flex-col gap-8 lg:gap-[45px]",
+      inset
+        ? "w-full items-start px-6 text-left md:px-10 lg:px-[120px]"
+        : "container-wide items-center text-center",
+    ]}
   >
-    <div class="flex flex-col items-center gap-4 lg:gap-[10px]">
+    <div
+      class:list={[
+        "flex flex-col gap-4 lg:gap-[10px]",
+        inset ? "items-start" : "items-center",
+      ]}
+    >
       {
         heading && (
-          <h1 class="font-display text-display-xl text-brand-50 max-w-[620px] font-medium lg:leading-[93px] lg:whitespace-pre-line">
+          <h1
+            class:list={[
+              "font-display text-display-xl text-brand-50 font-medium lg:leading-[93px] lg:whitespace-pre-line",
+              inset ? "max-w-[831px]" : "max-w-[620px]",
+            ]}
+          >
             {heading}
             {accent && (
               <>
@@ -91,13 +116,21 @@ const ctaSecondary = translate(ctaSecondaryLabel, locale)
       }
 
       <p
-        class="text-brand-50 max-w-[710px] text-base leading-[1.67] lg:text-lg"
+        class:list={[
+          "text-brand-50 text-base leading-[1.67] lg:text-lg",
+          inset ? "max-w-[631px]" : "max-w-[710px]",
+        ]}
       >
         {translate(lead, locale)}
       </p>
     </div>
 
-    <div class="flex flex-col items-center gap-4 sm:flex-row lg:gap-8">
+    <div
+      class:list={[
+        "flex flex-col gap-4 sm:flex-row lg:gap-8",
+        inset ? "items-start" : "items-center",
+      ]}
+    >
       {
         cta && ctaHref && (
           <a href={ctaHref} class="btn btn-primary">

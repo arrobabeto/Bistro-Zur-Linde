@@ -1,0 +1,115 @@
+---
+// SectionContactHero.astro
+//
+// Centred contact intro with a two-column address / hours strip (Figma Kontakt).
+//
+// CMS JSON:
+// {
+//   "title":      { "de": "Wir sind" },
+//   "titleAccent":{ "de": "für Sie da." },
+//   "lead":       { "de": "…" },
+//   "leftLabel":  { "de": "Adresse" },
+//   "leftText":   { "de": "Bistro zur Linde\nUntere Hauptstrasse 15B" },
+//   "rightLabel": { "de": "Öffnungszeiten" },
+//   "rightText":  { "de": "Mo–Fr: …" },
+//   "_orbi":      { "component": "SectionContactHero" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  titleAccent?: I18nString
+  lead?: I18nString
+  leftLabel?: I18nString
+  leftText?: I18nString
+  rightLabel?: I18nString
+  rightText?: I18nString
+  locale: Locale
+}
+
+const {
+  title,
+  titleAccent,
+  lead,
+  leftLabel,
+  leftText,
+  rightLabel,
+  rightText,
+  locale,
+} = Astro.props
+
+const heading = translate(title, locale)
+const accent = translate(titleAccent, locale)
+const leftHeading = translate(leftLabel, locale)
+const rightHeading = translate(rightLabel, locale)
+---
+
+<section
+  class="container-wide py-12 lg:pt-12 lg:pb-16"
+  data-testid="section-contact-hero"
+>
+  <div
+    class="mx-auto flex max-w-[900px] flex-col items-center gap-8 text-center lg:gap-10"
+  >
+    <div class="flex flex-col items-center gap-6 lg:gap-8">
+      {
+        heading && (
+          <h1 class="font-display text-brand-900 text-[2.5rem] leading-tight font-medium lg:text-[5rem] lg:leading-[88px]">
+            {heading}
+            {accent && (
+              <>
+                {" "}
+                <em class="italic">{accent}</em>
+              </>
+            )}
+          </h1>
+        )
+      }
+      <p
+        class="text-brand-900 max-w-[896px] text-base leading-[1.5] lg:text-xl"
+      >
+        {translate(lead, locale)}
+      </p>
+    </div>
+
+    <div
+      class="flex w-full max-w-[900px] flex-col items-stretch gap-8 sm:flex-row sm:items-center sm:justify-center sm:gap-16 lg:gap-24"
+    >
+      <div class="flex flex-1 flex-col items-center gap-3 text-center">
+        {
+          leftHeading && (
+            <h2 class="font-display text-brand-900 text-[1.375rem] leading-8 font-bold lg:text-[1.625rem]">
+              {leftHeading}
+            </h2>
+          )
+        }
+        <p
+          class="text-brand-900 max-w-[252px] text-base leading-6 whitespace-pre-line"
+        >
+          {translate(leftText, locale)}
+        </p>
+      </div>
+
+      <span
+        class="bg-brand-900 hidden h-40 w-px shrink-0 sm:block"
+        aria-hidden="true"></span>
+
+      <div class="flex flex-1 flex-col items-center gap-3 text-center">
+        {
+          rightHeading && (
+            <h2 class="font-display text-brand-900 text-[1.375rem] leading-8 font-bold lg:text-[1.625rem]">
+              {rightHeading}
+            </h2>
+          )
+        }
+        <p
+          class="text-brand-900 max-w-[260px] text-base leading-6 whitespace-pre-line"
+        >
+          {translate(rightText, locale)}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
