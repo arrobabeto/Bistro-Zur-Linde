@@ -13,6 +13,7 @@
 //     "href":     "/news",
 //     "img":      "/images/event-eroeffnung.jpg"
 //   }],
+//   "columns": 2,
 //   "_orbi": { "component": "SectionEvents" }
 // }
 import { translate } from "~/lib/i18n"
@@ -33,23 +34,59 @@ interface Props {
   eyebrow?: I18nString
   title?: I18nString
   items?: EventItem[]
+  /** Desktop column count. News uses 2; the homepage keeps the default 3. */
+  columns?: 2 | 3
   locale: Locale
 }
 
-const { eyebrow, title, items = [], locale } = Astro.props
+const { eyebrow, title, items = [], columns = 3, locale } = Astro.props
+const eyebrowText = translate(eyebrow, locale)
+const twoCol = columns === 2
 ---
 
-<section class="container-wide py-section">
-  <div class="mb-10 flex flex-col gap-4 lg:mb-12">
-    <p class="eyebrow">{translate(eyebrow, locale)}</p>
-    <h2
-      class="font-display text-brand-900 max-w-5xl text-[2rem] leading-9 font-medium text-balance lg:text-[3rem] lg:leading-[1.15]"
-    >
-      {translate(title, locale)}
-    </h2>
+<section
+  class:list={["py-section", twoCol ? "container-inset" : "container-wide"]}
+  data-testid="section-events"
+>
+  <div
+    class:list={[
+      "mb-10 flex flex-col gap-4 lg:mb-12",
+      twoCol && "lg:flex-row lg:items-end lg:justify-between",
+    ]}
+  >
+    <div class="flex flex-col gap-4">
+      {eyebrowText && <p class="eyebrow">{eyebrowText}</p>}
+      <h2
+        class:list={[
+          "font-display text-brand-900 text-[2rem] leading-9 font-medium text-balance lg:text-[3rem]",
+          twoCol
+            ? "lg:max-w-[1033px] lg:leading-[72px]"
+            : "max-w-5xl lg:leading-[1.15]",
+        ]}
+      >
+        {translate(title, locale)}
+      </h2>
+    </div>
+
+    {
+      twoCol && (
+        <div class="hidden gap-8 pb-2 lg:flex" aria-hidden="true">
+          <span class="bg-brand-900 h-3 w-3 rounded-full" />
+          <span class="bg-brand-900/25 h-3 w-3 rounded-full" />
+          <span class="bg-brand-900/25 h-3 w-3 rounded-full" />
+        </div>
+      )
+    }
   </div>
 
-  <ul class="grid gap-[52px] md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+  <ul
+    class:list={[
+      "grid gap-10 md:grid-cols-2",
+      twoCol
+        ? "lg:mx-auto lg:max-w-[1280px] lg:grid-cols-2 lg:gap-x-10 lg:gap-y-12"
+        : "lg:grid-cols-3 lg:gap-10",
+    ]}
+  >
     {
       items.map((item) => (
         <li class="flex flex-col">
@@ -69,12 +106,12 @@ const { eyebrow, title, items = [], locale } = Astro.props
             </p>
           </div>
 
-          <h3 class="font-display text-brand-900 mt-5 text-[2rem] leading-9 font-medium lg:mt-6 lg:text-[2.25rem] lg:leading-tight">
+          <h3 class="font-display text-brand-900 mt-5 text-[2rem] leading-9 font-medium lg:mt-5 lg:text-[2rem] lg:leading-[1.3]">
             {translate(item.title, locale)}
           </h3>
 
-          <span class="bg-brand-900 mt-6 h-0.5 w-8" aria-hidden="true" />
-          <p class="text-brand-900/80 mt-4 text-base leading-6 lg:text-lg">
+          <span class="bg-brand-900 mt-4 h-0.5 w-8" aria-hidden="true" />
+          <p class="text-brand-900/80 mt-5 text-base leading-6 lg:text-lg lg:leading-[1.5]">
             {translate(item.text, locale)}
           </p>
 

@@ -1,0 +1,62 @@
+---
+// SectionSplitHero.astro
+//
+// Image on the left, title and lead on the right (Figma News hero 2031:86).
+// Does not overlay the site header — pairs with the regular Navigation.
+//
+// CMS JSON:
+// {
+//   "title":  { "de": "Was in der Linde passiert." },
+//   "lead":   { "de": "…" },
+//   "img":    "/images/news-hero.jpg",
+//   "imgAlt": { "de": "…" },
+//   "_orbi":  { "component": "SectionSplitHero" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  lead?: I18nString
+  img?: string
+  imgAlt?: I18nString
+  locale: Locale
+}
+
+const { title, lead, img, imgAlt, locale } = Astro.props
+const heading = translate(title, locale)
+---
+
+<section
+  class="grid lg:grid-cols-[710fr_802fr]"
+  data-testid="section-split-hero"
+>
+  {
+    img && (
+      <img
+        src={img}
+        alt={translate(imgAlt, locale)}
+        class="h-[280px] w-full object-cover lg:h-[593px]"
+        width="710"
+        height="593"
+        loading="eager"
+      />
+    )
+  }
+
+  <div
+    class="flex flex-col justify-center gap-6 px-6 py-10 md:px-10 lg:gap-[20px] lg:px-[105px] lg:py-0"
+  >
+    {
+      heading && (
+        <h1 class="font-display text-display-xl text-brand-900 max-w-[525px] font-medium lg:leading-[93px]">
+          {heading}
+        </h1>
+      )
+    }
+    <p class="text-brand-900 max-w-[550px] text-base leading-[1.67] lg:text-lg">
+      {translate(lead, locale)}
+    </p>
+  </div>
+</section>

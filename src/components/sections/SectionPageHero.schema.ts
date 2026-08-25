@@ -11,6 +11,7 @@ export const sectionPageHeroSchema = z.object({
   ctaSecondaryHref: z.string().optional(),
   img: z.string().optional(),
   imgAlt: i18nStringSchema,
+  align: z.enum(["center", "start"]).optional(),
   _orbi: orbiSchema,
 })
 

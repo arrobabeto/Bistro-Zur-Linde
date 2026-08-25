@@ -1,24 +1,22 @@
 import { z } from "zod"
 import { i18nStringSchema, orbiSchema } from "~/lib/section-schema-base"
 
-export const sectionEventsSchema = z.object({
+export const sectionFeaturedArticlesSchema = z.object({
   eyebrow: i18nStringSchema,
-  title: i18nStringSchema,
-  items: z
+  slides: z
     .array(
       z.object({
-        date: i18nStringSchema,
         title: i18nStringSchema,
-        text: i18nStringSchema,
-        ctaLabel: i18nStringSchema,
+        author: i18nStringSchema,
+        date: i18nStringSchema,
         href: z.string().optional(),
         img: z.string().optional(),
         imgAlt: i18nStringSchema,
       }),
     )
     .optional(),
-  columns: z.union([z.literal(2), z.literal(3)]).optional(),
+  mediaSize: z.enum(["default", "tall"]).optional(),
   _orbi: orbiSchema,
 })
 
-export default sectionEventsSchema
+export default sectionFeaturedArticlesSchema
