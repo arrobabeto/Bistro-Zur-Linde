@@ -1,0 +1,49 @@
+---
+import { phrases } from "~/lib/phrases"
+import { translate } from "~/lib/i18n"
+import type { Locale } from "~/config/locales"
+import { RESERVATION_HASH } from "~/config/opentable"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+---
+
+<dialog
+  id={RESERVATION_HASH}
+  data-reservation-dialog
+  class="reservation-dialog bg-brand-50 backdrop:bg-brand-900/50 m-auto max-h-[min(100vh-2rem,40rem)] w-[min(100%,28rem)] overflow-auto rounded-sm border-0 p-0 shadow-xl"
+  aria-labelledby="reservation-dialog-title"
+>
+  <div
+    class="border-brand-200 flex items-start justify-between gap-4 border-b px-5 py-4"
+  >
+    <h2
+      id="reservation-dialog-title"
+      class="font-display text-brand-900 text-xl font-semibold"
+    >
+      {translate(phrases.reserve_now, locale)}
+    </h2>
+    <button
+      type="button"
+      data-reservation-close
+      class="text-brand-900/70 hover:text-brand-900 -mr-1 flex h-9 w-9 items-center justify-center rounded-sm text-2xl leading-none"
+      aria-label={translate(phrases.close, locale)}
+    >
+      ×
+    </button>
+  </div>
+  <div
+    data-opentable-mount
+    class="flex min-h-[320px] items-start justify-center px-4 py-6"
+  >
+  </div>
+</dialog>
+
+<script>
+  import { initReservationDialog } from "~/scripts/reservation-dialog"
+
+  initReservationDialog()
+</script>
