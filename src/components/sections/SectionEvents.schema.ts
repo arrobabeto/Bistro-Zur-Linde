@@ -7,13 +7,13 @@ export const sectionEventsSchema = z.object({
   items: z
     .array(
       z.object({
-        date: i18nStringSchema,
+        date: i18nStringSchema.optional(),
         title: i18nStringSchema,
         text: i18nStringSchema,
-        ctaLabel: i18nStringSchema,
+        ctaLabel: i18nStringSchema.optional(),
         href: z.string().optional(),
         img: z.string().optional(),
-        imgAlt: i18nStringSchema,
+        imgAlt: i18nStringSchema.optional(),
       }),
     )
     .optional(),

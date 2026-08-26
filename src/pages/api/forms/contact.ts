@@ -24,25 +24,44 @@ const schema = z.object({
   website: z.string().max(200).optional().default(""),
 })
 
-async function readBody(request: Request): Promise<unknown> {
+async function readBody(request: Request): Promise<{
+  raw: unknown
+  isForm: boolean
+}> {
   const contentType = request.headers.get("content-type") ?? ""
   if (contentType.includes("application/json")) {
-    return request.json()
+    return { raw: await request.json(), isForm: false }
   }
   if (
     contentType.includes("application/x-www-form-urlencoded") ||
     contentType.includes("multipart/form-data")
   ) {
     const form = await request.formData()
-    return Object.fromEntries(form.entries())
+    return { raw: Object.fromEntries(form.entries()), isForm: true }
   }
-  // Try JSON first, then formData.
   try {
-    return await request.json()
+    return { raw: await request.json(), isForm: false }
   } catch {
     const form = await request.formData()
-    return Object.fromEntries(form.entries())
+    return { raw: Object.fromEntries(form.entries()), isForm: true }
   }
+}
+
+function wantsJson(request: Request, isForm: boolean): boolean {
+  if (isForm) return false
+  const accept = request.headers.get("accept") ?? ""
+  return accept.includes("application/json")
+}
+
+function redirectToKontakt(
+  request: Request,
+  query: "sent=1" | "error=1",
+): Response {
+  const url = new URL(request.url)
+  return Response.redirect(
+    new URL(`/kontakt?${query}#schreiben`, url.origin),
+    303,
+  )
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -57,14 +76,18 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   let raw: unknown
+  let isForm: boolean
   try {
-    raw = await readBody(request)
+    ;({ raw, isForm } = await readBody(request))
   } catch {
     return json({ ok: false, message: "Invalid request body" }, 400)
   }
 
+  const asJson = wantsJson(request, isForm)
+
   const parsed = schema.safeParse(raw)
   if (!parsed.success) {
+    if (!asJson) return redirectToKontakt(request, "error=1")
     return json(
       { ok: false, message: "Validation failed", issues: parsed.error.issues },
       400,
@@ -73,12 +96,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   const data = parsed.data
   if (data.website) {
+    if (!asJson) return redirectToKontakt(request, "sent=1")
     return json({ ok: true, message: "Sent" })
   }
 
   const to = MAIL_TO_EMAIL
   const from = MAIL_FROM_EMAIL
   if (!to || !from || !isEmailConfigured()) {
+    if (!asJson) return redirectToKontakt(request, "error=1")
     return json(
       {
         ok: false,
@@ -108,6 +133,7 @@ export const POST: APIRoute = async ({ request }) => {
         .join("\n"),
     })
   } catch (error) {
+    if (!asJson) return redirectToKontakt(request, "error=1")
     return json(
       {
         ok: false,
@@ -130,6 +156,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.error("[contact] insert failed after email sent:", error)
   }
 
+  if (!asJson) return redirectToKontakt(request, "sent=1")
   return json({ ok: true, message: "Sent" })
 }
 

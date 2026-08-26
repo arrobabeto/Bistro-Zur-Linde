@@ -6,7 +6,7 @@
 //   "eyebrow": { "de": "Events" },
 //   "title":   { "de": "…" },
 //   "items":   [{
-//     "date":     { "de": "03 FEB 2027" },
+//     "date":     { "de": "27- August -2026" },
 //     "title":    { "de": "…" },
 //     "text":     { "de": "…" },
 //     "ctaLabel": { "de": "Mehr erfahren" },
@@ -88,40 +88,70 @@ const twoCol = columns === 2
     ]}
   >
     {
-      items.map((item) => (
-        <li class="flex flex-col">
-          <div class="relative">
+      items.map((item) => {
+        const date = translate(item.date, locale)
+        const cta = translate(item.ctaLabel, locale)
+        return (
+          <li class="flex flex-col">
             {item.img && (
               <img
                 src={item.img}
                 alt={translate(item.imgAlt, locale)}
-                class="aspect-[323/480] w-full object-cover lg:aspect-[620/480]"
+                class="aspect-[323/480] w-full object-cover object-[center_top] lg:aspect-[620/480]"
                 width="620"
                 height="480"
                 loading="lazy"
               />
             )}
-            <p class="bg-brand-50 text-brand-900 absolute top-5 right-5 px-5 py-3 text-base leading-6">
-              {translate(item.date, locale)}
+
+            <h3 class="font-display text-brand-900 mt-5 text-[2rem] leading-9 font-medium lg:leading-[1.3]">
+              {translate(item.title, locale)}
+            </h3>
+
+            {twoCol ? (
+              <>
+                {date && (
+                  <p class="text-brand-900 mt-2 text-sm leading-[1.64]">
+                    {date}
+                  </p>
+                )}
+                <span
+                  class="bg-brand-900 mt-4 h-0.5 w-8 shrink-0"
+                  aria-hidden="true"
+                />
+              </>
+            ) : (
+              <div class="mt-4 flex items-center gap-4">
+                <span
+                  class="bg-brand-900 h-0.5 w-8 shrink-0"
+                  aria-hidden="true"
+                />
+                {date && (
+                  <p class="text-brand-900 text-base leading-6 whitespace-nowrap">
+                    {date}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <p class="text-brand-900 mt-5 text-base leading-6 lg:text-lg lg:leading-[1.5]">
+              {translate(item.text, locale)}
             </p>
-          </div>
 
-          <h3 class="font-display text-brand-900 mt-5 text-[2rem] leading-9 font-medium lg:mt-5 lg:text-[2rem] lg:leading-[1.3]">
-            {translate(item.title, locale)}
-          </h3>
-
-          <span class="bg-brand-900 mt-4 h-0.5 w-8" aria-hidden="true" />
-          <p class="text-brand-900/80 mt-5 text-base leading-6 lg:text-lg lg:leading-[1.5]">
-            {translate(item.text, locale)}
-          </p>
-
-          {item.href && translate(item.ctaLabel, locale) && (
-            <a href={item.href} class="btn btn-secondary mt-6 self-start">
-              {translate(item.ctaLabel, locale)}
-            </a>
-          )}
-        </li>
-      ))
+            {item.href && cta && (
+              <a
+                href={item.href}
+                class="btn btn-secondary mt-6 self-start"
+                {...(item.href.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                {cta}
+              </a>
+            )}
+          </li>
+        )
+      })
     }
   </ul>
 </section>

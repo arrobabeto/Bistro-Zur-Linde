@@ -8,7 +8,7 @@
 //   "text":        { "de": "…" },
 //   "ctaLabel":    { "de": "Tisch reservieren" },
 //   "ctaHref":     "/kontakt",
-//   "mark":        "/images/logo.svg",
+//   "mark":        "/images/logo.png",
 //   "_orbi":       { "component": "SectionReservation" }
 // }
 import { translate } from "~/lib/i18n"
@@ -40,8 +40,8 @@ const cta = translate(ctaLabel, locale)
         <img
           src={mark}
           alt=""
-          class="h-[86px] w-[86px]"
-          width="86"
+          class="h-[86px] w-auto"
+          width="68"
           height="86"
           loading="lazy"
         />

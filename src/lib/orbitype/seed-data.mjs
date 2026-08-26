@@ -64,25 +64,31 @@ export function buildSeedPages() {
               name: { de: "Bistro" },
               href: "/bistro",
               img: "/images/room-bistro.jpg",
-              imgAlt: { de: "Gastraum des Bistros mit grossen Fenstern" },
+              imgAlt: { de: "Gedeckte Tische im Gastraum des Bistros" },
             },
             {
               name: { de: "Sääli" },
               href: "/saali",
               img: "/images/room-saali.jpg",
-              imgAlt: { de: "Festlich gedeckte Tafel im Sääli" },
+              imgAlt: {
+                de: "Gedeckter Tisch im Sääli mit Blick auf die Terrasse",
+              },
             },
             {
               name: { de: "Zigarrenlounge" },
               href: "/zigarrenlounge",
               img: "/images/room-zigarrenlounge.jpg",
-              imgAlt: { de: "Ledersessel in der Zigarrenlounge" },
+              imgAlt: {
+                de: "Sitzecke der Zigarrenlounge mit farbigen Sesseln",
+              },
             },
             {
               name: { de: "Wine Room" },
               href: "/wine-room",
               img: "/images/room-wine-room.jpg",
-              imgAlt: { de: "Weinregale im Wine Room" },
+              imgAlt: {
+                de: "Weinraum mit Holztisch und Weinregalen",
+              },
             },
           ],
           _orbi: { component: "SectionRooms" },
@@ -91,7 +97,7 @@ export function buildSeedPages() {
           slides: [
             {
               img: "/images/promo-1.jpg",
-              imgAlt: { de: "Terrasse des Bistro zur Linde im Abendlicht" },
+              imgAlt: { de: "Gastraum des Bistros mit Weinkühlern und Bar" },
               eyebrow: { de: "Der Ort" },
               title: {
                 de: "Neubau, Terrasse, Umgebung — einzigartig in der Region",
@@ -116,37 +122,39 @@ export function buildSeedPages() {
           },
           items: [
             {
-              date: { de: "03 FEB 2027" },
-              title: { de: "Eröffnung Bistro zur Linde" },
+              date: { de: "27 - August - 2026" },
+              title: { de: "Neueröffnung Bistro zur Linde" },
               text: {
-                de: "Feiern Sie mit uns die Eröffnung und entdecken Sie die neue Linde zum ersten Mal.",
+                de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
               },
-              ctaLabel: { de: "Mehr erfahren" },
-              href: "/news",
               img: "/images/event-eroeffnung.jpg",
-              imgAlt: { de: "Gäste vor dem Eingang des Bistro zur Linde" },
+              imgAlt: {
+                de: "Lindenpark-Gebäude bei der Neueröffnung mit Logo und Datum",
+              },
             },
             {
-              date: { de: "03 FEB 2027" },
-              title: { de: "Ruedi Zünd im Interview" },
+              date: { de: "August 2026" },
+              title: { de: "Ein Blick hinter die Kulissen des Lindenparks" },
               text: {
-                de: "Erfahren Sie mehr über seine Philosophie, seine Küche und den Neustart in Küngoldingen.",
+                de: "Von der Baustelle zum neuen Treffpunkt: Die Baureportage zeigt, wie der Lindenpark und das Bistro zur Linde Schritt für Schritt entstanden sind.",
+              },
+              img: "/images/event-interview.jpg",
+              imgAlt: {
+                de: "Zeitungsseite zur Baureportage des Lindenparks",
+              },
+            },
+            {
+              date: { de: "22- August -2026" },
+              title: { de: "Bistro zur Linde im Zofinger Tagblatt" },
+              text: {
+                de: "Das Zofinger Tagblatt berichtet über das Bistro zur Linde und die Neueröffnung in Küngoldingen.",
               },
               ctaLabel: { de: "Mehr erfahren" },
-              href: "/news",
-              img: "/images/event-interview.jpg",
-              imgAlt: { de: "Ruedi Zünd richtet einen Teller an" },
-            },
-            {
-              date: { de: "03 FEB 2027" },
-              title: { de: "Saisonkarte Herbst" },
-              text: {
-                de: "Kulinarische Highlights der Saison – frisch, regional und mit viel Leidenschaft gekocht.",
-              },
-              ctaLabel: { de: "Jetzt entdecken" },
               href: "/news",
               img: "/images/event-saisonkarte.jpg",
-              imgAlt: { de: "Herbstlich angerichteter Teller mit Weinglas" },
+              imgAlt: {
+                de: "Zeitungsartikel über Rudolf Zünd und das Bistro zur Linde",
+              },
             },
           ],
           _orbi: { component: "SectionEvents" },
@@ -159,7 +167,7 @@ export function buildSeedPages() {
           },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.svg",
+          mark: "/images/logo.png",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -240,7 +248,7 @@ export function buildSeedPages() {
           },
           img: "/images/bistro-terrasse.jpg",
           imgAlt: {
-            de: "Terrasse mit Sonnenschirmen und Blick über die Umgebung",
+            de: "Gedeckter Tisch im Gastraum mit Blick auf die Seelandschaft",
           },
           _orbi: { component: "SectionImageBanner" },
         },
@@ -248,7 +256,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.svg",
+          mark: "/images/logo.png",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -281,21 +289,30 @@ export function buildSeedPages() {
         },
         {
           title: {
-            de: "Vier Räume. Eine Küche. Für jeden Anlass der richtige.",
+            de: "Aktuelles aus dem Bistro zur Linde",
           },
           columns: 2,
           items: [
             {
-              date: { de: "27 - August - 2026" },
+              date: { de: "27- August -2026" },
               title: { de: "Neueröffnung Bistro zur Linde" },
               text: {
                 de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
               },
-              ctaLabel: { de: "Mehr erfahren" },
-              href: "/posts",
               img: "/images/news-card-1.jpg",
               imgAlt: {
                 de: "Ankündigung der Neueröffnung vor dem Gebäude des Lindenparks",
+              },
+            },
+            {
+              date: { de: "27- August -2026" },
+              title: { de: "Ein Blick hinter die Kulissen des Lindenparks" },
+              text: {
+                de: "Von der Baustelle zum neuen Treffpunkt: Die Baureportage zeigt, wie der Lindenpark und das Bistro zur Linde Schritt für Schritt entstanden sind.",
+              },
+              img: "/images/news-card-2.jpg",
+              imgAlt: {
+                de: "Zeitungsseite zur Baureportage des Lindenparks",
               },
             },
             {
@@ -305,31 +322,19 @@ export function buildSeedPages() {
                 de: "Das Zofinger Tagblatt berichtet über das Bistro zur Linde und die Neueröffnung in Küngoldingen.",
               },
               ctaLabel: { de: "Mehr erfahren" },
-              href: "/posts",
-              img: "/images/news-card-2.jpg",
-              imgAlt: { de: "Ruedi Zünd richtet in der Küche einen Teller an" },
-            },
-            {
-              date: { de: "August 2026" },
-              title: { de: "Ein Blick hinter die Kulissen des Lindenparks" },
-              text: {
-                de: "Von der Baustelle zum neuen Treffpunkt: Die Baureportage zeigt, wie der Lindenpark und das Bistro zur Linde Schritt für Schritt entstanden sind.",
-              },
-              ctaLabel: { de: "Mehr erfahren" },
-              href: "/posts",
+              href: "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
               img: "/images/news-card-3.jpg",
               imgAlt: {
-                de: "Zeitungsausschnitt über den Bau des Lindenparks",
+                de: "Zeitungsartikel über Rudolf Zünd und das Bistro zur Linde",
               },
             },
             {
-              date: { de: "August 2026" },
               title: { de: "Ein Raum für besondere Momente" },
               text: {
                 de: "Geburtstag, Firmenessen oder Familienfeier: Im Sääli wird aus einem gemeinsamen Essen ein Anlass, bei dem Ihre Gesellschaft ganz unter sich bleiben kann.",
               },
-              ctaLabel: { de: "Mehr erfahren" },
-              href: "/posts",
+              ctaLabel: { de: "Kontakt aufnehmen" },
+              href: "/kontakt",
               img: "/images/news-card-4.jpg",
               imgAlt: {
                 de: "Gäste an einer festlich gedeckten Tafel im Sääli",
@@ -358,7 +363,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.svg",
+          mark: "/images/logo.png",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -432,7 +437,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.svg",
+          mark: "/images/logo.png",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -510,7 +515,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.svg",
+          mark: "/images/logo.png",
           _orbi: { component: "SectionReservation" },
         },
       ],
