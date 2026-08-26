@@ -150,6 +150,39 @@
     @apply mx-auto w-full max-w-[90rem] px-6 md:px-10 lg:px-20;
   }
 
+  /* Legal long-form (Figma Datenschutz 2131:1477 — Inter 16/24) */
+  .legal-prose {
+    @apply text-base leading-6;
+  }
+
+  .legal-prose :where(p) {
+    @apply mb-4;
+  }
+
+  .legal-prose :where(p:first-child) {
+    @apply font-display text-brand-900 mb-6 text-[1.5rem] leading-8 font-semibold lg:text-[1.75rem] lg:leading-9;
+  }
+
+  .legal-prose :where(h2) {
+    @apply text-brand-900 mt-10 mb-4 text-base leading-6 font-semibold;
+  }
+
+  .legal-prose :where(h3) {
+    @apply text-brand-900 mt-8 mb-3 text-base leading-6 font-semibold;
+  }
+
+  .legal-prose :where(ul) {
+    @apply mb-4 list-disc space-y-1 pl-5;
+  }
+
+  .legal-prose :where(li) {
+    @apply leading-6;
+  }
+
+  .legal-prose :where(a) {
+    @apply underline underline-offset-2;
+  }
+
   /* Figma 04. Buttons — mobile 14px/py-2, desktop 18px/py-3 (frame 2075:197) */
   .btn {
     @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-2 text-sm leading-8 font-medium transition-colors lg:px-14 lg:py-3 lg:text-lg;

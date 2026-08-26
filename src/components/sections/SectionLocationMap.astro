@@ -133,9 +133,9 @@ const mapTitle = translate(imgAlt, locale)
         <iframe
           src={mapEmbedSrc}
           title={mapTitle || "Map"}
-          class="h-[240px] w-full max-w-[1280px] border-0 lg:h-[522px]"
-          width="1280"
-          height="522"
+          class="aspect-[600/450] h-auto w-full max-w-[1280px] border-0 lg:aspect-auto lg:h-[522px]"
+          width="600"
+          height="450"
           loading="lazy"
           allowfullscreen
           referrerpolicy="strict-origin-when-cross-origin"
