@@ -39,6 +39,8 @@ const {
 
 const heading = translate(title, locale)
 const mailReady = enabled ?? isEmailConfigured()
+const sent = Astro.url.searchParams.get("sent") === "1"
+const errored = Astro.url.searchParams.get("error") === "1"
 const field =
   "text-brand-900 min-h-11 w-full border-0 border-b border-brand-900/40 bg-transparent px-0 pb-3 text-base leading-[1.5] outline-none transition-colors focus:border-brand-900"
 ---
@@ -56,6 +58,29 @@ const field =
         <h2 class="font-display text-brand-900 text-center text-[2rem] leading-tight font-semibold lg:text-[2.5rem] lg:leading-[72px]">
           {heading}
         </h2>
+      )
+    }
+
+    {
+      sent && (
+        <p
+          class="border-brand-900/20 bg-brand-50 text-brand-900 w-full border px-4 py-3 text-sm"
+          role="status"
+        >
+          {translate(phrases.sent_successfully, locale)}
+        </p>
+      )
+    }
+
+    {
+      errored && (
+        <p
+          class="border-accent-500/40 bg-brand-50 text-brand-900 w-full border px-4 py-3 text-sm"
+          role="alert"
+        >
+          Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es
+          erneut.
+        </p>
       )
     }
 
@@ -119,9 +144,9 @@ const field =
         <span class="text-brand-900/70 text-base leading-[1.5]">Ansprache</span>
         <select name="topic" class={`${field} appearance-none pr-8`}>
           <option value=""></option>
-          <option value="Reservation">Reservation</option>
-          <option value="Anlass">Anlass / Sääli</option>
-          <option value="Allgemein">Allgemeine Anfrage</option>
+          <option value="Anlass planen">Anlass planen</option>
+          <option value="Gutschein kaufen">Gutschein kaufen</option>
+          <option value="Sonstiges">Sonstiges</option>
         </select>
         <span
           class="text-brand-900 pointer-events-none absolute right-0 bottom-3"

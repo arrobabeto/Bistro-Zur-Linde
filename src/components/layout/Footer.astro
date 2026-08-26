@@ -5,9 +5,12 @@ import type { Locale } from "~/config/locales"
 import { siteName } from "~/lib/site"
 import {
   CONTACT_ADDRESS,
+  CONTACT_COMPANY,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
   FOOTER_LEGAL,
-  FOOTER_ROOMS,
-  FOOTER_SERVICE,
+  FOOTER_MENU,
+  OPENING_HOURS,
   SOCIAL_LINKS,
 } from "~/config/navigation"
 import SocialIcon from "~/components/common/SocialIcon.astro"
@@ -18,36 +21,30 @@ interface Props {
 
 const { locale } = Astro.props
 const year = new Date().getFullYear()
-
-const columns = [
-  { key: "rooms", items: FOOTER_ROOMS },
-  { key: "service", items: FOOTER_SERVICE },
-  { key: "legal", items: FOOTER_LEGAL },
-]
 ---
 
-<footer class="bg-brand-900 mt-auto text-white">
+<footer class="mt-auto bg-[#7C695C] text-white">
   <div
-    class="container-wide grid justify-items-center gap-12 py-14 text-center lg:grid-cols-2 lg:justify-items-stretch lg:py-20 lg:text-left"
+    class="container-wide grid gap-12 py-14 text-center lg:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] lg:items-start lg:justify-items-stretch lg:gap-16 lg:py-[5.8rem] lg:text-left"
   >
     <div class="flex flex-col items-center gap-8 lg:items-start">
-      <a href="/">
+      <a href="/" class="shrink-0">
         <img
-          src="/images/logo-light.svg"
+          src="/images/logo-footer.png"
           alt={siteName()}
-          class="h-[86px] w-[86px]"
-          width="86"
-          height="86"
+          class="h-[118px] w-auto"
+          width="92"
+          height="118"
         />
       </a>
 
-      <ul class="flex items-center gap-3">
+      <ul class="flex items-center gap-6">
         {
           SOCIAL_LINKS.map((social) => (
             <li>
               <a
                 href={social.href}
-                class="enter:border-white flex h-10 w-10 items-center justify-center rounded-full border border-white/40 transition-colors"
+                class="enter:opacity-70 flex h-10 w-10 items-center justify-center text-white transition-opacity"
                 aria-label={social.label}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -59,31 +56,121 @@ const columns = [
         }
       </ul>
 
-      <address class="text-xl leading-7 not-italic">
-        {CONTACT_ADDRESS.map((line) => <span class="block">{line}</span>)}
+      <address class="leading-7 not-italic">
+        <span class="block text-[22px]">{CONTACT_COMPANY}</span>
+        {
+          CONTACT_ADDRESS.map((line) => (
+            <span class="block text-xl">{line}</span>
+          ))
+        }
       </address>
 
       <p class="text-lg leading-7">© {year}</p>
     </div>
 
-    <div
-      class="flex flex-col items-center gap-10 sm:grid sm:grid-cols-3 sm:items-start lg:justify-items-start"
-    >
-      {
-        columns.map((column) => (
-          <nav aria-label={translate(phrases.menu, locale)}>
-            <ul class="flex flex-col items-center gap-6 lg:items-start">
-              {column.items.map((item) => (
+    <div class="flex flex-col gap-12 lg:gap-14">
+      <div
+        class="grid justify-items-center gap-10 sm:grid-cols-3 sm:items-start sm:justify-items-start lg:gap-8"
+      >
+        <nav aria-label={translate(phrases.menu, locale)}>
+          <ul class="flex flex-col items-center gap-6 lg:items-start">
+            {
+              FOOTER_MENU.map((item) => (
                 <li>
                   <a class="footer-link" href={item.href}>
                     {item.label}
                   </a>
                 </li>
-              ))}
-            </ul>
-          </nav>
-        ))
-      }
+              ))
+            }
+          </ul>
+        </nav>
+
+        <div class="flex flex-col items-center gap-4 lg:items-start">
+          <h2 class="font-display text-2xl leading-7 font-semibold">
+            Öffnungszeiten
+          </h2>
+          <p class="text-xl leading-7 whitespace-pre-line">
+            {OPENING_HOURS.join("\n")}
+          </p>
+        </div>
+
+        <nav aria-label="Rechtliches">
+          <h2 class="font-display mb-4 text-2xl leading-7 font-medium">
+            Rechtliches
+          </h2>
+          <ul class="flex flex-col items-center gap-6 lg:items-start">
+            {
+              FOOTER_LEGAL.map((item) => (
+                <li>
+                  <a class="footer-link" href={item.href}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+
+      <div
+        class="grid justify-items-center gap-10 sm:grid-cols-2 sm:items-end sm:justify-items-start lg:gap-8"
+      >
+        <div class="flex flex-col items-center gap-4 lg:items-start">
+          <h2
+            class="font-display border-brand-50/80 border-b pb-2 text-2xl leading-7 font-semibold"
+          >
+            Kontakt
+          </h2>
+          <a
+            class="footer-link"
+            href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`}
+          >
+            {CONTACT_PHONE}
+          </a>
+          <a class="footer-link" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>
+        </div>
+
+        <div
+          id="newsletter"
+          class="flex w-full max-w-[328px] flex-col items-center gap-4 lg:items-start"
+        >
+          <div class="flex flex-col gap-1 text-center lg:text-left">
+            <h2 class="font-display text-[2rem] leading-8 font-normal">
+              Neuigkeiten aus der Linde
+            </h2>
+            <p class="text-xl leading-8">Nichts verpassen</p>
+          </div>
+
+          <form
+            class="flex w-full items-center gap-3 border-b border-white/80 pb-2"
+            method="post"
+            action="/api/forms/newsletter"
+          >
+            <label class="sr-only" for="footer-newsletter-email">
+              E-Mail-Adresse
+            </label>
+            <input
+              id="footer-newsletter-email"
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="E-Mail-Adresse eingeben"
+              class="min-h-7 flex-1 border-0 bg-transparent text-xl leading-7 text-white outline-none placeholder:text-white/90"
+            />
+            <button
+              type="submit"
+              class="enter:bg-white/20 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white text-white"
+              aria-label={translate(phrases.subscribe, locale)}
+            >
+              <span aria-hidden="true" class="text-lg leading-none">→</span>
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
