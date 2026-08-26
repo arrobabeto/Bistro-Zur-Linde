@@ -1,5 +1,9 @@
 /** Starter CMS rows — single source for mock mode and `pnpm run cms:seed`. */
 
+import { readFileSync } from "node:fs"
+import { dirname, join } from "node:path"
+import { fileURLToPath } from "node:url"
+
 const now = () => new Date().toISOString()
 
 const RESERVATION_HREF = "/kontakt"
@@ -7,6 +11,12 @@ const RESERVATION_HREF = "/kontakt"
 /** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
 const MENU_ANCHOR = "speisekarte"
 const MENU_HREF = `#${MENU_ANCHOR}`
+
+const LEGAL_DIR = join(dirname(fileURLToPath(import.meta.url)), "legal")
+const DATENSCHUTZ_BODY_DE = readFileSync(
+  join(LEGAL_DIR, "datenschutz.de.html"),
+  "utf8",
+)
 
 export function buildSeedPages() {
   return [
@@ -505,7 +515,7 @@ export function buildSeedPages() {
           ctaHref:
             "https://www.google.com/maps/search/?api=1&query=Untere+Hauptstrasse+15B,+4665+Oftringen",
           mapEmbedSrc:
-            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2705.392567757981!2d7.940544176604083!3d47.30666890864074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479025e9d6c4f927%3A0xdad824867b2c5044!2sBistro%20zur%20Linde!5e0!3m2!1sen!2smx!4v1787643686376!5m2!1sen!2smx",
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2705.392567757981!2d7.940544176604083!3d47.30666890864074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479025e9d6c4f927%3A0xdad824867b2c5044!2sBistro%20zur%20Linde!5e0!3m2!1sen!2smx!4v1787735412311!5m2!1sen!2smx",
           imgAlt: {
             de: "Kartenausschnitt mit dem Standort des Bistro zur Linde",
           },
@@ -517,6 +527,32 @@ export function buildSeedPages() {
           ctaHref: RESERVATION_HREF,
           mark: "/images/logo.png",
           _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-datenschutz",
+      slug: "datenschutz",
+      title: {
+        de: "Datenschutz",
+      },
+      lead: {
+        de: "Datenschutzerklärung der E. Floccari Liegenschaften AG und der Bistro zur Linde GmbH.",
+      },
+      keywords: ["datenschutz", "privacy", "rechtliches"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          eyebrow: { de: "RECHTLICHES" },
+          title: { de: "Datenschutz" },
+          _orbi: { component: "SectionLegalHero" },
+        },
+        {
+          heading: { de: "Allgemeine Datenschutzerklärung" },
+          content: { de: DATENSCHUTZ_BODY_DE },
+          _orbi: { component: "SectionLegalBody" },
         },
       ],
     },

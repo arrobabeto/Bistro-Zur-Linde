@@ -1,0 +1,43 @@
+---
+// SectionLegalHero.astro
+//
+// Page intro for legal documents (Figma Datenschutz 2131:1477).
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "RECHTLICHES" },
+//   "title":   { "de": "Datenschutz" },
+//   "_orbi":   { "component": "SectionLegalHero" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  locale: Locale
+}
+
+const { eyebrow, title, locale } = Astro.props
+const eyebrowText = translate(eyebrow, locale)
+const heading = translate(title, locale)
+---
+
+<section
+  class="container-wide pt-10 pb-8 lg:pt-14 lg:pb-10"
+  data-testid="section-legal-hero"
+>
+  <div
+    class="mx-auto flex max-w-[1198px] flex-col items-center gap-4 text-center lg:gap-6"
+  >
+    {eyebrowText && <p class="eyebrow tracking-[0.3em]">{eyebrowText}</p>}
+    {
+      heading && (
+        <h1 class="font-display text-brand-900 text-[2.5rem] leading-tight font-medium lg:text-[5rem] lg:leading-[88px]">
+          {heading}
+        </h1>
+      )
+    }
+  </div>
+</section>

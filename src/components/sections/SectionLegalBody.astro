@@ -1,0 +1,41 @@
+---
+// SectionLegalBody.astro
+//
+// Long-form legal copy with a document heading (Figma Datenschutz body).
+//
+// CMS JSON:
+// {
+//   "heading": { "de": "Allgemeine Datenschutzerklärung" },
+//   "content": { "de": "<p>…</p>" },
+//   "_orbi":   { "component": "SectionLegalBody" }
+// }
+import SafeHtml from "~/components/common/SafeHtml.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  heading?: I18nString
+  content?: I18nString
+  locale: Locale
+}
+
+const { heading, content, locale } = Astro.props
+const docHeading = translate(heading, locale)
+---
+
+<section class="container-wide pb-16 lg:pb-24" data-testid="section-legal-body">
+  <div class="mx-auto flex max-w-[1198px] flex-col gap-8 lg:gap-10">
+    {
+      docHeading && (
+        <h2 class="font-display text-brand-900 text-[1.75rem] leading-10 font-semibold lg:text-[2.5rem] lg:leading-[48px]">
+          {docHeading}
+        </h2>
+      )
+    }
+    <SafeHtml
+      html={translate(content, locale)}
+      class="legal-prose text-brand-900"
+    />
+  </div>
+</section>
