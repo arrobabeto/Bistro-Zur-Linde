@@ -27,6 +27,8 @@ interface Props {
 }
 
 const { eyebrow, title, rooms = [], locale } = Astro.props
+
+const boxClass = "block h-[395px] overflow-hidden sm:h-[420px] lg:h-[600px]"
 ---
 
 <section class="py-section">
@@ -43,25 +45,47 @@ const { eyebrow, title, rooms = [], locale } = Astro.props
     {
       rooms.map((room) => (
         <li class="relative">
-          <a
-            href={room.href ?? "/"}
-            class="group block h-[395px] overflow-hidden sm:h-[420px] lg:h-[600px]"
-          >
-            {room.img && (
-              <img
-                src={room.img}
-                alt={translate(room.imgAlt, locale)}
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                width="378"
-                height="600"
-                loading="lazy"
+          {room.href ? (
+            <a href={room.href} class:list={["group", boxClass]}>
+              {room.img && (
+                <img
+                  src={room.img}
+                  alt={translate(room.imgAlt, locale)}
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  width="378"
+                  height="600"
+                  loading="lazy"
+                />
+              )}
+              <span
+                class="bg-brand-900/20 absolute inset-0"
+                aria-hidden="true"
               />
-            )}
-            <span class="bg-brand-900/20 absolute inset-0" aria-hidden="true" />
-            <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
-              {translate(room.name, locale)}
-            </span>
-          </a>
+              <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
+                {translate(room.name, locale)}
+              </span>
+            </a>
+          ) : (
+            <div class={boxClass}>
+              {room.img && (
+                <img
+                  src={room.img}
+                  alt={translate(room.imgAlt, locale)}
+                  class="h-full w-full object-cover"
+                  width="378"
+                  height="600"
+                  loading="lazy"
+                />
+              )}
+              <span
+                class="bg-brand-900/20 absolute inset-0"
+                aria-hidden="true"
+              />
+              <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
+                {translate(room.name, locale)}
+              </span>
+            </div>
+          )}
         </li>
       ))
     }

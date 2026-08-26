@@ -17,6 +17,7 @@
 //   "_orbi": { "component": "SectionEvents" }
 // }
 import { translate } from "~/lib/i18n"
+import { phrases } from "~/lib/phrases"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
 
@@ -27,6 +28,8 @@ interface EventItem {
   ctaLabel?: I18nString
   href?: string
   img?: string
+  /** Shown from the `lg` breakpoint up; mobile keeps `img`. */
+  imgDesktop?: string
   imgAlt?: I18nString
 }
 
@@ -42,6 +45,8 @@ interface Props {
 const { eyebrow, title, items = [], columns = 3, locale } = Astro.props
 const eyebrowText = translate(eyebrow, locale)
 const twoCol = columns === 2
+const enlargeLabel = translate(phrases.enlarge_image, locale)
+const closeLabel = translate(phrases.close, locale)
 ---
 
 <section
@@ -91,17 +96,34 @@ const twoCol = columns === 2
       items.map((item) => {
         const date = translate(item.date, locale)
         const cta = translate(item.ctaLabel, locale)
+        const alt = translate(item.imgAlt, locale)
         return (
           <li class="flex flex-col">
             {item.img && (
-              <img
-                src={item.img}
-                alt={translate(item.imgAlt, locale)}
-                class="aspect-[323/480] w-full object-cover object-[center_top] lg:aspect-[620/480]"
-                width="620"
-                height="480"
-                loading="lazy"
-              />
+              <button
+                type="button"
+                data-lightbox-trigger
+                data-lightbox-alt={alt}
+                aria-label={enlargeLabel}
+                class="enter:opacity-90 cursor-zoom-in overflow-hidden text-left transition-opacity"
+              >
+                <picture>
+                  {item.imgDesktop && (
+                    <source
+                      media="(min-width: 1024px)"
+                      srcset={item.imgDesktop}
+                    />
+                  )}
+                  <img
+                    src={item.img}
+                    alt={alt}
+                    class="aspect-[323/480] w-full object-cover object-[center_top] lg:aspect-[620/480]"
+                    width="620"
+                    height="480"
+                    loading="lazy"
+                  />
+                </picture>
+              </button>
             )}
 
             <h3 class="font-display text-brand-900 mt-5 text-[2rem] leading-9 font-medium lg:leading-[1.3]">
@@ -154,4 +176,33 @@ const twoCol = columns === 2
       })
     }
   </ul>
+
+  <dialog
+    data-lightbox
+    class="backdrop:bg-brand-900/80 m-auto max-h-[min(100vh-2rem,56rem)] w-[min(100%-2rem,72rem)] border-0 bg-transparent p-0 shadow-none"
+    aria-label={enlargeLabel}
+  >
+    <div class="relative flex items-center justify-center p-2 sm:p-4">
+      <button
+        type="button"
+        data-lightbox-close
+        class="bg-brand-900/70 absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full text-2xl leading-none text-white"
+        aria-label={closeLabel}
+      >
+        ×
+      </button>
+      <img
+        data-lightbox-img
+        src=""
+        alt=""
+        class="max-h-[min(90vh,52rem)] max-w-full object-contain"
+      />
+    </div>
+  </dialog>
 </section>
+
+<script>
+  import { initLightbox } from "~/scripts/lightbox"
+
+  initLightbox()
+</script>

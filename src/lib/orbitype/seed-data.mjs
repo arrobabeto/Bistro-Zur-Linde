@@ -4,7 +4,7 @@ import { DATENSCHUTZ_BODY_DE } from "./legal/datenschutz-body.mjs"
 
 const now = () => new Date().toISOString()
 
-const RESERVATION_HREF = "/kontakt"
+const RESERVATION_HREF = "#reservieren"
 
 /** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
 const MENU_ANCHOR = "speisekarte"
@@ -78,7 +78,6 @@ export function buildSeedPages() {
             },
             {
               name: { de: "Zigarrenlounge" },
-              href: "/zigarrenlounge",
               img: "/images/room-zigarrenlounge.jpg",
               imgAlt: {
                 de: "Sitzecke der Zigarrenlounge mit farbigen Sesseln",
@@ -86,7 +85,6 @@ export function buildSeedPages() {
             },
             {
               name: { de: "Wine Room" },
-              href: "/wine-room",
               img: "/images/room-wine-room.jpg",
               imgAlt: {
                 de: "Weinraum mit Holztisch und Weinregalen",
@@ -130,6 +128,7 @@ export function buildSeedPages() {
                 de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
               },
               img: "/images/event-eroeffnung.jpg",
+              imgDesktop: "/images/event-eroeffnung-desktop.jpg",
               imgAlt: {
                 de: "Lindenpark-Gebäude bei der Neueröffnung mit Logo und Datum",
               },
@@ -140,7 +139,10 @@ export function buildSeedPages() {
               text: {
                 de: "Von der Baustelle zum neuen Treffpunkt: Die Baureportage zeigt, wie der Lindenpark und das Bistro zur Linde Schritt für Schritt entstanden sind.",
               },
-              img: "/images/event-interview.jpg",
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
+              img: "/images/event-interview-mobile.jpg",
+              imgDesktop: "/images/event-interview.jpg",
               imgAlt: {
                 de: "Zeitungsseite zur Baureportage des Lindenparks",
               },
@@ -153,7 +155,8 @@ export function buildSeedPages() {
               },
               ctaLabel: { de: "Mehr erfahren" },
               href: "/news",
-              img: "/images/event-saisonkarte.jpg",
+              img: "/images/event-saisonkarte-mobile.jpg",
+              imgDesktop: "/images/event-saisonkarte.jpg",
               imgAlt: {
                 de: "Zeitungsartikel über Rudolf Zünd und das Bistro zur Linde",
               },
@@ -169,7 +172,7 @@ export function buildSeedPages() {
           },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.png",
+          mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -258,7 +261,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.png",
+          mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -312,6 +315,8 @@ export function buildSeedPages() {
               text: {
                 de: "Von der Baustelle zum neuen Treffpunkt: Die Baureportage zeigt, wie der Lindenpark und das Bistro zur Linde Schritt für Schritt entstanden sind.",
               },
+              ctaLabel: { de: "Mehr erfahren" },
+              href: "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
               img: "/images/news-card-2.jpg",
               imgAlt: {
                 de: "Zeitungsseite zur Baureportage des Lindenparks",
@@ -365,7 +370,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.png",
+          mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -439,7 +444,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.png",
+          mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },
       ],
@@ -479,7 +484,7 @@ export function buildSeedPages() {
           title: { de: "Möchten Sie einen" },
           titleAccent: { de: "Tisch reservieren?" },
           ctaLabel: { de: "Tisch reservieren" },
-          ctaHref: "#schreiben",
+          ctaHref: RESERVATION_HREF,
           img: "/images/kontakt-banner.jpg",
           imgAlt: {
             de: "Küchenchef richtet mit einer Pinzette einen Teller an",
@@ -517,7 +522,7 @@ export function buildSeedPages() {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
-          mark: "/images/logo.png",
+          mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },
       ],

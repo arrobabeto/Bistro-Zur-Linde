@@ -13,6 +13,8 @@ export const sectionEventsSchema = z.object({
         ctaLabel: i18nStringSchema.optional(),
         href: z.string().optional(),
         img: z.string().optional(),
+        /** Optional desktop-only image (`lg` and up). Falls back to `img`. */
+        imgDesktop: z.string().optional(),
         imgAlt: i18nStringSchema.optional(),
       }),
     )

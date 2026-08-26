@@ -4,6 +4,8 @@ export const phrases = {
     en: "All rights reserved",
     de: "Alle Rechte vorbehalten",
   },
+  close: { en: "Close", de: "Schliessen" },
+  enlarge_image: { en: "Enlarge image", de: "Bild vergrössern" },
   company: { en: "Company", de: "Firma" },
   download: { en: "Download", de: "Herunterladen" },
   email: { en: "Email", de: "E-Mail" },

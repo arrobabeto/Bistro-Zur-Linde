@@ -11,6 +11,7 @@ import {
   FOOTER_LEGAL,
   FOOTER_MENU,
   OPENING_HOURS,
+  KITCHEN_HOURS,
   SOCIAL_LINKS,
 } from "~/config/navigation"
 import SocialIcon from "~/components/common/SocialIcon.astro"
@@ -86,13 +87,21 @@ const year = new Date().getFullYear()
           </ul>
         </nav>
 
-        <div class="flex flex-col items-center gap-4 lg:items-start">
-          <h2 class="font-display text-2xl leading-7 font-semibold">
-            Öffnungszeiten
-          </h2>
-          <p class="text-xl leading-7 whitespace-pre-line">
-            {OPENING_HOURS.join("\n")}
-          </p>
+        <div class="flex flex-col items-center gap-8 lg:items-start">
+          <div class="flex flex-col items-center gap-4 lg:items-start">
+            <h2 class="font-display text-2xl leading-7 font-semibold">
+              Öffnungszeiten
+            </h2>
+            <p class="text-xl leading-7 font-light whitespace-pre-line">
+              {OPENING_HOURS.join("\n")}
+            </p>
+          </div>
+          <div class="flex flex-col items-center gap-4 lg:items-start">
+            <h2 class="font-display text-2xl leading-7 font-semibold">Küche</h2>
+            <p class="text-xl leading-7 font-light whitespace-pre-line">
+              {KITCHEN_HOURS.join("\n")}
+            </p>
+          </div>
         </div>
 
         <nav aria-label="Rechtliches">
@@ -135,40 +144,26 @@ const year = new Date().getFullYear()
 
         <div
           id="newsletter"
-          class="flex w-full max-w-[328px] flex-col items-center gap-4 lg:items-start"
+          class="flex w-full max-w-[541px] flex-col items-center gap-4 lg:items-start"
         >
-          <div class="flex flex-col gap-1 text-center lg:text-left">
-            <h2 class="font-display text-[2rem] leading-8 font-normal">
-              Neuigkeiten aus der Linde
-            </h2>
-            <p class="text-xl leading-8">Nichts verpassen</p>
-          </div>
-
-          <form
-            class="flex w-full items-center gap-3 border-b border-white/80 pb-2"
-            method="post"
-            action="/api/forms/newsletter"
+          <h2
+            class="font-display text-center text-[1.75rem] leading-8 font-normal lg:text-left"
           >
-            <label class="sr-only" for="footer-newsletter-email">
-              E-Mail-Adresse
-            </label>
-            <input
-              id="footer-newsletter-email"
-              type="email"
-              name="email"
-              required
-              autocomplete="email"
-              placeholder="E-Mail-Adresse eingeben"
-              class="min-h-7 flex-1 border-0 bg-transparent text-xl leading-7 text-white outline-none placeholder:text-white/90"
-            />
-            <button
-              type="submit"
-              class="enter:bg-white/20 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white text-white"
-              aria-label={translate(phrases.subscribe, locale)}
-            >
-              <span aria-hidden="true" class="text-lg leading-none">→</span>
-            </button>
-          </form>
+            Abonnieren Sie unseren Newsletter
+          </h2>
+          <p class="text-center text-base leading-8 font-light lg:text-left">
+            Exklusive Neuigkeiten, Angebote und Rezepte direkt per E-Mail
+            erhalten.
+          </p>
+          <a
+            class="btn btn-primary mt-2 min-w-[234px]"
+            href="https://www.opentable.de/widget/comms/mural?rid=514932&lang=de-DE"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Jetzt anmelden
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </div>

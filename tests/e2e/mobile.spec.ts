@@ -31,7 +31,7 @@ test.describe("mobile home", () => {
     await page.goto("/")
     // Direct child of nav: the logo and the reserve CTA, not the menu links
     await expect(
-      page.locator('body > header nav > a[href="/kontakt"]'),
+      page.locator('body > header nav > a[href="#reservieren"]'),
     ).toBeVisible()
   })
 

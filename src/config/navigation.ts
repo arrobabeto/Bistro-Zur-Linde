@@ -28,10 +28,13 @@ export const FOOTER_LEGAL: readonly NavItem[] = [
   { label: "Impressum", href: "/impressum" },
 ]
 
-export const RESERVATION_HREF = "/kontakt"
+import { RESERVATION_HASH } from "~/config/opentable"
+
+/** Opens the OpenTable reservation dialog (see ReservationDialog). */
+export const RESERVATION_HREF = `#${RESERVATION_HASH}`
 
 export const SOCIAL_LINKS: readonly NavItem[] = [
-  { label: "Instagram", href: "https://www.instagram.com/" },
+  { label: "Instagram", href: "https://www.instagram.com/bistrozurlinde" },
   { label: "LinkedIn", href: "https://www.linkedin.com/" },
   {
     label: "Google Maps",
@@ -47,5 +50,11 @@ export const CONTACT_EMAIL = "reservation@bistrozurlinde.ch"
 export const OPENING_HOURS = [
   "Mo–Fr: 11:00–14:00 & 18:00–23:30",
   "Sa: 18:00–23:30",
+  "So: Geschlossen",
+]
+
+export const KITCHEN_HOURS = [
+  "Mo–Fr: 11:30–13:30 & 18:00–22:00",
+  "Sa: 18:00–22:00",
   "So: Geschlossen",
 ]
