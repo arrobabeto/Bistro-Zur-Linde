@@ -1,8 +1,6 @@
 /** Starter CMS rows — single source for mock mode and `pnpm run cms:seed`. */
 
-import { readFileSync } from "node:fs"
-import { dirname, join } from "node:path"
-import { fileURLToPath } from "node:url"
+import { DATENSCHUTZ_BODY_DE } from "./legal/datenschutz-body.mjs"
 
 const now = () => new Date().toISOString()
 
@@ -11,12 +9,6 @@ const RESERVATION_HREF = "/kontakt"
 /** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
 const MENU_ANCHOR = "speisekarte"
 const MENU_HREF = `#${MENU_ANCHOR}`
-
-const LEGAL_DIR = join(dirname(fileURLToPath(import.meta.url)), "legal")
-const DATENSCHUTZ_BODY_DE = readFileSync(
-  join(LEGAL_DIR, "datenschutz.de.html"),
-  "utf8",
-)
 
 export function buildSeedPages() {
   return [
