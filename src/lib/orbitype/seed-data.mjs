@@ -48,7 +48,7 @@ export function buildSeedPages() {
             de: "Langjähriger Wirt des Restaurant Federal in Zofingen — jetzt am Herd im Bistro zur Linde. Gemeinsam mit seinem gesamten Team. Bekannt für Schweizer Küche und gehobene französische Handschrift.",
           },
           stats: [
-            { label: { de: "13\nGaultMillau\nPunkte" } },
+            { label: { de: "14\nGaultMillau\nPunkte" } },
             { label: { de: "Falstaff\n89 Punkte" } },
             { label: { de: "Team-Umzug\nkomplett" } },
           ],
