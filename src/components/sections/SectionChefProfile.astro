@@ -46,6 +46,7 @@ const {
 } = Astro.props
 
 const cta = translate(ctaLabel, locale)
+const ctaExternal = Boolean(ctaHref?.startsWith("http"))
 ---
 
 <section class="container-wide py-section">
@@ -89,6 +90,9 @@ const cta = translate(ctaLabel, locale)
           <a
             href={ctaHref}
             class="btn btn-secondary mt-4 self-center lg:self-start"
+            {...(ctaExternal
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
           >
             {cta}
           </a>

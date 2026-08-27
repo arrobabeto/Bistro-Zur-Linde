@@ -53,7 +53,8 @@ export function buildSeedPages() {
             { label: { de: "Team-Umzug\nkomplett" } },
           ],
           ctaLabel: { de: "Mehr über Ruedi Zünd" },
-          ctaHref: "/news",
+          ctaHref:
+            "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
           img: "/images/chef.jpg",
           imgAlt: { de: "Küchenchef Ruedi Zünd in seiner Küche" },
           _orbi: { component: "SectionChefProfile" },
@@ -80,7 +81,7 @@ export function buildSeedPages() {
               name: { de: "Zigarrenlounge" },
               img: "/images/room-zigarrenlounge.jpg",
               imgAlt: {
-                de: "Sitzecke der Zigarrenlounge mit farbigen Sesseln",
+                de: "Leder-Sofas und Ledertisch in der Zigarrenlounge",
               },
             },
             {
@@ -97,7 +98,7 @@ export function buildSeedPages() {
           slides: [
             {
               img: "/images/promo-1.jpg",
-              imgAlt: { de: "Gastraum des Bistros mit Weinkühlern und Bar" },
+              imgAlt: { de: "Dachterrasse mit Lounge und Pergola" },
               eyebrow: { de: "Der Ort" },
               title: {
                 de: "Neubau, Terrasse, Umgebung — einzigartig in der Region",
@@ -216,7 +217,7 @@ export function buildSeedPages() {
           },
           img: "/images/bistro-story.jpg",
           imgAlt: {
-            de: "Servicemitarbeiterin berät Gäste an einem Tisch im Bistro",
+            de: "Gedeckte Tische vor der beleuchteten Bar im Bistro",
           },
           mediaPosition: "right",
           _orbi: { component: "SectionStory" },
@@ -228,7 +229,8 @@ export function buildSeedPages() {
             de: "Ruedi Zünd bringt sein Handwerk aus vielen Jahren Gastronomie ins Bistro zur Linde — Schweizer Küche mit einer feinen Handschrift, ehrlich gekocht und ohne Umwege auf den Teller gebracht.",
           },
           ctaLabel: { de: "Mehr über Ruedi Zünd" },
-          ctaHref: "/news",
+          ctaHref:
+            "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
           img: "/images/bistro-kueche.jpg",
           imgAlt: { de: "Ruedi Zünd richtet in der Küche einen Teller an" },
           _orbi: { component: "SectionShowcase" },
@@ -351,7 +353,7 @@ export function buildSeedPages() {
           _orbi: { component: "SectionEvents" },
         },
         {
-          eyebrow: { de: "Ausgewählte Artikel" },
+          eyebrow: { de: "Speisekarte ansehen" },
           slides: [
             {
               title: { de: "Wo Geschmack entsteht" },
@@ -400,7 +402,7 @@ export function buildSeedPages() {
           align: "start",
           img: "/images/saali-hero.jpg",
           imgAlt: {
-            de: "Festlich gedeckte Tafeln im Sääli mit Blick auf die Berge",
+            de: "Gedeckte Tafeln im Sääli mit Blick durch die Fenster",
           },
           _orbi: { component: "SectionPageHero" },
         },
@@ -435,7 +437,7 @@ export function buildSeedPages() {
           ctaLabel: { de: "Sääli anfragen" },
           ctaHref: RESERVATION_HREF,
           img: "/images/saali-split.jpg",
-          imgAlt: { de: "Zwei Gäste stossen mit Rotwein an" },
+          imgAlt: { de: "Ausgewählte Weine vor dem Weinregal" },
           mediaPosition: "left",
           panelTone: "muted",
           _orbi: { component: "SectionSplitPanel" },

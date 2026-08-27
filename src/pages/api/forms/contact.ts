@@ -13,6 +13,7 @@ import { clientKey, rateLimit } from "~/lib/rate-limit"
 export const prerender = false
 
 const schema = z.object({
+  salutation: z.enum(["Frau", "Herr"]),
   first_name: z.string().trim().min(1).max(120),
   last_name: z.string().trim().min(1).max(120),
   email: z.email().max(254),
@@ -119,12 +120,13 @@ export const POST: APIRoute = async ({ request }) => {
       to,
       from,
       fromName: MAIL_FROM_NAME || PUBLIC_SITE_NAME,
-      subject: `Contact from ${data.first_name} ${data.last_name}`,
+      subject: `Contact from ${data.salutation} ${data.first_name} ${data.last_name}`,
       text: [
+        `Ansprache: ${data.salutation}`,
         `Name: ${data.first_name} ${data.last_name}`,
         `Email: ${data.email}`,
         data.phone ? `Phone: ${data.phone}` : "",
-        data.topic ? `Topic: ${data.topic}` : "",
+        data.topic ? `Betreff: ${data.topic}` : "",
         "Privacy consent: yes",
         "",
         data.message,
@@ -143,13 +145,17 @@ export const POST: APIRoute = async ({ request }) => {
     )
   }
 
+  const topicForStore = [data.salutation, data.topic]
+    .filter(Boolean)
+    .join(" · ")
+
   try {
     await insertContact({
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
       phone: data.phone,
-      topic: data.topic,
+      topic: topicForStore,
       message: data.message,
     })
   } catch (error) {

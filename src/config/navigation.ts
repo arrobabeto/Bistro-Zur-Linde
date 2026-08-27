@@ -14,14 +14,8 @@ export const PRIMARY_NAV: readonly NavItem[] = [
   { label: "Kontakt", href: "/kontakt" },
 ]
 
-/** Primary footer link list (Figma 2128:480). */
-export const FOOTER_MENU: readonly NavItem[] = [
-  { label: "Bistro", href: "/bistro" },
-  { label: "Sääli", href: "/saali" },
-  { label: "Zigarrenlounge", href: "/zigarrenlounge" },
-  { label: "Wine Room", href: "/wine-room" },
-  { label: "Gutschein bestellen", href: "/gutschein" },
-]
+/** Footer menu mirrors the primary nav. */
+export const FOOTER_MENU: readonly NavItem[] = PRIMARY_NAV
 
 export const FOOTER_LEGAL: readonly NavItem[] = [
   { label: "Datenschutz", href: "/datenschutz" },

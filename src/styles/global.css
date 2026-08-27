@@ -191,9 +191,9 @@
     @apply underline underline-offset-2;
   }
 
-  /* Figma 04. Buttons — mobile 14px/py-2, desktop 18px/py-3 (frame 2075:197) */
+  /* Buttons — mobile 17px/semibold for legibility; desktop 18px/medium */
   .btn {
-    @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-2 text-sm leading-8 font-medium transition-colors lg:px-14 lg:py-3 lg:text-lg;
+    @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-2 text-[17px] leading-8 font-semibold transition-colors lg:px-14 lg:py-3 lg:text-lg lg:font-medium;
   }
 
   .btn-primary {
