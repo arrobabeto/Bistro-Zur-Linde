@@ -1,0 +1,51 @@
+---
+// Cookie consent panel (Figma 2211:973 desktop, 2215:1550 mobile).
+// Rendered only on the home page; behaviour in src/scripts/cookie-banner.ts.
+---
+
+<aside
+  data-cookie-banner
+  data-testid="cookie-banner"
+  class="fixed inset-x-0 bottom-0 z-50 bg-white px-7 py-[52px] lg:px-[105px] lg:py-16"
+  role="dialog"
+  aria-labelledby="cookie-banner-title"
+  aria-hidden="true"
+  hidden
+>
+  <div
+    class="mx-auto flex w-full max-w-[90rem] flex-col gap-6 lg:max-w-none lg:gap-7"
+  >
+    <div class="flex flex-col gap-3 lg:max-w-[1062px] lg:gap-3.5">
+      <h2
+        id="cookie-banner-title"
+        class="font-display text-brand-900 text-[2rem] leading-[31px] font-light lg:text-[2.75rem] lg:leading-[57px]"
+      >
+        Diese Website verwendet Cookies
+      </h2>
+      <p
+        class="text-brand-900 max-w-[829px] text-base leading-8 font-light lg:text-lg"
+      >
+        Diese Website verwendet Cookies, um Ihnen die bestmögliche Nutzung zu
+        ermöglichen und einzelne Funktionen, wie zum Beispiel Kartenanzeigen
+        oder die Tischreservation, bereitzustellen. Weitere Informationen dazu
+        finden Sie in unserer{" "}
+        <a href="/datenschutz" class="underline underline-offset-2">
+          Datenschutzerklärung</a
+        >.
+      </p>
+    </div>
+    <button
+      type="button"
+      data-cookie-banner-dismiss
+      class="btn btn-secondary h-14 w-[192px] shrink-0 px-14 py-3 text-lg font-medium"
+    >
+      Verstanden
+    </button>
+  </div>
+</aside>
+
+<script>
+  import { initCookieBanner } from "~/scripts/cookie-banner"
+
+  initCookieBanner()
+</script>

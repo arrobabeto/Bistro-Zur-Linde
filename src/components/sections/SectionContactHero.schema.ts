@@ -7,6 +7,8 @@ export const sectionContactHeroSchema = z.object({
   lead: i18nStringSchema,
   leftLabel: i18nStringSchema,
   leftText: i18nStringSchema,
+  middleLabel: i18nStringSchema,
+  middleText: i18nStringSchema,
   rightLabel: i18nStringSchema,
   rightText: i18nStringSchema,
   _orbi: orbiSchema,

@@ -1,6 +1,7 @@
 /** Starter CMS rows — single source for mock mode and `pnpm run cms:seed`. */
 
 import { DATENSCHUTZ_BODY_DE } from "./legal/datenschutz-body.mjs"
+import { IMPRESSUM_BODY_DE } from "./legal/impressum-body.mjs"
 
 const now = () => new Date().toISOString()
 
@@ -23,7 +24,14 @@ export function buildSeedPages() {
       },
       img: "/images/hero.jpg",
       keywords: ["bistro", "restaurant", "oftringen", "küngoldingen"],
-      head: {},
+      head: {
+        title: {
+          de: "Bistro zur Linde | Restaurant & Eventlocation Oftringen",
+        },
+        description: {
+          de: "Bistro zur Linde in Oftringen — Schweizer Küche, Eventlocation mit Sääli und Zigarrenlounge. Vier Räume für jeden Anlass. Jetzt Tisch reservieren.",
+        },
+      },
       created_at: now(),
       updated_at: now(),
       sections: [
@@ -97,7 +105,8 @@ export function buildSeedPages() {
         {
           slides: [
             {
-              img: "/images/promo-1.jpg",
+              img: "/images/promo-1-mobile.jpg",
+              imgDesktop: "/images/promo-1.jpg",
               imgAlt: { de: "Dachterrasse mit Lounge und Pergola" },
               eyebrow: { de: "Der Ort" },
               title: {
@@ -107,11 +116,15 @@ export function buildSeedPages() {
             },
             {
               img: "/images/promo-2.jpg",
-              imgAlt: { de: "Eingangsbereich des Neubaus" },
+              imgAlt: {
+                de: "Aussenansicht des Neubaus mit Eingang und Fassade",
+              },
             },
             {
               img: "/images/promo-3.jpg",
-              imgAlt: { de: "Gartenanlage mit Gräsern vor dem Lindenpark" },
+              imgAlt: {
+                de: "Linde-Schild mit Farnen und Öffnungszeiten am Eingang",
+              },
             },
           ],
           _orbi: { component: "SectionPromoBanner" },
@@ -128,7 +141,7 @@ export function buildSeedPages() {
               text: {
                 de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
               },
-              img: "/images/event-eroeffnung.jpg",
+              img: "/images/event-eroeffnung-mobile.jpg",
               imgDesktop: "/images/event-eroeffnung-desktop.jpg",
               imgAlt: {
                 de: "Lindenpark-Gebäude bei der Neueröffnung mit Logo und Datum",
@@ -142,8 +155,7 @@ export function buildSeedPages() {
               },
               ctaLabel: { de: "Mehr erfahren" },
               href: "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
-              img: "/images/event-interview-mobile.jpg",
-              imgDesktop: "/images/event-interview.jpg",
+              img: "/images/event-interview.jpg",
               imgAlt: {
                 de: "Zeitungsseite zur Baureportage des Lindenparks",
               },
@@ -213,11 +225,11 @@ export function buildSeedPages() {
           title: { de: "Für jeden" },
           titleAccent: { de: "Tag" },
           text: {
-            de: "Handwerker beim Mittagessen. Geschäftsleute zwischen zwei Meetings. Freunde am Feierabend. Familien am Sonntag. Vereine, die ihren Ausflug hier ausklingen lassen. Gäste, die einfach vorbeikommen, weil sie Lust auf ein gutes Essen haben.\nDas Bistro ist an jedem dieser Tische zu Hause.",
+            de: "Handwerker beim Mittagessen. Geschäftsleute zwischen zwei Meetings. Freunde am Feierabend. Familien am Samstag. Vereine, die ihren Ausflug hier ausklingen lassen. Gäste, die einfach vorbeikommen, weil sie Lust auf ein gutes Essen haben.\nDas Bistro ist an jedem dieser Tische zu Hause.",
           },
           img: "/images/bistro-story.jpg",
           imgAlt: {
-            de: "Gedeckte Tische vor der beleuchteten Bar im Bistro",
+            de: "Gedeckte Tische im Gastraum mit Bar und Weinregal",
           },
           mediaPosition: "right",
           _orbi: { component: "SectionStory" },
@@ -232,7 +244,7 @@ export function buildSeedPages() {
           ctaHref:
             "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
           img: "/images/bistro-kueche.jpg",
-          imgAlt: { de: "Ruedi Zünd richtet in der Küche einen Teller an" },
+          imgAlt: { de: "Professionelle Edelstahlküche im Bistro zur Linde" },
           _orbi: { component: "SectionShowcase" },
         },
         {
@@ -255,7 +267,7 @@ export function buildSeedPages() {
           },
           img: "/images/bistro-terrasse.jpg",
           imgAlt: {
-            de: "Gedeckter Tisch im Gastraum mit Blick auf die Seelandschaft",
+            de: "Dachterrasse mit Lounge-Sofas und Sitzbereich",
           },
           _orbi: { component: "SectionImageBanner" },
         },
@@ -306,7 +318,8 @@ export function buildSeedPages() {
               text: {
                 de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
               },
-              img: "/images/news-card-1.jpg",
+              img: "/images/event-eroeffnung-mobile.jpg",
+              imgDesktop: "/images/news-card-1.jpg",
               imgAlt: {
                 de: "Ankündigung der Neueröffnung vor dem Gebäude des Lindenparks",
               },
@@ -357,8 +370,8 @@ export function buildSeedPages() {
           slides: [
             {
               title: { de: "Wo Geschmack entsteht" },
-              author: { de: "Bistro zur Linde" },
-              date: { de: "16 September 2026" },
+              author: { de: "Cipta Rowanson" },
+              date: { de: "Untere Hauptstrasse 15B\n4665 Oftringen" },
               href: "/posts",
               img: "/images/news-featured.jpg",
               imgAlt: {
@@ -426,7 +439,7 @@ export function buildSeedPages() {
               },
               img: "/images/saali-rahmen.jpg",
               imgAlt: {
-                de: "Küchenchef richtet einen frischen Salat für den Anlass an",
+                de: "Gedeckte Tische im Sääli mit Blick auf den Weinkeller",
               },
             },
           ],
@@ -476,9 +489,13 @@ export function buildSeedPages() {
           leftText: {
             de: "Bistro zur Linde\nUntere Hauptstrasse 15B",
           },
-          rightLabel: { de: "Öffnungszeiten" },
-          rightText: {
+          middleLabel: { de: "Öffnungszeiten" },
+          middleText: {
             de: "Mo–Fr: 11:00–14:00 & 18:00–23:30\nSa: 18:00–23:30\nSo: Geschlossen",
+          },
+          rightLabel: { de: "Küche" },
+          rightText: {
+            de: "Mo–Fr: 11:30–13:30 & 18:00–22:00\nSa: 18:00–22:00\nSo: Geschlossen",
           },
           _orbi: { component: "SectionContactHero" },
         },
@@ -536,7 +553,7 @@ export function buildSeedPages() {
         de: "Datenschutz",
       },
       lead: {
-        de: "Datenschutzerklärung der E. Floccari Liegenschaften AG und der Bistro zur Linde GmbH.",
+        de: "Datenschutzerklärung der Bistro zur Linde GmbH.",
       },
       keywords: ["datenschutz", "privacy", "rechtliches"],
       head: {},
@@ -551,6 +568,33 @@ export function buildSeedPages() {
         {
           heading: { de: "Allgemeine Datenschutzerklärung" },
           content: { de: DATENSCHUTZ_BODY_DE },
+          _orbi: { component: "SectionLegalBody" },
+        },
+      ],
+    },
+    {
+      id: "seed-impressum",
+      slug: "impressum",
+      title: {
+        de: "Impressum",
+      },
+      lead: {
+        de: "Impressum der Bistro zur Linde GmbH.",
+      },
+      keywords: ["impressum", "rechtliches", "legal"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          eyebrow: { de: "RECHTLICHES" },
+          title: { de: "Impressum" },
+          _orbi: { component: "SectionLegalHero" },
+        },
+        {
+          heading: { de: "Impressum" },
+          content: { de: IMPRESSUM_BODY_DE },
+          variant: "impressum",
           _orbi: { component: "SectionLegalBody" },
         },
       ],

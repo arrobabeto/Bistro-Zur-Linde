@@ -22,6 +22,11 @@ function assertProductionSiteUrl(url: string): void {
       `PUBLIC_SITE_URL must not point at ${host} in production (got ${url})`,
     )
   }
+  if (host.endsWith(".vercel.app")) {
+    throw new Error(
+      `PUBLIC_SITE_URL must use the production domain in production, not ${host} (got ${url})`,
+    )
+  }
   if (parsed.protocol !== "https:") {
     throw new Error(`PUBLIC_SITE_URL must use https in production (got ${url})`)
   }

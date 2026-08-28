@@ -191,6 +191,23 @@
     @apply underline underline-offset-2;
   }
 
+  /* Legal Impressum (Figma 2211:618 — Inter 16/24 + Cormorant 28/42, 20px gaps) */
+  .legal-prose--impressum {
+    @apply flex flex-col gap-5;
+  }
+
+  .legal-prose--impressum :where(p) {
+    @apply mb-0;
+  }
+
+  .legal-prose--impressum :where(p:first-child) {
+    @apply font-sans text-base leading-6 font-normal;
+  }
+
+  .legal-prose--impressum :where(p.legal-impressum__display) {
+    @apply font-display text-[1.75rem] leading-[2.625rem];
+  }
+
   /* Buttons — mobile 17px/semibold for legibility; desktop 18px/medium */
   .btn {
     @apply font-display inline-flex items-center justify-center gap-2 rounded-full px-8 py-2 text-[17px] leading-8 font-semibold transition-colors lg:px-14 lg:py-3 lg:text-lg lg:font-medium;
