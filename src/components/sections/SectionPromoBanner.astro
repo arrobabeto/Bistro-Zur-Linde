@@ -19,6 +19,8 @@ import type { Locale } from "~/config/locales"
 
 interface Slide {
   img?: string
+  /** Shown from the `lg` breakpoint up; mobile keeps `img`. */
+  imgDesktop?: string
   imgAlt?: I18nString
   eyebrow?: I18nString
   title?: I18nString
@@ -57,14 +59,22 @@ const id = `promo-${crypto.randomUUID().slice(0, 8)}`
             class="relative w-full shrink-0 snap-center overflow-hidden"
           >
             {slide.img && (
-              <img
-                src={slide.img}
-                alt={translate(slide.imgAlt, locale)}
-                class="aspect-[324/582] w-full object-cover lg:aspect-auto lg:h-[670px]"
-                width="1280"
-                height="670"
-                loading="lazy"
-              />
+              <picture>
+                {slide.imgDesktop && (
+                  <source
+                    media="(min-width: 1024px)"
+                    srcset={slide.imgDesktop}
+                  />
+                )}
+                <img
+                  src={slide.img}
+                  alt={translate(slide.imgAlt, locale)}
+                  class="aspect-[324/582] w-full object-cover lg:aspect-auto lg:h-[670px]"
+                  width="1280"
+                  height="670"
+                  loading="lazy"
+                />
+              </picture>
             )}
 
             {translate(slide.title, locale) && (

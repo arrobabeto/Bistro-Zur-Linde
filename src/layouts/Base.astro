@@ -5,6 +5,7 @@ import Navigation from "~/components/layout/Navigation.astro"
 import ReservationDialog from "~/components/layout/ReservationDialog.astro"
 import JsonLd from "~/components/seo/JsonLd.astro"
 import type { Locale } from "~/config/locales"
+import { htmlLang } from "~/config/locales"
 import {
   organizationLogo,
   organizationName,
@@ -43,7 +44,7 @@ const orgGraph = {
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={htmlLang(locale)}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -1,7 +1,7 @@
 ---
 import Base from "~/layouts/Base.astro"
 import Seo from "~/components/seo/Seo.astro"
-import { DEFAULT_LOCALE } from "~/config/locales"
+import { DEFAULT_LOCALE, ogLocale } from "~/config/locales"
 import { listPosts } from "~/lib/orbitype/posts"
 import { translate } from "~/lib/i18n"
 import { phrases } from "~/lib/phrases"
@@ -36,6 +36,7 @@ const title = translate(phrases.posts, locale)
       ogDescription={siteDescription()}
       ogImage={absoluteUrl("/images/logo.png")}
       ogType="website"
+      ogLocale={ogLocale(locale)}
       twitterCard="summary"
       twitterSite=""
       twitterCreator=""

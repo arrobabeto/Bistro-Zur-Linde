@@ -16,6 +16,23 @@ export type Locale = (typeof LOCALES)[number]
 
 export const DEFAULT_LOCALE: Locale = "de"
 
+/** BCP 47 tags for `<html lang>` and Open Graph locale metadata. */
+export const LOCALE_HTML_LANG: Record<Locale, string> = {
+  de: "de-CH",
+}
+
+export const LOCALE_OG_LOCALE: Record<Locale, string> = {
+  de: "de_CH",
+}
+
+export function htmlLang(locale: Locale): string {
+  return LOCALE_HTML_LANG[locale] ?? locale
+}
+
+export function ogLocale(locale: Locale): string {
+  return LOCALE_OG_LOCALE[locale] ?? locale.replace("-", "_")
+}
+
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value)
 }

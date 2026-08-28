@@ -6,6 +6,8 @@ export const sectionPromoBannerSchema = z.object({
     .array(
       z.object({
         img: z.string().optional(),
+        /** Optional desktop-only image (`lg` and up). Falls back to `img`. */
+        imgDesktop: z.string().optional(),
         imgAlt: i18nStringSchema,
         eyebrow: i18nStringSchema,
         title: i18nStringSchema,

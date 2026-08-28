@@ -14,6 +14,7 @@ const {
   ogDescription,
   ogImage,
   ogType,
+  ogLocale,
   twitterCard,
 } = Astro.props
 
@@ -35,6 +36,7 @@ const twitterCreator = PUBLIC_TWITTER_CREATOR || Astro.props.twitterCreator
 <meta property="og:image" content={ogImage} />
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonical} />
+<meta property="og:locale" content={ogLocale} />
 <meta name="twitter:card" content={twitterCard} />
 <meta name="twitter:title" content={ogTitle} />
 <meta name="twitter:description" content={ogDescription} />

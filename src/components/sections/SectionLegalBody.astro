@@ -17,15 +17,22 @@ import type { Locale } from "~/config/locales"
 interface Props {
   heading?: I18nString
   content?: I18nString
+  variant?: "default" | "impressum"
   locale: Locale
 }
 
-const { heading, content, locale } = Astro.props
+const { heading, content, variant = "default", locale } = Astro.props
 const docHeading = translate(heading, locale)
+const isImpressum = variant === "impressum"
 ---
 
 <section class="container-wide pb-16 lg:pb-24" data-testid="section-legal-body">
-  <div class="mx-auto flex max-w-[1198px] flex-col gap-8 lg:gap-10">
+  <div
+    class:list={[
+      "mx-auto flex max-w-[1198px] flex-col",
+      isImpressum ? "gap-5" : "gap-8 lg:gap-10",
+    ]}
+  >
     {
       docHeading && (
         <h2 class="font-display text-brand-900 text-[1.75rem] leading-10 font-semibold lg:text-[2.5rem] lg:leading-[48px]">
@@ -35,7 +42,10 @@ const docHeading = translate(heading, locale)
     }
     <SafeHtml
       html={translate(content, locale)}
-      class="legal-prose text-brand-900"
+      class:list={[
+        "legal-prose text-brand-900",
+        isImpressum && "legal-prose--impressum",
+      ]}
     />
   </div>
 </section>

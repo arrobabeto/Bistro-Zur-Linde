@@ -1,5 +1,5 @@
 import type { Locale } from "~/config/locales"
-import { LOCALES, DEFAULT_LOCALE } from "~/config/locales"
+import { LOCALES, DEFAULT_LOCALE, ogLocale } from "~/config/locales"
 import { translate } from "~/lib/i18n"
 import { localePath } from "~/lib/i18n"
 import { stripHtml } from "~/lib/sanitize"
@@ -29,6 +29,7 @@ export type SeoData = {
   ogDescription: string
   ogImage: string
   ogType: string
+  ogLocale: string
   twitterCard: string
   twitterSite: string
   twitterCreator: string
@@ -99,6 +100,7 @@ export function buildPageSeo(options: {
     ogDescription: description,
     ogImage,
     ogType: "website",
+    ogLocale: ogLocale(locale),
     twitterCard: "summary_large_image",
     twitterSite: "",
     twitterCreator: "",
@@ -162,6 +164,7 @@ export function buildPostSeo(options: {
     ogDescription: description,
     ogImage,
     ogType: "article",
+    ogLocale: ogLocale(locale),
     twitterCard: "summary_large_image",
     twitterSite: "",
     twitterCreator: "",
