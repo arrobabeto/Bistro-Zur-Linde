@@ -191,6 +191,47 @@
     @apply underline underline-offset-2;
   }
 
+  /* Blog single post body (Figma 2229:1088 — lead 20/32, h2 36/44, p 17/28) */
+  .post-prose {
+    @apply flex flex-col gap-10;
+  }
+
+  .post-prose :where(p) {
+    @apply text-[17px] leading-7;
+  }
+
+  .post-prose :where(p.post-lead) {
+    @apply text-xl leading-8;
+  }
+
+  .post-prose :where(h2) {
+    @apply font-display text-[1.75rem] leading-[2.5rem] font-semibold lg:text-[2.25rem] lg:leading-[44px];
+  }
+
+  .post-prose :where(blockquote) {
+    @apply bg-white px-8 py-8 lg:px-10;
+  }
+
+  .post-prose :where(blockquote p) {
+    @apply font-display text-accent-500 text-[1.5rem] leading-[1.7] lg:text-[1.75rem] lg:leading-[38px];
+  }
+
+  .post-prose :where(p.post-quote-attr) {
+    @apply text-brand-900 mt-4 text-sm leading-none font-semibold;
+  }
+
+  .post-prose :where(figure) {
+    @apply flex flex-col gap-3;
+  }
+
+  .post-prose :where(figure img) {
+    @apply h-auto w-full object-cover;
+  }
+
+  .post-prose :where(figcaption) {
+    @apply text-brand-500 text-sm leading-none;
+  }
+
   /* Legal Impressum (Figma 2211:618 — Inter 16/24 + Cormorant 28/42, 20px gaps) */
   .legal-prose--impressum {
     @apply flex flex-col gap-5;

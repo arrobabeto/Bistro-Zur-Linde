@@ -1,0 +1,112 @@
+---
+// SectionPostHero.astro
+//
+// Blog single-post header + hero image (Figma blog-single-post 2229:1088).
+//
+// CMS JSON:
+// {
+//   "category":    { "de": "Gastronomie" },
+//   "date":        { "de": "27. August 2026" },
+//   "title":       { "de": "Saisonale Menükarte: …" },
+//   "author":      { "de": "Von Ruedi Zünd" },
+//   "readingTime": { "de": "Lesezeit: ca. 5 Min." },
+//   "img":         "/images/blog-hero-herbstkarte.jpg",
+//   "imgAlt":      { "de": "…" },
+//   "_orbi":       { "component": "SectionPostHero" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  category?: I18nString
+  date?: I18nString
+  title?: I18nString
+  author?: I18nString
+  readingTime?: I18nString
+  img?: string
+  imgAlt?: I18nString
+  locale: Locale
+}
+
+const { category, date, title, author, readingTime, img, imgAlt, locale } =
+  Astro.props
+
+const categoryText = translate(category, locale)
+const dateText = translate(date, locale)
+const heading = translate(title, locale)
+const authorText = translate(author, locale)
+const readingText = translate(readingTime, locale)
+const alt = translate(imgAlt, locale)
+---
+
+<section
+  class="mx-auto w-full max-w-[1100px] px-6 pt-10 pb-0 md:px-10 lg:px-0 lg:pt-20"
+  data-testid="section-post-hero"
+>
+  <header
+    class="mx-auto flex max-w-[1100px] flex-col items-center gap-6 text-center"
+  >
+    {
+      (categoryText || dateText) && (
+        <p class="flex items-center gap-4 text-sm leading-none">
+          {categoryText && (
+            <span class="text-accent-500 text-sm font-semibold tracking-wide">
+              {categoryText}
+            </span>
+          )}
+          {categoryText && dateText && (
+            <span
+              class="bg-brand-500 inline-block size-1 rounded-full"
+              aria-hidden="true"
+            />
+          )}
+          {dateText && (
+            <time class="text-brand-500 text-[15px] leading-none">
+              {dateText}
+            </time>
+          )}
+        </p>
+      )
+    }
+    {
+      heading && (
+        <h1 class="font-display text-brand-900 max-w-[1100px] text-[2.25rem] leading-tight font-semibold lg:text-[4rem] lg:leading-[74px]">
+          {heading}
+        </h1>
+      )
+    }
+    {
+      (authorText || readingText) && (
+        <p class="text-brand-900 flex items-center gap-6 text-base leading-none">
+          {authorText && <span>{authorText}</span>}
+          {authorText && readingText && (
+            <span
+              class="bg-brand-50 inline-block h-4 w-px"
+              aria-hidden="true"
+            />
+          )}
+          {readingText && (
+            <span class="text-brand-500 text-[15px]">{readingText}</span>
+          )}
+        </p>
+      )
+    }
+  </header>
+
+  {
+    img && (
+      <figure class="mt-10 lg:mt-20">
+        <img
+          src={img}
+          alt={alt || heading}
+          class="h-[240px] w-full object-cover lg:h-[620px]"
+          width="1100"
+          height="620"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    )
+  }
+</section>

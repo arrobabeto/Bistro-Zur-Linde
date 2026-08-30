@@ -1,0 +1,136 @@
+---
+// SectionRelatedPosts.astro
+//
+// Related article cards under a single post (Figma 2229:1088).
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Lesenswerte Geschichten" },
+//   "title":   { "de": "Weitere Artikel aus dem Journal" },
+//   "cards": [{
+//     "category": { "de": "Der Ort" },
+//     "date":     { "de": "15. August 2026" },
+//     "title":    { "de": "Ein Blick hinter die Kulissen…" },
+//     "excerpt":  { "de": "Vom Fundament…" },
+//     "href":     "/news",
+//     "img":      "/images/blog-related-1.jpg",
+//     "ctaLabel": { "de": "Weiterlesen" }
+//   }],
+//   "_orbi": { "component": "SectionRelatedPosts" }
+// }
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Card {
+  category?: I18nString
+  date?: I18nString
+  title?: I18nString
+  excerpt?: I18nString
+  href?: string
+  img?: string
+  imgAlt?: I18nString
+  ctaLabel?: I18nString
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  cards?: Card[]
+  locale: Locale
+}
+
+const { eyebrow, title, cards = [], locale } = Astro.props
+const eyebrowText = translate(eyebrow, locale)
+const heading = translate(title, locale)
+---
+
+{
+  cards.length > 0 && (
+    <section
+      class="bg-white px-6 py-16 md:px-10 lg:px-[7.5rem] lg:py-[6.25rem]"
+      data-testid="section-related-posts"
+    >
+      <div class="mx-auto max-w-[1272px]">
+        {(eyebrowText || heading) && (
+          <div class="mb-10 flex flex-col gap-4 lg:mb-14">
+            {eyebrowText && (
+              <p class="text-accent-500 text-sm font-semibold tracking-wide">
+                {eyebrowText}
+              </p>
+            )}
+            {heading && (
+              <h2 class="font-display text-brand-900 text-[2rem] leading-tight font-semibold lg:text-[3rem] lg:leading-[58px]">
+                {heading}
+              </h2>
+            )}
+          </div>
+        )}
+
+        <ul class="grid gap-10 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+          {cards.map((card) => {
+            const category = translate(card.category, locale)
+            const date = translate(card.date, locale)
+            const cardTitle = translate(card.title, locale)
+            const excerpt = translate(card.excerpt, locale)
+            const cta = translate(card.ctaLabel, locale) || "Weiterlesen"
+            const href = card.href || "/news"
+            return (
+              <li class="flex flex-col gap-5">
+                {card.img && (
+                  <a href={href} class="block overflow-hidden">
+                    <img
+                      src={card.img}
+                      alt={translate(card.imgAlt, locale) || cardTitle}
+                      class="h-[220px] w-full object-cover lg:h-[320px]"
+                      width="397"
+                      height="320"
+                      loading="lazy"
+                    />
+                  </a>
+                )}
+                <div class="flex flex-col gap-3">
+                  {(category || date) && (
+                    <p class="flex items-center gap-3 text-xs leading-none">
+                      {category && (
+                        <span class="text-accent-500 font-semibold">
+                          {category}
+                        </span>
+                      )}
+                      {category && date && (
+                        <span
+                          class="bg-brand-500 inline-block size-1 rounded-full"
+                          aria-hidden="true"
+                        />
+                      )}
+                      {date && (
+                        <time class="text-brand-500 text-[13px]">{date}</time>
+                      )}
+                    </p>
+                  )}
+                  {cardTitle && (
+                    <h3 class="font-display text-brand-900 text-[1.5rem] leading-[1.2] font-medium lg:text-[1.75rem] lg:leading-[34px]">
+                      <a href={href}>{cardTitle}</a>
+                    </h3>
+                  )}
+                  {excerpt && (
+                    <p class="text-brand-500 text-[15px] leading-[22px]">
+                      {excerpt}
+                    </p>
+                  )}
+                  <a
+                    href={href}
+                    class="font-display text-brand-900 enter:text-accent-500 mt-1 inline-flex items-center gap-1.5 text-lg font-semibold"
+                  >
+                    {cta}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}

@@ -2,6 +2,7 @@
 
 import { DATENSCHUTZ_BODY_DE } from "./legal/datenschutz-body.mjs"
 import { IMPRESSUM_BODY_DE } from "./legal/impressum-body.mjs"
+import { BLOG_HERBSTKARTE_BODY_DE } from "./blog/herbstkarte-body.mjs"
 
 const now = () => new Date().toISOString()
 
@@ -607,26 +608,85 @@ export function buildSeedPosts() {
     {
       id: "seed-post-1",
       title: {
-        de: "Eröffnung Bistro zur Linde",
+        de: "Saisonale Menükarte: Herbstgenuss in der Linde",
       },
       lead: {
-        de: "<p>Feiern Sie mit uns die Eröffnung und entdecken Sie die neue Linde zum ersten Mal.</p>",
+        de: "Wenn die Blätter im Lindenpark goldgelb tanzen, erwacht in unserer Küche eine ganz besondere kreative Energie — die neue Herbstkarte ist da.",
       },
-      img: "/images/event-eroeffnung.jpg",
+      img: "/images/blog-hero-herbstkarte.jpg",
       status: {
         options: ["draft", "review", "published"],
         value: "published",
       },
-      keywords: ["eröffnung", "events"],
+      keywords: ["herbst", "menükarte", "gastronomie"],
       created_at: now(),
       updated_at: now(),
       sections: [
         {
-          title: { de: "Ein Abend für die Nachbarschaft" },
-          content: {
-            de: "<p>Die Türen der neuen Linde öffnen sich zum ersten Mal. Lernen Sie das Team kennen, entdecken Sie die vier Räume und geniessen Sie einen ersten Vorgeschmack auf die Küche von Ruedi Zünd.</p>",
+          category: { de: "Gastronomie" },
+          date: { de: "27. August 2026" },
+          title: { de: "Saisonale Menükarte: Herbstgenuss in der Linde" },
+          author: { de: "Von Ruedi Zünd" },
+          readingTime: { de: "Lesezeit: ca. 5 Min." },
+          img: "/images/blog-hero-herbstkarte.jpg",
+          imgAlt: {
+            de: "Herbstliche Gerichte der saisonalen Menükarte in der Linde",
           },
-          _orbi: { component: "SectionProse" },
+          _orbi: { component: "SectionPostHero" },
+        },
+        {
+          category: { de: "Gastronomie" },
+          content: { de: BLOG_HERBSTKARTE_BODY_DE },
+          _orbi: { component: "SectionPostBody" },
+        },
+        {
+          eyebrow: { de: "Lesenswerte Geschichten" },
+          title: { de: "Weitere Artikel aus dem Journal" },
+          cards: [
+            {
+              category: { de: "Der Ort" },
+              date: { de: "15. August 2026" },
+              title: {
+                de: "Ein Blick hinter die Kulissen des Lindenparks",
+              },
+              excerpt: {
+                de: "Vom Fundament bis zum gedeckten Tisch: Erfahren Sie mehr über die Entstehung unseres neuen Begegnungsortes in Küngoldingen.",
+              },
+              href: "/news",
+              img: "/images/blog-related-1.jpg",
+              imgAlt: { de: "Lindenpark und Umgebung" },
+              ctaLabel: { de: "Weiterlesen" },
+            },
+            {
+              category: { de: "Weinkultur" },
+              date: { de: "03. August 2026" },
+              title: {
+                de: "Die Schätze aus unserem historischen Wine Room",
+              },
+              excerpt: {
+                de: "Unser Sommelier nimmt Sie mit auf eine Reise durch handverlesene europäische Weingüter und zeigt exklusive Raritäten.",
+              },
+              href: "/news",
+              img: "/images/blog-related-2.jpg",
+              imgAlt: { de: "Wine Room der Linde" },
+              ctaLabel: { de: "Weiterlesen" },
+            },
+            {
+              category: { de: "Events" },
+              date: { de: "28. Juli 2026" },
+              title: {
+                de: "Feste feiern im gemütlichen Linde-Sääli",
+              },
+              excerpt: {
+                de: "Ob runder Geburtstag, Familienfeier oder Firmenanlass — so planen Sie Ihren perfekten, privaten Event in unseren historischen Räumen.",
+              },
+              href: "/saali",
+              img: "/images/blog-related-3.jpg",
+              imgAlt: { de: "Sääli der Linde" },
+              ctaLabel: { de: "Weiterlesen" },
+            },
+          ],
+          _orbi: { component: "SectionRelatedPosts" },
         },
       ],
     },
