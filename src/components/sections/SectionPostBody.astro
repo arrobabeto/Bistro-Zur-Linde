@@ -1,0 +1,137 @@
+---
+// SectionPostBody.astro
+//
+// Share bar + long-form post body (Figma 2229:1088 Article Column).
+//
+// CMS JSON:
+// {
+//   "category": { "de": "Gastronomie" },
+//   "content":  { "de": "<p class=\"post-lead\">…</p><h2>…</h2>…" },
+//   "_orbi":    { "component": "SectionPostBody" }
+// }
+import SafeHtml from "~/components/common/SafeHtml.astro"
+import { SOCIAL_LINKS } from "~/config/navigation"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  category?: I18nString
+  content?: I18nString
+  locale: Locale
+}
+
+const { category, content, locale } = Astro.props
+const categoryText = translate(category, locale)
+const shareUrl = Astro.url.href
+const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`
+const instagramHref =
+  SOCIAL_LINKS.find((link) => link.label === "Instagram")?.href ?? "#"
+---
+
+<section
+  class="mx-auto w-full max-w-[780px] px-6 pt-12 pb-16 md:px-10 lg:px-0 lg:pt-20 lg:pb-[7.5rem]"
+  data-testid="section-post-body"
+>
+  <div
+    class="border-brand-50 flex flex-col gap-4 border-y py-4 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div class="flex items-center gap-3">
+      <p class="font-display text-brand-900 text-xl font-semibold">Teilen:</p>
+      <div class="flex items-center gap-2">
+        <a
+          href={facebookHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-brand-900 enter:text-accent-500 inline-flex size-10 items-center justify-center"
+          aria-label="Auf Facebook teilen"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.02 3.66 9.18 8.44 9.93v-7.03H7.9v-2.9h2.4V9.85c0-2.37 1.4-3.68 3.56-3.68 1.03 0 2.11.18 2.11.18v2.32h-1.19c-1.17 0-1.54.73-1.54 1.48v1.78h2.62l-.42 2.9h-2.2V22c4.78-.75 8.44-4.91 8.44-9.93z"
+            ></path>
+          </svg>
+        </a>
+        <a
+          href={instagramHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-brand-900 enter:text-accent-500 inline-flex size-10 items-center justify-center"
+          aria-label="Instagram"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            aria-hidden="true"
+          >
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+        <a
+          href={shareUrl}
+          class="text-brand-900 enter:text-accent-500 inline-flex size-10 items-center justify-center"
+          aria-label="Link zum Artikel"
+          data-share-copy
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            ></path>
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+    {
+      categoryText && (
+        <p class="text-brand-500 text-sm leading-none">
+          Veröffentlicht in: {categoryText}
+        </p>
+      )
+    }
+  </div>
+
+  <SafeHtml
+    html={translate(content, locale)}
+    class="post-prose text-brand-900 mt-10 lg:mt-12"
+  />
+</section>
+
+<script>
+  document.querySelectorAll("[data-share-copy]").forEach((el) => {
+    el.addEventListener("click", async (event) => {
+      event.preventDefault()
+      const href = (el as HTMLAnchorElement).href
+      try {
+        await navigator.clipboard.writeText(href)
+      } catch {
+        window.prompt("Link kopieren:", href)
+      }
+    })
+  })
+</script>
