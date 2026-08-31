@@ -13,6 +13,7 @@
 //   ],
 //   "_orbi": { "component": "SectionFeatureGrid" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -37,7 +38,7 @@ const heading = translate(title, locale)
   {
     heading && (
       <h2 class="mb-8 text-center text-3xl font-semibold tracking-tight">
-        {heading}
+        <CmsText html={heading} />
       </h2>
     )
   }

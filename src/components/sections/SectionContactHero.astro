@@ -16,6 +16,7 @@
 //   "rightText":   { "de": "Mo–Fr: …" },
 //   "_orbi":       { "component": "SectionContactHero" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -81,7 +82,9 @@ const dividerClass = "bg-brand-900/20 hidden h-40 w-px shrink-0 sm:block"
             {accent && (
               <>
                 {" "}
-                <em class="italic">{accent}</em>
+                <em class="italic">
+                  <CmsText html={accent} />
+                </em>
               </>
             )}
           </h1>
@@ -90,7 +93,7 @@ const dividerClass = "bg-brand-900/20 hidden h-40 w-px shrink-0 sm:block"
       <p
         class="text-brand-900 max-w-[896px] text-base leading-[1.5] lg:text-xl lg:leading-[1.5]"
       >
-        {translate(lead, locale)}
+        <CmsText html={translate(lead, locale)} />
       </p>
     </div>
 

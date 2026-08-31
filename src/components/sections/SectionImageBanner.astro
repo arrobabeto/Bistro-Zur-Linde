@@ -11,6 +11,7 @@
 //   "imgAlt": { "de": "…" },
 //   "_orbi":  { "component": "SectionImageBanner" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -53,14 +54,14 @@ const heading = translate(title, locale)
     {
       heading && (
         <h2 class="font-display text-display-lg text-brand-50 font-medium lg:leading-[1.7]">
-          {heading}
+          <CmsText html={heading} />
         </h2>
       )
     }
     <p
       class="text-brand-50 max-w-[923px] text-base leading-[1.5] lg:text-2xl lg:leading-[1.42]"
     >
-      {translate(text, locale)}
+      <CmsText html={translate(text, locale)} />
     </p>
   </div>
 </section>

@@ -1,0 +1,23 @@
+---
+/**
+ * Renders CMS copy that may include Binflow surgical style spans
+ * (`data-binflow-style`) without escaping them as plain text.
+ */
+import { sanitize } from "~/lib/sanitize"
+
+type Props = {
+  html: string | undefined
+  class?: string
+  as?: "span" | "div"
+}
+
+const { html, class: className, as = "span" } = Astro.props as Props
+---
+
+{
+  as === "div" ? (
+    <div class={className} set:html={sanitize(html ?? "")} />
+  ) : (
+    <span class={className} set:html={sanitize(html ?? "")} />
+  )
+}

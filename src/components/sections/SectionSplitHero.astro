@@ -12,6 +12,7 @@
 //   "imgAlt": { "de": "…" },
 //   "_orbi":  { "component": "SectionSplitHero" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -51,12 +52,12 @@ const heading = translate(title, locale)
     {
       heading && (
         <h1 class="font-display text-display-xl text-brand-900 max-w-[525px] font-medium lg:leading-[93px]">
-          {heading}
+          <CmsText html={heading} />
         </h1>
       )
     }
     <p class="text-brand-900 max-w-[550px] text-base leading-[1.67] lg:text-lg">
-      {translate(lead, locale)}
+      <CmsText html={translate(lead, locale)} />
     </p>
   </div>
 </section>

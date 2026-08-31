@@ -3,6 +3,7 @@
 //
 // First-run onboarding. Schema install and seed run via CLI only —
 // never from public HTTP endpoints.
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -56,12 +57,12 @@ const heading = translate(title, locale)
           class="mb-4 text-4xl font-semibold tracking-tight text-balance"
           data-testid="welcome-heading"
         >
-          {heading}
+          <CmsText html={heading} />
         </h1>
       )
     }
     <p class="mb-10 text-lg text-neutral-600">
-      {translate(lead, locale)}
+      <CmsText html={translate(lead, locale)} />
     </p>
   </div>
 

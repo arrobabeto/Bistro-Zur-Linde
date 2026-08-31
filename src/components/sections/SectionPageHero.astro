@@ -19,6 +19,7 @@
 //   "imgAlt":            { "de": "…" },
 //   "_orbi":             { "component": "SectionPageHero" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -104,11 +105,13 @@ const inset = align === "start"
               inset ? "max-w-[831px]" : "max-w-[620px]",
             ]}
           >
-            {heading}
+            <CmsText html={heading} />
             {accent && (
               <>
                 {" "}
-                <em class="font-semibold italic">{accent}</em>
+                <em class="font-semibold italic">
+                  <CmsText html={accent} />
+                </em>
               </>
             )}
           </h1>
@@ -121,7 +124,7 @@ const inset = align === "start"
           inset ? "max-w-[631px]" : "max-w-[710px]",
         ]}
       >
-        {translate(lead, locale)}
+        <CmsText html={translate(lead, locale)} />
       </p>
     </div>
 

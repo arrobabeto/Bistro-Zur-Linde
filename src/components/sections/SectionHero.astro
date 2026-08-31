@@ -12,6 +12,7 @@
 //   "imgAlt":      { "de": "…" },
 //   "_orbi":       { "component": "SectionHero" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -42,11 +43,13 @@ const cta = translate(ctaLabel, locale)
     {
       heading && (
         <h1 class="font-display text-display-xl text-brand-900 font-light whitespace-pre-line">
-          {heading}
+          <CmsText html={heading} />
           {accent && (
             <>
               {" "}
-              <em class="font-medium italic">{accent}</em>
+              <em class="font-medium italic">
+                <CmsText html={accent} />
+              </em>
             </>
           )}
         </h1>
@@ -55,7 +58,7 @@ const cta = translate(ctaLabel, locale)
 
     <div class="flex flex-col items-start gap-8 lg:gap-8 lg:pt-16">
       <p class="body-copy max-w-[330px] lg:max-w-xl">
-        {translate(lead, locale)}
+        <CmsText html={translate(lead, locale)} />
       </p>
       {
         cta && ctaHref && (

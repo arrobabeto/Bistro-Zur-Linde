@@ -9,6 +9,7 @@
 //   "ctaHref":  "/#contact",
 //   "_orbi":    { "component": "SectionCta" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -32,13 +33,15 @@ const cta = translate(ctaLabel, locale)
   >
     {
       heading && (
-        <h2 class="mb-3 text-3xl font-semibold tracking-tight">{heading}</h2>
+        <h2 class="mb-3 text-3xl font-semibold tracking-tight">
+          <CmsText html={heading} />
+        </h2>
       )
     }
     {
       text && (
         <p class="text-brand-50 mx-auto mb-8 max-w-2xl">
-          {translate(text, locale)}
+          <CmsText html={translate(text, locale)} />
         </p>
       )
     }
