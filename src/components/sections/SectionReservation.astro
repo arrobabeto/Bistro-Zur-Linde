@@ -11,6 +11,7 @@
 //   "mark":        "/images/logo.svg",
 //   "_orbi":       { "component": "SectionReservation" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -51,11 +52,13 @@ const cta = translate(ctaLabel, locale)
     {
       heading && (
         <h2 class="font-display text-brand-900 text-display-md font-semibold">
-          {heading}
+          <CmsText html={heading} />
           {accent && (
             <>
               {" "}
-              <em class="italic">{accent}</em>
+              <em class="italic">
+                <CmsText html={accent} />
+              </em>
             </>
           )}
         </h2>
@@ -64,7 +67,9 @@ const cta = translate(ctaLabel, locale)
 
     {
       translate(text, locale) && (
-        <p class="body-copy max-w-3xl">{translate(text, locale)}</p>
+        <p class="body-copy max-w-3xl">
+          <CmsText html={translate(text, locale)} />
+        </p>
       )
     }
 

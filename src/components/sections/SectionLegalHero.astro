@@ -9,6 +9,7 @@
 //   "title":   { "de": "Datenschutz" },
 //   "_orbi":   { "component": "SectionLegalHero" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -35,7 +36,7 @@ const heading = translate(title, locale)
     {
       heading && (
         <h1 class="font-display text-brand-900 text-[2.5rem] leading-tight font-medium lg:text-[5rem] lg:leading-[88px]">
-          {heading}
+          <CmsText html={heading} />
         </h1>
       )
     }

@@ -13,6 +13,7 @@
 //   "imgAlt":   { "de": "…" },
 //   "_orbi":    { "component": "SectionChefProfile" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -71,7 +72,9 @@ const ctaExternal = Boolean(ctaHref?.startsWith("http"))
       <h2 class="section-title max-w-2xl text-balance">
         {translate(title, locale)}
       </h2>
-      <p class="body-copy max-w-2xl">{translate(text, locale)}</p>
+      <p class="body-copy max-w-2xl">
+        <CmsText html={translate(text, locale)} />
+      </p>
 
       {
         stats.length > 0 && (

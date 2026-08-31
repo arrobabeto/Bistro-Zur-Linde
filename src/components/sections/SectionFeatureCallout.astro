@@ -8,6 +8,7 @@
 //   "variant": "highlight",
 //   "_orbi":   { "component": "SectionFeatureCallout" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import SafeHtml from "~/components/common/SafeHtml.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
@@ -36,7 +37,9 @@ const isHighlight = variant === "highlight"
   >
     {
       heading && (
-        <h2 class="mb-4 text-2xl font-bold tracking-tight">{heading}</h2>
+        <h2 class="mb-4 text-2xl font-bold tracking-tight">
+          <CmsText html={heading} />
+        </h2>
       )
     }
     <SafeHtml

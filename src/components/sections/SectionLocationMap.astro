@@ -18,6 +18,7 @@
 //   "imgAlt":       { "de": "…" },
 //   "_orbi":        { "component": "SectionLocationMap" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -70,7 +71,7 @@ const mapTitle = translate(imgAlt, locale)
       {
         heading && (
           <h2 class="font-display text-brand-50 text-[2rem] leading-tight font-semibold lg:text-[3.25rem] lg:leading-[72px]">
-            {heading}
+            <CmsText html={heading} />
           </h2>
         )
       }

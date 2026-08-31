@@ -27,11 +27,20 @@ const OPTIONS: sanitizeHtml.IOptions = {
     "img",
     "figure",
     "figcaption",
+    "span",
   ],
   allowedAttributes: {
     a: ["href", "title", "target", "rel"],
     img: ["src", "alt", "width", "height", "loading"],
+    span: ["style", "class", "data-binflow-style"],
     "*": ["class"],
+  },
+  allowedStyles: {
+    span: {
+      "font-weight": [/^\d{3}$/],
+      "font-size": [/^\d+px$/],
+      color: [/^#[0-9A-Fa-f]{6}$/],
+    },
   },
   allowedSchemes: ["https", "mailto", "tel"],
   transformTags: {

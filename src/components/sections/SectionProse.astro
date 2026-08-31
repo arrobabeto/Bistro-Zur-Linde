@@ -7,6 +7,7 @@
 //   "content": { "en": "<p>Body</p>", "de": "<p>Text</p>" },
 //   "_orbi":   { "component": "SectionProse" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import SafeHtml from "~/components/common/SafeHtml.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
@@ -25,7 +26,9 @@ const heading = translate(title, locale)
 <section class="container-prose py-section">
   {
     heading && (
-      <h2 class="mb-4 text-2xl font-semibold tracking-tight">{heading}</h2>
+      <h2 class="mb-4 text-2xl font-semibold tracking-tight">
+        <CmsText html={heading} />
+      </h2>
     )
   }
   <SafeHtml

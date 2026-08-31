@@ -18,6 +18,7 @@
 //   }],
 //   "_orbi": { "component": "SectionRelatedPosts" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -61,7 +62,7 @@ const heading = translate(title, locale)
             )}
             {heading && (
               <h2 class="font-display text-brand-900 text-[2rem] leading-tight font-semibold lg:text-[3rem] lg:leading-[58px]">
-                {heading}
+                <CmsText html={heading} />
               </h2>
             )}
           </div>

@@ -14,6 +14,7 @@
 //   "_orbi":       { "component": "SectionContactForm" }
 // }
 import type { Locale } from "~/config/locales"
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import { phrases } from "~/lib/phrases"
 import type { I18nString } from "~/types/i18n"
@@ -56,7 +57,7 @@ const field =
     {
       heading && (
         <h2 class="font-display text-brand-900 text-center text-[2rem] leading-tight font-semibold lg:text-[2.5rem] lg:leading-[72px]">
-          {heading}
+          <CmsText html={heading} />
         </h2>
       )
     }

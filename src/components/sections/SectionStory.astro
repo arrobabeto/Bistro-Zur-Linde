@@ -13,6 +13,7 @@
 //   "mediaPosition": "right",
 //   "_orbi":         { "component": "SectionStory" }
 // }
+import CmsText from "~/components/common/CmsText.astro"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -59,11 +60,13 @@ const accent = translate(titleAccent, locale)
               !accent && "lg:max-w-[445px]",
             ]}
           >
-            {heading}
+            <CmsText html={heading} />
             {accent && (
               <>
                 {" "}
-                <em class="italic">{accent}</em>
+                <em class="italic">
+                  <CmsText html={accent} />
+                </em>
               </>
             )}
           </h2>
@@ -72,7 +75,7 @@ const accent = translate(titleAccent, locale)
       <p
         class="text-brand-900 max-w-[510px] text-base leading-[1.5] whitespace-pre-line lg:text-xl"
       >
-        {translate(text, locale)}
+        <CmsText html={translate(text, locale)} />
       </p>
     </div>
 
