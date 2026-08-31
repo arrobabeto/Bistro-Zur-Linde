@@ -1,0 +1,99 @@
+{
+  "id": "lEaOD2",
+  "sections": [
+    {
+      "title": {
+        "de": "Feiern und sich ganz\nunter sich fühlen."
+      },
+      "lead": {
+        "de": "Ob runder Geburtstag, Firmenessen, Vereinsanlass oder Familienfeier — das Sääli ist Ihr eigener Raum in der Linde, ganz für Ihre Gesellschaft."
+      },
+      "ctaLabel": {
+        "de": "Sääli anfragen"
+      },
+      "ctaHref": "/kontakt",
+      "align": "start",
+      "img": "/images/saali-hero.jpg",
+      "imgAlt": {
+        "de": "Festlich gedeckte Tafeln im Sääli mit Blick auf die Berge"
+      },
+      "_orbi": {
+        "component": "SectionPageHero"
+      }
+    },
+    {
+      "title": {
+        "de": "Für besondere anlässe"
+      },
+      "text": {
+        "de": "Runde Geburtstage. Firmenessen und Weihnachtsfeiern. Vereinsanlässe. Familienfeiern und Apéros.\nDas Sääli macht daraus einen eigenen Rahmen, abseits vom Bistro-Trubel."
+      },
+      "img": "/images/saali-story.jpg",
+      "imgAlt": {
+        "de": "Weinregal im Sääli"
+      },
+      "mediaPosition": "right",
+      "_orbi": {
+        "component": "SectionStory"
+      },
+      "textStyle": {
+        "fontWeight": 700
+      }
+    },
+    {
+      "eyebrow": {
+        "de": "Der Rahmen"
+      },
+      "mediaSize": "tall",
+      "slides": [
+        {
+          "title": {
+            "de": "Ein eigener Raum mit Platz für Ihre Gesellschaft und einer Menüauswahl, die wir gemeinsam auf Ihren Anlass abstimmen."
+          },
+          "img": "/images/saali-rahmen.jpg",
+          "imgAlt": {
+            "de": "Gedeckte Tische im Sääli mit Blick auf den Weinkeller"
+          }
+        }
+      ],
+      "_orbi": {
+        "component": "SectionFeaturedArticles"
+      }
+    },
+    {
+      "title": {
+        "de": "Ihr Anlass,\nunser Rahmen."
+      },
+      "ctaLabel": {
+        "de": "Sääli anfragen"
+      },
+      "ctaHref": "/kontakt",
+      "img": "/images/blog/edit-01a058ed.png",
+      "imgAlt": {
+        "de": "Zwei Gäste stossen mit Rotwein an"
+      },
+      "mediaPosition": "left",
+      "panelTone": "muted",
+      "_orbi": {
+        "component": "SectionSplitPanel"
+      }
+    },
+    {
+      "title": {
+        "de": "Kommen Sie, wie Sie sind."
+      },
+      "ctaLabel": {
+        "de": "Tisch reservieren"
+      },
+      "ctaHref": "/kontakt",
+      "mark": "/images/logo.png",
+      "_orbi": {
+        "component": "SectionReservation"
+      }
+    }
+  ],
+  "slug": "saali",
+  "title": {
+    "de": "Sääli"
+  }
+}
