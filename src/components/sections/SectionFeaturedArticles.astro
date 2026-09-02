@@ -6,7 +6,8 @@
 //
 // CMS JSON:
 // {
-//   "eyebrow": { "de": "Ausgewählte Artikel" },
+//   "eyebrow": { "de": "Speisekarte ansehen" },
+//   "eyebrowHref": "/documents/menu-2026-08-31-dc98112b.pdf",
 //   "slides":  [{
 //     "title":  { "de": "Wo Geschmack entsteht" },
 //     "author": { "de": "Bistro zur Linde" },
@@ -33,18 +34,34 @@ interface Slide {
 
 interface Props {
   eyebrow?: I18nString
+  /** When set, the overlay badge is a link (e.g. kitchen menu PDF). */
+  eyebrowHref?: string
   slides?: Slide[]
   /** `tall` matches the Sääli "DER RAHMEN" frame (658px); default is News (560px). */
   mediaSize?: "default" | "tall"
   locale: Locale
 }
 
-const { eyebrow, slides = [], mediaSize = "default", locale } = Astro.props
+const {
+  eyebrow,
+  eyebrowHref,
+  slides = [],
+  mediaSize = "default",
+  locale,
+} = Astro.props
 const id = `featured-${crypto.randomUUID().slice(0, 8)}`
 const label = translate(eyebrow, locale)
 const multi = slides.length > 1
 const imgHeight = mediaSize === "tall" ? "lg:h-[658px]" : "lg:h-[560px]"
 const imgH = mediaSize === "tall" ? 658 : 560
+const kitchenMenuPdf = "/documents/menu-2026-08-31-dc98112b.pdf"
+const badgeHref =
+  eyebrowHref || (/speisekarte/i.test(label) ? kitchenMenuPdf : undefined)
+const badgeClass =
+  "bg-brand-50 text-brand-900 absolute top-5 left-1/2 z-10 max-w-[min(100%-2rem,20rem)] -translate-x-1/2 px-3 py-2 text-center text-xs leading-5 tracking-[0.12em] uppercase transition-opacity enter:opacity-80 lg:top-10 lg:px-5 lg:py-3 lg:text-base lg:leading-6 lg:tracking-[0.2em]"
+const badgeOpensFile = Boolean(
+  badgeHref?.startsWith("http") || badgeHref?.endsWith(".pdf"),
+)
 ---
 
 <section
@@ -93,11 +110,20 @@ const imgH = mediaSize === "tall" ? 658 : 560
                       loading="lazy"
                     />
                   ))}
-                {label && (
-                  <p class="bg-brand-50 text-brand-900 absolute top-5 left-1/2 max-w-[min(100%-2rem,20rem)] -translate-x-1/2 px-3 py-2 text-center text-xs leading-5 tracking-[0.12em] uppercase lg:top-10 lg:px-5 lg:py-3 lg:text-base lg:leading-6 lg:tracking-[0.2em]">
-                    {label}
-                  </p>
-                )}
+                {label &&
+                  (badgeHref ? (
+                    <a
+                      href={badgeHref}
+                      class={badgeClass}
+                      {...(badgeOpensFile
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    <p class={badgeClass}>{label}</p>
+                  ))}
               </div>
 
               {(title || author || date) && (

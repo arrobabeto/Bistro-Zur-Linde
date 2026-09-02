@@ -369,10 +369,11 @@ export function buildSeedPages() {
         },
         {
           eyebrow: { de: "Speisekarte ansehen" },
+          eyebrowHref: "/documents/menu-2026-08-31-dc98112b.pdf",
           slides: [
             {
               title: { de: "Wo Geschmack entsteht" },
-              author: { de: "Cipta Rowanson" },
+              author: { de: "Bistro zur Linde" },
               date: { de: "Untere Hauptstrasse 15B\n4665 Oftringen" },
               href: "/posts",
               img: "/images/news-featured.jpg",
