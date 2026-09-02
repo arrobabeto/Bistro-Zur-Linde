@@ -1,7 +1,7 @@
 ---
 // SectionPhotoGallery.astro
 //
-// 2×2 photo grid with optional play overlay (Figma 2241:975 — Gallery).
+// 2×2 photo grid (Figma 2241:975 — Gallery).
 //
 // CMS JSON:
 // {
@@ -9,8 +9,7 @@
 //   "title":   { "de": "Eindrücke aus der Linde" },
 //   "tiles": [{
 //     "img": "/images/wineroom-gallery-1.jpg",
-//     "imgAlt": { "de": "…" },
-//     "play": false
+//     "imgAlt": { "de": "…" }
 //   }],
 //   "_orbi": { "component": "SectionPhotoGallery" }
 // }
@@ -22,7 +21,6 @@ import type { Locale } from "~/config/locales"
 interface Tile {
   img?: string
   imgAlt?: I18nString
-  play?: boolean
 }
 
 interface Props {
@@ -69,25 +67,6 @@ const heading = translate(title, locale)
                 height="400"
                 loading="lazy"
               />
-              {tile.play && (
-                <span
-                  class="pointer-events-none absolute inset-0 flex items-center justify-center"
-                  aria-hidden="true"
-                >
-                  <span class="inline-flex size-20 items-center justify-center rounded-full bg-white/90">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      class="text-brand-900 translate-x-0.5"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </span>
-              )}
             </li>
           )
         })
