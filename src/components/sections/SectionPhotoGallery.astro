@@ -1,0 +1,97 @@
+---
+// SectionPhotoGallery.astro
+//
+// 2×2 photo grid with optional play overlay (Figma 2241:975 — Gallery).
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Eindrücke" },
+//   "title":   { "de": "Eindrücke aus der Linde" },
+//   "tiles": [{
+//     "img": "/images/wineroom-gallery-1.jpg",
+//     "imgAlt": { "de": "…" },
+//     "play": false
+//   }],
+//   "_orbi": { "component": "SectionPhotoGallery" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Tile {
+  img?: string
+  imgAlt?: I18nString
+  play?: boolean
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  tiles?: Tile[]
+  locale: Locale
+}
+
+const { eyebrow, title, tiles = [], locale } = Astro.props
+const label = translate(eyebrow, locale)
+const heading = translate(title, locale)
+---
+
+<section
+  class="px-6 py-16 md:px-10 lg:px-[7.5rem] lg:pt-[7.5rem] lg:pb-16"
+  data-testid="section-photo-gallery"
+>
+  <div class="mx-auto max-w-[1272px]">
+    {
+      (label || heading) && (
+        <div class="mx-auto mb-10 flex max-w-[800px] flex-col items-center gap-4 text-center lg:mb-14">
+          {label && <p class="eyebrow">{label}</p>}
+          {heading && (
+            <h2 class="font-display text-brand-900 text-[2rem] leading-tight font-semibold lg:text-[3.25rem] lg:leading-[64px]">
+              <CmsText html={heading} />
+            </h2>
+          )}
+        </div>
+      )
+    }
+
+    <ul class="grid gap-6 md:grid-cols-2">
+      {
+        tiles.map((tile) => {
+          if (!tile.img) return null
+          return (
+            <li class="relative overflow-hidden">
+              <img
+                src={tile.img}
+                alt={translate(tile.imgAlt, locale)}
+                class="h-[220px] w-full object-cover lg:h-[400px]"
+                width="624"
+                height="400"
+                loading="lazy"
+              />
+              {tile.play && (
+                <span
+                  class="pointer-events-none absolute inset-0 flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  <span class="inline-flex size-20 items-center justify-center rounded-full bg-white/90">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="text-brand-900 translate-x-0.5"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </span>
+              )}
+            </li>
+          )
+        })
+      }
+    </ul>
+  </div>
+</section>

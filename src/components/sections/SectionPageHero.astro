@@ -25,6 +25,7 @@ import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
 
 interface Props {
+  eyebrow?: I18nString
   title?: I18nString
   titleAccent?: I18nString
   lead?: I18nString
@@ -34,12 +35,18 @@ interface Props {
   ctaSecondaryHref?: string
   /** `start` = left-aligned compact hero (Sääli); default centres like Bistro. */
   align?: "center" | "start"
+  /** `wide` = Wine Room 680px; `xl` = Zigarrenlounge ~1055px. */
+  titleWidth?: "default" | "wide" | "xl"
   img?: string
   imgAlt?: I18nString
+  /** Decorative overlay (Figma Wine Room goblet). */
+  overlayImg?: string
+  overlayImgAlt?: I18nString
   locale: Locale
 }
 
 const {
+  eyebrow,
   title,
   titleAccent,
   lead,
@@ -48,16 +55,27 @@ const {
   ctaSecondaryLabel,
   ctaSecondaryHref,
   align = "center",
+  titleWidth = "default",
   img,
   imgAlt,
+  overlayImg,
+  overlayImgAlt,
   locale,
 } = Astro.props
 
+const eyebrowText = translate(eyebrow, locale)
 const heading = translate(title, locale)
 const accent = translate(titleAccent, locale)
 const cta = translate(ctaLabel, locale)
 const ctaSecondary = translate(ctaSecondaryLabel, locale)
 const inset = align === "start"
+const titleMax = inset
+  ? "max-w-[831px]"
+  : titleWidth === "xl"
+    ? "max-w-[1055px]"
+    : titleWidth === "wide"
+      ? "max-w-[680px]"
+      : "max-w-[620px]"
 ---
 
 <section
@@ -82,6 +100,18 @@ const inset = align === "start"
     )
   }
   <div class="absolute inset-0 -z-10 bg-black/40"></div>
+  {
+    overlayImg && (
+      <img
+        src={overlayImg}
+        alt={translate(overlayImgAlt, locale)}
+        class="pointer-events-none absolute top-1/2 left-1/2 -z-10 hidden h-[512px] w-[512px] -translate-x-1/2 -translate-y-[42%] object-contain opacity-80 lg:block"
+        width="512"
+        height="512"
+        aria-hidden={!translate(overlayImgAlt, locale)}
+      />
+    )
+  }
 
   <div
     class:list={[
@@ -93,16 +123,23 @@ const inset = align === "start"
   >
     <div
       class:list={[
-        "flex flex-col gap-4 lg:gap-[10px]",
+        "flex flex-col gap-4 lg:gap-4",
         inset ? "items-start" : "items-center",
       ]}
     >
+      {
+        eyebrowText && (
+          <p class="text-brand-50 text-base leading-6 tracking-[0.2em] uppercase">
+            {eyebrowText}
+          </p>
+        )
+      }
       {
         heading && (
           <h1
             class:list={[
               "font-display text-display-xl text-brand-50 font-medium lg:leading-[93px] lg:whitespace-pre-line",
-              inset ? "max-w-[831px]" : "max-w-[620px]",
+              titleMax,
             ]}
           >
             <CmsText html={heading} />

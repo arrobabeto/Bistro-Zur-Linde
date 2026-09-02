@@ -6,6 +6,8 @@ export const sectionSplitPanelSchema = z.object({
   text: i18nStringSchema,
   ctaLabel: i18nStringSchema,
   ctaHref: z.string().optional(),
+  ctaSecondaryLabel: i18nStringSchema,
+  ctaSecondaryHref: z.string().optional(),
   img: z.string().optional(),
   imgAlt: i18nStringSchema,
   mediaPosition: z.enum(["left", "right"]).optional(),
