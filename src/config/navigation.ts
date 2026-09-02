@@ -31,7 +31,10 @@ export const RESERVATION_HREF = `#${RESERVATION_HASH}`
 
 export const SOCIAL_LINKS: readonly NavItem[] = [
   { label: "Instagram", href: "https://www.instagram.com/bistrozurlinde" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/bistrozurlinde/home/",
+  },
   {
     label: "Google Maps",
     href: "https://maps.google.com/?q=Untere+Hauptstrasse+15B,+4665+Oftringen",
