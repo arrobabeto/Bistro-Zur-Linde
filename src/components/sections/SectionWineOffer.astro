@@ -1,0 +1,92 @@
+---
+// SectionWineOffer.astro
+//
+// Numbered 2×2 offer cards (Figma Wine Room 2241:975 — Für Weinliebhaber).
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Für Weinliebhaber" },
+//   "title":   { "de": "Wein erleben, ungezwungen und echt." },
+//   "items": [{
+//     "index": { "de": "I" },
+//     "title": { "de": "Glas zum Essen" },
+//     "text":  { "de": "…" }
+//   }],
+//   "_orbi": { "component": "SectionWineOffer" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Item {
+  index?: I18nString
+  title?: I18nString
+  text?: I18nString
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  items?: Item[]
+  locale: Locale
+}
+
+const { eyebrow, title, items = [], locale } = Astro.props
+const label = translate(eyebrow, locale)
+const heading = translate(title, locale)
+---
+
+<section
+  class="px-6 py-16 md:px-10 lg:px-[7.5rem] lg:py-[7.5rem]"
+  data-testid="section-wine-offer"
+>
+  <div class="mx-auto max-w-[1272px]">
+    {
+      (label || heading) && (
+        <div class="mx-auto mb-12 flex max-w-[800px] flex-col items-center gap-4 text-center lg:mb-16">
+          {label && <p class="eyebrow">{label}</p>}
+          {heading && (
+            <h2 class="font-display text-brand-900 text-[2rem] leading-tight font-semibold lg:text-[3.25rem] lg:leading-[64px]">
+              <CmsText html={heading} />
+            </h2>
+          )}
+        </div>
+      )
+    }
+
+    <ul class="grid gap-8 md:grid-cols-2 lg:gap-8">
+      {
+        items.map((item) => {
+          const index = translate(item.index, locale)
+          const itemTitle = translate(item.title, locale)
+          const text = translate(item.text, locale)
+          return (
+            <li class="border-brand-900 flex flex-col gap-6 rounded-2xl border bg-white p-8 lg:p-10">
+              {index && (
+                <p class="font-display text-brand-900 text-[2rem] leading-[39px] font-semibold">
+                  {index}
+                </p>
+              )}
+              <div class="flex flex-col gap-3">
+                {itemTitle && (
+                  <h3
+                    class:list={[
+                      "font-display text-brand-900 font-semibold",
+                      text ? "text-2xl leading-8" : "text-[1.75rem] leading-8",
+                    ]}
+                  >
+                    {itemTitle}
+                  </h3>
+                )}
+                {text && (
+                  <p class="text-brand-900 text-base leading-6">{text}</p>
+                )}
+              </div>
+            </li>
+          )
+        })
+      }
+    </ul>
+  </div>
+</section>

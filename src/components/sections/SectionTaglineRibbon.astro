@@ -1,0 +1,36 @@
+---
+// SectionTaglineRibbon.astro
+//
+// Full-width display line (Figma 2241:1068 — Tagline Ribbon).
+//
+// CMS JSON:
+// {
+//   "text": { "de": "Auswählen   ·   Entkorken   ·   Erleben" },
+//   "_orbi": { "component": "SectionTaglineRibbon" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  text?: I18nString
+  locale: Locale
+}
+
+const { text, locale } = Astro.props
+const line = translate(text, locale)
+---
+
+{
+  line && (
+    <section
+      class="border-brand-900 bg-brand-50 border-t border-b px-6 py-20 text-center"
+      data-testid="section-tagline-ribbon"
+    >
+      <p class="font-display text-brand-900 text-[2rem] leading-normal font-medium tracking-[4.8px] uppercase">
+        <CmsText html={line} />
+      </p>
+    </section>
+  )
+}

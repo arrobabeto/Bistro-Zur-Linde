@@ -1,0 +1,104 @@
+---
+// SectionWineDetail.astro
+//
+// Photo + heading + body + CTA (Figma 2241:975 — Im Wine Room).
+//
+// CMS JSON:
+// {
+//   "title":    { "de": "Im Wine Room" },
+//   "text":     { "de": "…" },
+//   "ctaLabel": { "de": "Weinkarte ansehen" },
+//   "ctaHref":  "#reservieren",
+//   "img":      "/images/wineroom-interior.jpg",
+//   "_orbi":    { "component": "SectionWineDetail" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  text?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  img?: string
+  imgAlt?: I18nString
+  /** `md` = 48/64 (Zigarrenlounge); default 52/64 (Wine Room). */
+  titleSize?: "default" | "md"
+  locale: Locale
+}
+
+const {
+  eyebrow,
+  title,
+  text,
+  ctaLabel,
+  ctaHref,
+  img,
+  imgAlt,
+  titleSize = "default",
+  locale,
+} = Astro.props
+const label = translate(eyebrow, locale)
+const heading = translate(title, locale)
+const body = translate(text, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section
+  class="px-6 py-16 md:px-10 lg:px-[7.5rem] lg:py-[7.5rem]"
+  data-testid="section-wine-detail"
+>
+  <div
+    class="mx-auto flex max-w-[1272px] flex-col items-center gap-12 lg:flex-row lg:gap-[88px]"
+  >
+    {
+      img && (
+        <img
+          src={img}
+          alt={translate(imgAlt, locale) || heading}
+          class="h-[280px] w-full object-cover lg:h-[680px] lg:w-[580px] lg:shrink-0"
+          width="580"
+          height="680"
+          loading="lazy"
+        />
+      )
+    }
+    <div class="flex max-w-[604px] flex-col gap-7 lg:gap-7">
+      <div class="flex flex-col gap-4">
+        {label && <p class="eyebrow text-left tracking-[0.2em]">{label}</p>}
+        {
+          heading && (
+            <h2
+              class:list={[
+                "font-display text-brand-900 font-semibold",
+                titleSize === "md"
+                  ? "text-[2rem] leading-tight lg:text-[3rem] lg:leading-[64px]"
+                  : "text-[2rem] leading-tight lg:text-[3.25rem] lg:leading-[64px]",
+              ]}
+            >
+              <CmsText html={heading} />
+            </h2>
+          )
+        }
+      </div>
+      {
+        body && (
+          <p class="text-brand-900 text-lg leading-[34px] whitespace-pre-line">
+            <CmsText html={body} />
+          </p>
+        )
+      }
+      {
+        cta && ctaHref && (
+          <a href={ctaHref} class="btn btn-secondary self-start">
+            {cta}
+            <span aria-hidden="true">→</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>

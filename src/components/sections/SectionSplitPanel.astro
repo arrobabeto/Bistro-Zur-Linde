@@ -9,6 +9,8 @@
 //   "text":          { "de": "…" },
 //   "ctaLabel":      { "de": "Speisekarte entdecken" },
 //   "ctaHref":       "/speisekarte",
+//   "ctaSecondaryLabel": { "de": "Getränkekarte ansehen" },
+//   "ctaSecondaryHref":  "",
 //   "img":           "/images/bistro-menu.jpg",
 //   "imgAlt":        { "de": "…" },
 //   "mediaPosition": "left",
@@ -26,6 +28,9 @@ interface Props {
   text?: I18nString
   ctaLabel?: I18nString
   ctaHref?: string
+  ctaSecondaryLabel?: I18nString
+  /** Omit until the drinks menu PDF is ready. */
+  ctaSecondaryHref?: string
   img?: string
   imgAlt?: I18nString
   mediaPosition?: "left" | "right"
@@ -41,6 +46,8 @@ const {
   text,
   ctaLabel,
   ctaHref,
+  ctaSecondaryLabel,
+  ctaSecondaryHref,
   img,
   imgAlt,
   mediaPosition = "left",
@@ -52,6 +59,9 @@ const {
 const heading = translate(title, locale)
 const body = translate(text, locale)
 const cta = translate(ctaLabel, locale)
+const ctaSecondary = translate(ctaSecondaryLabel, locale)
+const showPrimary = Boolean(cta && ctaHref)
+const showSecondary = Boolean(ctaSecondary)
 ---
 
 <section
@@ -97,11 +107,26 @@ const cta = translate(ctaLabel, locale)
         )
       }
       {
-        cta && ctaHref && (
-          <a href={ctaHref} class="btn btn-primary mt-2 self-start">
-            {cta}
-            <span aria-hidden="true">→</span>
-          </a>
+        (showPrimary || showSecondary) && (
+          <div class="mt-2 flex flex-wrap items-center gap-3 self-start">
+            {showPrimary && (
+              <a href={ctaHref} class="btn btn-primary">
+                {cta}
+                <span aria-hidden="true">→</span>
+              </a>
+            )}
+            {showSecondary &&
+              (ctaSecondaryHref ? (
+                <a href={ctaSecondaryHref} class="btn btn-outline-light">
+                  {ctaSecondary}
+                  <span aria-hidden="true">→</span>
+                </a>
+              ) : (
+                <span class="btn btn-outline-light pointer-events-none">
+                  {ctaSecondary}
+                </span>
+              ))}
+          </div>
         )
       }
     </div>

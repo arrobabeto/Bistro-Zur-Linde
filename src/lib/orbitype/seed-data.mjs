@@ -255,6 +255,7 @@ export function buildSeedPages() {
           },
           ctaLabel: { de: "Speisekarte entdecken" },
           ctaHref: MENU_HREF,
+          ctaSecondaryLabel: { de: "Getränkekarte ansehen" },
           img: "/images/bistro-menu.jpg",
           imgAlt: { de: "Angerichteter Teller mit Fleisch, Gemüse und Jus" },
           mediaPosition: "left",
@@ -459,6 +460,228 @@ export function buildSeedPages() {
         {
           title: { de: "Kommen Sie, wie Sie sind." },
           ctaLabel: { de: "Tisch reservieren" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-wine-room",
+      slug: "wine-room",
+      title: {
+        de: "Wine Room",
+      },
+      lead: {
+        de: "Direkt aus dem Wine Room ausgewählt, für Glas, Degustation oder Abend.",
+      },
+      img: "/images/wineroom-hero.jpg",
+      keywords: ["wine room", "wein", "degustation", "oftringen"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          title: { de: "Wein entdecken und\nsich verwöhnen lassen." },
+          lead: {
+            de: "Direkt aus dem Wine Room ausgewählt, für Glas, Degustation oder Abend.",
+          },
+          ctaLabel: { de: "Wine Room anfragen" },
+          ctaHref: RESERVATION_HREF,
+          img: "/images/wineroom-hero.jpg",
+          imgAlt: {
+            de: "Gedeckter Tisch im Wine Room der Linde",
+          },
+          overlayImg: "/images/wineroom-goblet.png",
+          titleWidth: "wide",
+          _orbi: { component: "SectionPageHero" },
+        },
+        {
+          eyebrow: { de: "Für Weinliebhaber" },
+          title: { de: "Wein erleben, ungezwungen und echt." },
+          items: [
+            {
+              index: { de: "I" },
+              title: { de: "Glas zum Essen" },
+              text: {
+                de: "Entdecken Sie unsere monatlich wechselnden Raritäten im offenen Ausschank, die perfekt auf Ruedi Zünds ehrliche Küche abgestimmt sind.",
+              },
+            },
+            {
+              index: { de: "II" },
+              title: { de: "Eine Degustation mit Freunden" },
+              text: {
+                de: "Erleben Sie eine geführte Reise durch ausgewählte Schweizer Winzer und europäische Spitzenweine in der intimen Runde unseres Wine Rooms.",
+              },
+            },
+            {
+              index: { de: "III" },
+              title: { de: "Ein besonderer Tropfen für den Anlass" },
+              text: {
+                de: "Ob Jahrgangswein, Champagner oder Entdeckungstipp — wir verwahren den passenden Schatz in unserem klimatisierten Weinlager für Sie.",
+              },
+            },
+            {
+              index: { de: "IV" },
+              title: { de: "Beratung, wenn Sie Hilfe brauchen" },
+              text: {
+                de: "Unser Team begleitet Sie persönlich und unkompliziert bei der Auswahl Ihrer Flasche — verständlich, leidenschaftlich und ohne Fachjargon.",
+              },
+            },
+          ],
+          _orbi: { component: "SectionWineOffer" },
+        },
+        {
+          title: { de: "Im Wine Room" },
+          text: {
+            de: "Von Schweizer Tropfen aus dem Aargau, Luzern und Wallis bis zu grossen Namen aus Italien, Frankreich und Spanien — dazu Champagner für den besonderen Moment.\nIm offenen Ausschank geniessen Sie auch mal nur ein Glas, ganz ohne gleich eine Flasche zu bestellen.",
+          },
+          ctaLabel: { de: "Weinkarte ansehen" },
+          ctaHref: RESERVATION_HREF,
+          img: "/images/wineroom-interior.jpg",
+          imgAlt: {
+            de: "Innenraum des Wine Rooms mit Holztisch und Weinregalen",
+          },
+          _orbi: { component: "SectionWineDetail" },
+        },
+        {
+          text: { de: "Auswählen   ·   Entkorken   ·   Erleben" },
+          _orbi: { component: "SectionTaglineRibbon" },
+        },
+        {
+          eyebrow: { de: "Eindrücke" },
+          title: { de: "Eindrücke aus der Linde" },
+          tiles: [
+            {
+              img: "/images/wineroom-gallery-1.jpg",
+              imgAlt: { de: "Gedeckter Tisch im Wine Room" },
+            },
+            {
+              img: "/images/wineroom-gallery-2.jpg",
+              imgAlt: { de: "Weingläser und Flaschen" },
+            },
+            {
+              img: "/images/wineroom-gallery-3.jpg",
+              imgAlt: { de: "Atmosphäre im Wine Room" },
+            },
+            {
+              img: "/images/wineroom-gallery-4.jpg",
+              imgAlt: { de: "Impression aus der Linde" },
+              play: true,
+            },
+          ],
+          _orbi: { component: "SectionPhotoGallery" },
+        },
+        {
+          title: { de: "Ihr Wein, unsere Auswahl." },
+          ctaLabel: { de: "Wine Room anfragen" },
+          ctaHref: RESERVATION_HREF,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-zigarrenlounge",
+      slug: "zigarrenlounge",
+      title: {
+        de: "Zigarrenlounge",
+      },
+      lead: {
+        de: "Nach dem Essen noch bleiben — mit einer feinen Zigarre, einem Digestif oder einem Glas Wein.",
+      },
+      img: "/images/zigarren-hero.jpg",
+      keywords: ["zigarrenlounge", "zigarre", "digestif", "oftringen"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          eyebrow: { de: "DIE ZIGARRENLOUNGE" },
+          title: { de: "Verweilen und sich Zeit nehmen." },
+          lead: {
+            de: "Nach dem Essen noch bleiben — mit einer feinen Zigarre, einem Digestif oder einem Glas Wein, in der Zigarrenlounge des Bistro zur Linde.",
+          },
+          ctaLabel: { de: "Platz anfragen" },
+          ctaHref: RESERVATION_HREF,
+          img: "/images/zigarren-hero.jpg",
+          imgAlt: {
+            de: "Zigarrenlounge des Bistro zur Linde mit Ledersesseln",
+          },
+          titleWidth: "xl",
+          _orbi: { component: "SectionPageHero" },
+        },
+        {
+          eyebrow: { de: "FÜR DEN ABEND DANACH" },
+          title: { de: "Vier Gründe, noch zu bleiben." },
+          items: [
+            {
+              index: { de: "I" },
+              title: { de: "Ein Digestif nach dem Essen" },
+            },
+            {
+              index: { de: "II" },
+              title: { de: "Ein Glas Wein mit Freunden" },
+            },
+            {
+              index: { de: "III" },
+              title: { de: "Eine Zigarre in Ruhe geniessen" },
+            },
+            {
+              index: { de: "IV" },
+              title: {
+                de: "Ein Treffen unter Geschäftspartnern, das noch nicht enden muss",
+              },
+            },
+          ],
+          _orbi: { component: "SectionWineOffer" },
+        },
+        {
+          eyebrow: { de: "DIE AUSWAHL" },
+          title: { de: "Handwerkskunst & Leidenschaft" },
+          titleSize: "md",
+          text: {
+            de: "Drei Marken, drei unterschiedliche Handschriften — eine gemeinsame Leidenschaft für traditionelle Handwerkskunst und ausgewählte Zigarren. Von Mitscho's Cigars aus Nicaragua über die Schweizer Prima Cigars bis zu Presidente Cigars aus der Dominikanischen Republik — mild bis kräftig, für jeden Geschmack.",
+          },
+          ctaLabel: { de: "Zigarrenkarte ansehen" },
+          ctaHref: RESERVATION_HREF,
+          img: "/images/zigarren-interior.jpg",
+          imgAlt: {
+            de: "Auswahl an Zigarren und Atmosphäre in der Lounge",
+          },
+          _orbi: { component: "SectionWineDetail" },
+        },
+        {
+          text: { de: "Zünden   ·   Ziehen   ·   Geniessen" },
+          _orbi: { component: "SectionTaglineRibbon" },
+        },
+        {
+          eyebrow: { de: "EINDRÜCKE" },
+          title: { de: "Stunden voller Ruhe und Genuss" },
+          tiles: [
+            {
+              img: "/images/zigarren-gallery-1.jpg",
+              imgAlt: { de: "Sitzecke in der Zigarrenlounge" },
+            },
+            {
+              img: "/images/zigarren-gallery-2.jpg",
+              imgAlt: { de: "Zigarren und Accessoires" },
+            },
+            {
+              img: "/images/zigarren-gallery-3.jpg",
+              imgAlt: { de: "Atmosphäre der Lounge" },
+            },
+            {
+              img: "/images/zigarren-gallery-4.jpg",
+              imgAlt: { de: "Impression aus der Zigarrenlounge" },
+              play: true,
+            },
+          ],
+          _orbi: { component: "SectionPhotoGallery" },
+        },
+        {
+          title: { de: "Der Abend muss noch nicht enden." },
+          ctaLabel: { de: "Platz anfragen" },
           ctaHref: RESERVATION_HREF,
           mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
