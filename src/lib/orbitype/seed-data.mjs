@@ -568,7 +568,6 @@ export function buildSeedPages() {
             {
               img: "/images/wineroom-gallery-4.jpg",
               imgAlt: { de: "Impression aus der Linde" },
-              play: true,
             },
           ],
           _orbi: { component: "SectionPhotoGallery" },
@@ -675,7 +674,6 @@ export function buildSeedPages() {
             {
               img: "/images/zigarren-gallery-4.jpg",
               imgAlt: { de: "Impression aus der Zigarrenlounge" },
-              play: true,
             },
           ],
           _orbi: { component: "SectionPhotoGallery" },
