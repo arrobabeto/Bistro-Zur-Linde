@@ -26,7 +26,7 @@
         "de": "Für besondere anlässe"
       },
       "text": {
-        "de": "Runde Geburtstage. Firmenessen und Weihnachtsfeiern. Vereinsanlässe. Familienfeiern und Apéros.\n<span class=\"font-normal\" style=\"font-weight:400\" data-binflow-style=\"1\">Das Sääli macht daraus einen eigenen Rahmen, abseits vom Bistro-Trubel.</span>"
+        "de": "Runde Geburtstage. Firmenessen und Weihnachtsfeiern. Vereinsanlässe. Familienfeiern und Apéros.\n<span class=\"font-bold\" style=\"font-weight:700\" data-binflow-style=\"1\">Das Sääli macht daraus einen eigenen Rahmen, abseits vom Bistro-Trubel.</span>"
       },
       "img": "/images/blog/edit-01a06117.jpg",
       "imgAlt": {
@@ -37,7 +37,7 @@
         "component": "SectionStory"
       },
       "textStyle": {
-        "fontWeight": 400
+        "fontWeight": 700
       }
     },
     {
