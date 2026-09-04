@@ -13,6 +13,27 @@ test.describe("smoke", () => {
     await expect(page.locator("main > section")).toHaveCount(6)
   })
 
+  test("home room cards link to their pages", async ({ page }) => {
+    await page.goto("/")
+    const rooms = page
+      .locator("section")
+      .filter({ hasText: "Für jeden Anlass die richtige Tür" })
+    await expect(rooms.getByRole("link", { name: "Bistro" })).toHaveAttribute(
+      "href",
+      "/bistro",
+    )
+    await expect(rooms.getByRole("link", { name: "Sääli" })).toHaveAttribute(
+      "href",
+      "/saali",
+    )
+    await expect(
+      rooms.getByRole("link", { name: "Zigarrenlounge" }),
+    ).toHaveAttribute("href", "/zigarrenlounge")
+    await expect(
+      rooms.getByRole("link", { name: "Wine Room" }),
+    ).toHaveAttribute("href", "/wine-room")
+  })
+
   test("unknown slug returns HTTP 404 in mock mode", async ({ page }) => {
     const response = await page.goto("/definitely-not-a-real-page-xyz")
     expect(response?.status()).toBe(404)

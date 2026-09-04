@@ -7,6 +7,7 @@ import { BLOG_HERBSTKARTE_BODY_DE } from "./blog/herbstkarte-body.mjs"
 const now = () => new Date().toISOString()
 
 const RESERVATION_HREF = "#reservieren"
+const INQUIRY_MAILTO = "mailto:reservation@bistrozurlinde.ch"
 
 /** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
 const MENU_ANCHOR = "speisekarte"
@@ -88,6 +89,7 @@ export function buildSeedPages() {
             },
             {
               name: { de: "Zigarrenlounge" },
+              href: "/zigarrenlounge",
               img: "/images/room-zigarrenlounge.jpg",
               imgAlt: {
                 de: "Leder-Sofas und Ledertisch in der Zigarrenlounge",
@@ -95,6 +97,7 @@ export function buildSeedPages() {
             },
             {
               name: { de: "Wine Room" },
+              href: "/wine-room",
               img: "/images/room-wine-room.jpg",
               imgAlt: {
                 de: "Weinraum mit Holztisch und Weinregalen",
@@ -488,7 +491,7 @@ export function buildSeedPages() {
             de: "Direkt aus dem Wine Room ausgewählt, für Glas, Degustation oder Abend.",
           },
           ctaLabel: { de: "Wine Room anfragen" },
-          ctaHref: RESERVATION_HREF,
+          ctaHref: INQUIRY_MAILTO,
           img: "/images/wineroom-hero.jpg",
           imgAlt: {
             de: "Gedeckter Tisch im Wine Room der Linde",
@@ -575,7 +578,7 @@ export function buildSeedPages() {
         {
           title: { de: "Ihr Wein, unsere Auswahl." },
           ctaLabel: { de: "Wine Room anfragen" },
-          ctaHref: RESERVATION_HREF,
+          ctaHref: INQUIRY_MAILTO,
           mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },
@@ -603,7 +606,7 @@ export function buildSeedPages() {
             de: "Nach dem Essen noch bleiben — mit einer feinen Zigarre, einem Digestif oder einem Glas Wein, in der Zigarrenlounge des Bistro zur Linde.",
           },
           ctaLabel: { de: "Platz anfragen" },
-          ctaHref: RESERVATION_HREF,
+          ctaHref: INQUIRY_MAILTO,
           img: "/images/zigarren-hero.jpg",
           imgAlt: {
             de: "Zigarrenlounge des Bistro zur Linde mit Ledersesseln",
@@ -681,7 +684,7 @@ export function buildSeedPages() {
         {
           title: { de: "Der Abend muss noch nicht enden." },
           ctaLabel: { de: "Platz anfragen" },
-          ctaHref: RESERVATION_HREF,
+          ctaHref: INQUIRY_MAILTO,
           mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
         },

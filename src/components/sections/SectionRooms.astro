@@ -8,6 +8,7 @@
 //   "rooms":   [{ "name": { "de": "Bistro" }, "href": "/bistro", "img": "…" }],
 //   "_orbi":   { "component": "SectionRooms" }
 // }
+import { PRIMARY_NAV } from "~/config/navigation"
 import { translate } from "~/lib/i18n"
 import type { I18nString } from "~/types/i18n"
 import type { Locale } from "~/config/locales"
@@ -29,6 +30,12 @@ interface Props {
 const { eyebrow, title, rooms = [], locale } = Astro.props
 
 const boxClass = "block h-[395px] overflow-hidden sm:h-[420px] lg:h-[600px]"
+
+function roomHref(room: Room): string | undefined {
+  if (room.href) return room.href
+  const name = translate(room.name, locale)
+  return PRIMARY_NAV.find((item) => item.label === name)?.href
+}
 ---
 
 <section class="py-section">
@@ -43,51 +50,54 @@ const boxClass = "block h-[395px] overflow-hidden sm:h-[420px] lg:h-[600px]"
 
   <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
     {
-      rooms.map((room) => (
-        <li class="relative">
-          {room.href ? (
-            <a href={room.href} class:list={["group", boxClass]}>
-              {room.img && (
-                <img
-                  src={room.img}
-                  alt={translate(room.imgAlt, locale)}
-                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  width="378"
-                  height="600"
-                  loading="lazy"
+      rooms.map((room) => {
+        const href = roomHref(room)
+        return (
+          <li class="relative">
+            {href ? (
+              <a href={href} class:list={["group", boxClass]}>
+                {room.img && (
+                  <img
+                    src={room.img}
+                    alt={translate(room.imgAlt, locale)}
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    width="378"
+                    height="600"
+                    loading="lazy"
+                  />
+                )}
+                <span
+                  class="bg-brand-900/20 absolute inset-0"
+                  aria-hidden="true"
                 />
-              )}
-              <span
-                class="bg-brand-900/20 absolute inset-0"
-                aria-hidden="true"
-              />
-              <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
-                {translate(room.name, locale)}
-              </span>
-            </a>
-          ) : (
-            <div class={boxClass}>
-              {room.img && (
-                <img
-                  src={room.img}
-                  alt={translate(room.imgAlt, locale)}
-                  class="h-full w-full object-cover"
-                  width="378"
-                  height="600"
-                  loading="lazy"
+                <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
+                  {translate(room.name, locale)}
+                </span>
+              </a>
+            ) : (
+              <div class={boxClass}>
+                {room.img && (
+                  <img
+                    src={room.img}
+                    alt={translate(room.imgAlt, locale)}
+                    class="h-full w-full object-cover"
+                    width="378"
+                    height="600"
+                    loading="lazy"
+                  />
+                )}
+                <span
+                  class="bg-brand-900/20 absolute inset-0"
+                  aria-hidden="true"
                 />
-              )}
-              <span
-                class="bg-brand-900/20 absolute inset-0"
-                aria-hidden="true"
-              />
-              <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
-                {translate(room.name, locale)}
-              </span>
-            </div>
-          )}
-        </li>
-      ))
+                <span class="font-display text-brand-50 absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 text-center text-[2.5rem] leading-12 font-semibold lg:text-[2.5rem]">
+                  {translate(room.name, locale)}
+                </span>
+              </div>
+            )}
+          </li>
+        )
+      })
     }
   </ul>
 </section>
