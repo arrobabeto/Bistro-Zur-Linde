@@ -11,7 +11,7 @@
       "ctaLabel": {
         "de": "Sääli anfragen"
       },
-      "ctaHref": "/kontakt",
+      "ctaHref": "mailto:reservation@bistrozurlinde.ch",
       "align": "start",
       "img": "/images/saali-hero.jpg",
       "imgAlt": {
@@ -67,7 +67,7 @@
       "ctaLabel": {
         "de": "Sääli anfragen"
       },
-      "ctaHref": "/kontakt",
+      "ctaHref": "mailto:reservation@bistrozurlinde.ch",
       "img": "/images/blog/edit-01a058ed.png",
       "imgAlt": {
         "de": "Zwei Gäste stossen mit Rotwein an"

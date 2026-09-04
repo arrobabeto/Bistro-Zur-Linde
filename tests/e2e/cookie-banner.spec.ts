@@ -1,10 +1,18 @@
 import { expect, test, type Page } from "@playwright/test"
 
 const STORAGE_KEY = "bistro-cookie-banner-dismissed-on"
+const COOKIE_NAME = "bistro_cookie_banner_day"
 
 async function clearDismissFlag(page: Page): Promise<void> {
   await page.goto("/")
-  await page.evaluate((key) => localStorage.removeItem(key), STORAGE_KEY)
+  await page.evaluate(
+    ({ storageKey, cookieName }) => {
+      localStorage.removeItem(storageKey)
+      document.cookie = `${cookieName}=; Path=/; Max-Age=0; SameSite=Lax`
+      document.documentElement.removeAttribute("data-cookie-banner-dismissed")
+    },
+    { storageKey: STORAGE_KEY, cookieName: COOKIE_NAME },
+  )
   await page.reload()
 }
 
@@ -26,11 +34,21 @@ test.describe("cookie banner", () => {
     ).toBeVisible()
 
     await banner.getByRole("button", { name: "Verstanden" }).click()
-    await expect(banner).toBeHidden()
+    await expect(banner).toHaveCount(0)
+
+    const stored = await page.evaluate(
+      ({ storageKey, cookieName }) => ({
+        ls: localStorage.getItem(storageKey),
+        cookie: document.cookie.includes(cookieName),
+      }),
+      { storageKey: STORAGE_KEY, cookieName: COOKIE_NAME },
+    )
+    expect(stored.ls).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(stored.cookie).toBe(true)
 
     await page.reload()
     await page.waitForTimeout(2100)
-    await expect(banner).toBeHidden()
+    await expect(page.getByTestId("cookie-banner")).toHaveCount(0)
   })
 
   test("dismisses with Escape and persists for the day", async ({ page }) => {
@@ -41,11 +59,45 @@ test.describe("cookie banner", () => {
     await expect(banner).toBeVisible()
 
     await page.keyboard.press("Escape")
-    await expect(banner).toBeHidden()
+    await expect(banner).toHaveCount(0)
 
     await page.reload()
     await page.waitForTimeout(2100)
-    await expect(banner).toBeHidden()
+    await expect(page.getByTestId("cookie-banner")).toHaveCount(0)
+  })
+
+  test("persists via cookie when localStorage is unavailable", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      const proto = Storage.prototype
+      proto.setItem = () => {
+        throw new Error("blocked")
+      }
+      proto.getItem = () => {
+        throw new Error("blocked")
+      }
+      proto.removeItem = () => {
+        throw new Error("blocked")
+      }
+    })
+
+    await page.goto("/")
+    await page.evaluate((cookieName) => {
+      document.cookie = `${cookieName}=; Path=/; Max-Age=0; SameSite=Lax`
+    }, COOKIE_NAME)
+    await page.reload()
+
+    const banner = page.getByTestId("cookie-banner")
+    await page.waitForTimeout(2100)
+    await expect(banner).toBeVisible()
+
+    await banner.getByRole("button", { name: "Verstanden" }).click()
+    await expect(banner).toHaveCount(0)
+
+    await page.reload()
+    await page.waitForTimeout(2100)
+    await expect(page.getByTestId("cookie-banner")).toHaveCount(0)
   })
 
   test("does not render on non-home pages", async ({ page }) => {
