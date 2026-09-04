@@ -1,10 +1,18 @@
-import { expect, test } from "@playwright/test"
+import { expect, test, type Page } from "@playwright/test"
+
+const STORAGE_KEY = "bistro-cookie-banner-dismissed-on"
+
+async function clearDismissFlag(page: Page): Promise<void> {
+  await page.goto("/")
+  await page.evaluate((key) => localStorage.removeItem(key), STORAGE_KEY)
+  await page.reload()
+}
 
 test.describe("cookie banner", () => {
-  test("shows on home after 2s and dismisses with button or Escape", async ({
+  test("shows on home after 2s and stays dismissed for the day", async ({
     page,
   }) => {
-    await page.goto("/")
+    await clearDismissFlag(page)
     const banner = page.getByTestId("cookie-banner")
     await expect(banner).toBeHidden()
 
@@ -22,9 +30,21 @@ test.describe("cookie banner", () => {
 
     await page.reload()
     await page.waitForTimeout(2100)
+    await expect(banner).toBeHidden()
+  })
+
+  test("dismisses with Escape and persists for the day", async ({ page }) => {
+    await clearDismissFlag(page)
+    const banner = page.getByTestId("cookie-banner")
+
+    await page.waitForTimeout(2100)
     await expect(banner).toBeVisible()
 
     await page.keyboard.press("Escape")
+    await expect(banner).toBeHidden()
+
+    await page.reload()
+    await page.waitForTimeout(2100)
     await expect(banner).toBeHidden()
   })
 
