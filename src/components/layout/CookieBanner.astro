@@ -1,6 +1,6 @@
 ---
 // Cookie consent panel (Figma 2211:973 desktop, 2215:1550 mobile).
-// Home only; shows once per calendar day after dismiss (localStorage).
+// Home only; once per calendar day after dismiss (localStorage + cookie).
 ---
 
 <aside
@@ -43,6 +43,42 @@
     </button>
   </div>
 </aside>
+
+{/* Sync bootstrap: strip the banner before the deferred module can show it. */}
+<script is:inline>
+  ;(function () {
+    const STORAGE_KEY = "bistro-cookie-banner-dismissed-on"
+    const COOKIE_NAME = "bistro_cookie_banner_day"
+    function todayKey() {
+      const now = new Date()
+      const m = String(now.getMonth() + 1).padStart(2, "0")
+      const d = String(now.getDate()).padStart(2, "0")
+      return now.getFullYear() + "-" + m + "-" + d
+    }
+    function readDay() {
+      try {
+        const fromLs = localStorage.getItem(STORAGE_KEY)
+        if (fromLs) return fromLs
+      } catch {
+        /* private / blocked storage */
+      }
+      try {
+        const match = document.cookie.match(
+          new RegExp("(?:^|;\\s*)" + COOKIE_NAME + "=([^;]*)"),
+        )
+        if (match) return decodeURIComponent(match[1])
+      } catch {
+        /* ignore */
+      }
+      return null
+    }
+    if (readDay() === todayKey()) {
+      document.documentElement.setAttribute("data-cookie-banner-dismissed", "1")
+      const el = document.querySelector("[data-cookie-banner]")
+      if (el) el.remove()
+    }
+  })()
+</script>
 
 <script>
   import { initCookieBanner } from "~/scripts/cookie-banner"

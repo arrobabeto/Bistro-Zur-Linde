@@ -10,7 +10,7 @@
 //   "ctaLabel":      { "de": "Speisekarte entdecken" },
 //   "ctaHref":       "/speisekarte",
 //   "ctaSecondaryLabel": { "de": "Getränkekarte ansehen" },
-//   "ctaSecondaryHref":  "",
+//   "ctaSecondaryHref":  "/documents/menu-2026-09-02-77387eee.pdf",
 //   "img":           "/images/bistro-menu.jpg",
 //   "imgAlt":        { "de": "…" },
 //   "mediaPosition": "left",
@@ -29,7 +29,6 @@ interface Props {
   ctaLabel?: I18nString
   ctaHref?: string
   ctaSecondaryLabel?: I18nString
-  /** Omit until the drinks menu PDF is ready. */
   ctaSecondaryHref?: string
   img?: string
   imgAlt?: I18nString
@@ -61,7 +60,7 @@ const body = translate(text, locale)
 const cta = translate(ctaLabel, locale)
 const ctaSecondary = translate(ctaSecondaryLabel, locale)
 const showPrimary = Boolean(cta && ctaHref)
-const showSecondary = Boolean(ctaSecondary)
+const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
 ---
 
 <section
@@ -91,41 +90,38 @@ const showSecondary = Boolean(ctaSecondary)
       panelTone === "muted" ? "bg-brand-500" : "bg-brand-900",
     ]}
   >
-    <div class="flex max-w-[418px] flex-col gap-6">
+    <div class="flex flex-col gap-6">
       {
-        heading && (
-          <h2 class="font-display text-display-lg text-brand-50 font-medium lg:leading-[1.27] lg:whitespace-pre-line">
-            <CmsText html={heading} />
-          </h2>
-        )
-      }
-      {
-        body && (
-          <p class="text-brand-50 text-base leading-[1.67] lg:text-lg">
-            <CmsText html={body} />
-          </p>
+        (heading || body) && (
+          <div class="flex max-w-[418px] flex-col gap-6">
+            {heading && (
+              <h2 class="font-display text-display-lg text-brand-50 font-medium lg:leading-[1.27] lg:whitespace-pre-line">
+                <CmsText html={heading} />
+              </h2>
+            )}
+            {body && (
+              <p class="text-brand-50 text-base leading-[1.67] lg:text-lg">
+                <CmsText html={body} />
+              </p>
+            )}
+          </div>
         )
       }
       {
         (showPrimary || showSecondary) && (
-          <div class="mt-2 flex flex-wrap items-center gap-3 self-start">
+          <div class="mt-2 flex flex-row flex-wrap items-center gap-3">
             {showPrimary && (
-              <a href={ctaHref} class="btn btn-primary">
+              <a href={ctaHref} class="btn btn-primary shrink-0">
                 {cta}
                 <span aria-hidden="true">→</span>
               </a>
             )}
-            {showSecondary &&
-              (ctaSecondaryHref ? (
-                <a href={ctaSecondaryHref} class="btn btn-outline-light">
-                  {ctaSecondary}
-                  <span aria-hidden="true">→</span>
-                </a>
-              ) : (
-                <span class="btn btn-outline-light pointer-events-none">
-                  {ctaSecondary}
-                </span>
-              ))}
+            {showSecondary && (
+              <a href={ctaSecondaryHref} class="btn btn-primary shrink-0">
+                {ctaSecondary}
+                <span aria-hidden="true">→</span>
+              </a>
+            )}
           </div>
         )
       }

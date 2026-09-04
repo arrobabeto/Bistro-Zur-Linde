@@ -12,6 +12,7 @@ const INQUIRY_MAILTO = "mailto:reservation@bistrozurlinde.ch"
 /** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
 const MENU_ANCHOR = "speisekarte"
 const MENU_HREF = `#${MENU_ANCHOR}`
+const DRINKS_MENU_PDF = "/documents/menu-2026-09-02-77387eee.pdf"
 
 export function buildSeedPages() {
   return [
@@ -259,6 +260,7 @@ export function buildSeedPages() {
           ctaLabel: { de: "Speisekarte entdecken" },
           ctaHref: MENU_HREF,
           ctaSecondaryLabel: { de: "Getränkekarte ansehen" },
+          ctaSecondaryHref: DRINKS_MENU_PDF,
           img: "/images/bistro-menu.jpg",
           imgAlt: { de: "Angerichteter Teller mit Fleisch, Gemüse und Jus" },
           mediaPosition: "left",
@@ -417,7 +419,7 @@ export function buildSeedPages() {
             de: "Ob runder Geburtstag, Firmenessen, Vereinsanlass oder Familienfeier — das Sääli ist Ihr eigener Raum in der Linde, ganz für Ihre Gesellschaft.",
           },
           ctaLabel: { de: "Sääli anfragen" },
-          ctaHref: RESERVATION_HREF,
+          ctaHref: INQUIRY_MAILTO,
           align: "start",
           img: "/images/saali-hero.jpg",
           imgAlt: {
@@ -454,7 +456,7 @@ export function buildSeedPages() {
         {
           title: { de: "Ihr Anlass,\nunser Rahmen." },
           ctaLabel: { de: "Sääli anfragen" },
-          ctaHref: RESERVATION_HREF,
+          ctaHref: INQUIRY_MAILTO,
           img: "/images/saali-split.jpg",
           imgAlt: { de: "Ausgewählte Weine vor dem Weinregal" },
           mediaPosition: "left",
