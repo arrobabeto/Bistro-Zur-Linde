@@ -12,6 +12,7 @@ Rules are grouped by concern. Read the relevant file before editing that area.
 - [00-naming](00-meta/00-naming.mdc) — file, folder, and symbol naming
 - [01-structure](00-meta/01-structure.mdc) — directory layout and layer boundaries
 - [02-general-principles](00-meta/02-general-principles.mdc) — KISS, YAGNI, type safety
+- [03-git-shipping-phrases](00-meta/03-git-shipping-phrases.mdc) — Sube cambios / Actualiza cambios
 
 ## Architecture
 

@@ -1,0 +1,18 @@
+---
+description: User phrases Sube cambios and Actualiza cambios for GitHub
+alwaysApply: true
+---
+
+# Git shipping phrases
+
+Remote is **`origin`** (`Bistro-Zur-Linde` only). Work on **`develop`**. Never push to `arrobabeto/bistro`.
+
+## Actualiza cambios
+
+`git fetch origin`. If there is local work, `git stash push -u` first. Merge latest GitHub (`origin/develop`, and `origin/main` into `develop` if main is ahead). Restore the stash. Do not commit, push, or open a PR.
+
+## Sube cambios
+
+1. `git fetch origin` and compare `HEAD` to `origin/develop` and `origin/main`.
+2. **If local is behind GitHub:** preserve local work (`git stash push -u` when the tree is dirty), merge remote commits into `develop` without `reset --hard` or discarding files, restore the stash, then **stop**. Do not commit, push, or open a PR. Tell the user what was pulled, that their local edits were kept, and that they should say **Sube cambios** again when they have reviewed.
+3. **If local is already up to date:** commit current work (if any), push `origin/develop`, open a PR to `main`, merge it, stay on `develop`.
