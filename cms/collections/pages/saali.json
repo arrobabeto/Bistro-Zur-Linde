@@ -12,6 +12,10 @@
         "de": "Sääli anfragen"
       },
       "ctaHref": "mailto:reservation@bistrozurlinde.ch",
+      "ctaSecondaryLabel": {
+        "de": "Speisekarte ansehen"
+      },
+      "ctaSecondaryHref": "https://www.bistrozurlinde.ch/documents/menu-2026-09-03-1f18f1f0.pdf",
       "align": "start",
       "img": "/images/saali-hero.jpg",
       "imgAlt": {
@@ -68,6 +72,10 @@
         "de": "Sääli anfragen"
       },
       "ctaHref": "mailto:reservation@bistrozurlinde.ch",
+      "ctaSecondaryLabel": {
+        "de": "Weinkarte ansehen"
+      },
+      "ctaSecondaryHref": "https://www.bistrozurlinde.ch/documents/menu-2026-09-09-cb150761.pdf",
       "img": "/images/blog/edit-01a058ed.png",
       "imgAlt": {
         "de": "Zwei Gäste stossen mit Rotwein an"

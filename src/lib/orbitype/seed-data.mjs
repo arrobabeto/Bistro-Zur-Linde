@@ -12,7 +12,11 @@ const INQUIRY_MAILTO = "mailto:reservation@bistrozurlinde.ch"
 /** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
 const MENU_ANCHOR = "speisekarte"
 const MENU_HREF = `#${MENU_ANCHOR}`
+const KITCHEN_MENU_PDF =
+  "https://www.bistrozurlinde.ch/documents/menu-2026-09-03-1f18f1f0.pdf"
 const DRINKS_MENU_PDF = "/documents/menu-2026-09-02-77387eee.pdf"
+const WINE_MENU_PDF =
+  "https://www.bistrozurlinde.ch/documents/menu-2026-09-09-cb150761.pdf"
 
 export function buildSeedPages() {
   return [
@@ -420,6 +424,8 @@ export function buildSeedPages() {
           },
           ctaLabel: { de: "Sääli anfragen" },
           ctaHref: INQUIRY_MAILTO,
+          ctaSecondaryLabel: { de: "Speisekarte ansehen" },
+          ctaSecondaryHref: KITCHEN_MENU_PDF,
           align: "start",
           img: "/images/saali-hero.jpg",
           imgAlt: {
@@ -457,6 +463,8 @@ export function buildSeedPages() {
           title: { de: "Ihr Anlass,\nunser Rahmen." },
           ctaLabel: { de: "Sääli anfragen" },
           ctaHref: INQUIRY_MAILTO,
+          ctaSecondaryLabel: { de: "Weinkarte ansehen" },
+          ctaSecondaryHref: WINE_MENU_PDF,
           img: "/images/saali-split.jpg",
           imgAlt: { de: "Ausgewählte Weine vor dem Weinregal" },
           mediaPosition: "left",

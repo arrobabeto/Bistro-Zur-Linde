@@ -117,7 +117,13 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
               </a>
             )}
             {showSecondary && (
-              <a href={ctaSecondaryHref} class="btn btn-primary shrink-0">
+              <a
+                href={ctaSecondaryHref}
+                class:list={[
+                  "btn shrink-0",
+                  panelTone === "muted" ? "btn-outline-light" : "btn-primary",
+                ]}
+              >
                 {ctaSecondary}
                 <span aria-hidden="true">→</span>
               </a>
