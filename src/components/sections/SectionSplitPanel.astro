@@ -109,9 +109,22 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
       }
       {
         (showPrimary || showSecondary) && (
-          <div class="mt-2 flex flex-row flex-wrap items-center gap-3">
+          <div
+            class:list={[
+              "mt-2 gap-3",
+              showPrimary && showSecondary
+                ? "inline-grid max-w-[calc(240px*2+0.75rem)] grid-cols-2"
+                : "flex flex-row flex-wrap items-center",
+            ]}
+          >
             {showPrimary && (
-              <a href={ctaHref} class="btn btn-primary shrink-0">
+              <a
+                href={ctaHref}
+                class:list={[
+                  "btn btn-primary max-w-[240px] shrink-0",
+                  showSecondary && "w-full justify-center",
+                ]}
+              >
                 {cta}
                 <span aria-hidden="true">→</span>
               </a>
@@ -120,7 +133,9 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
               <a
                 href={ctaSecondaryHref}
                 class:list={[
-                  "btn shrink-0",
+                  "btn max-w-[240px] shrink-0 justify-center",
+                  // Size to the primary: zero max-content contribution, stretch to column.
+                  showPrimary && "w-0 min-w-full px-5 lg:px-6",
                   panelTone === "muted" ? "btn-outline-light" : "btn-primary",
                 ]}
               >
