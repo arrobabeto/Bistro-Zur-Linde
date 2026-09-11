@@ -19,5 +19,9 @@ if (!content.includes("cache.set(false)") && !content.includes("no-store")) {
   console.error("FAIL  middleware does not disable API caching")
   process.exit(1)
 }
+if (!content.includes("status === 404") && !content.includes("status==404")) {
+  console.error("FAIL  middleware does not force no-store on 404 responses")
+  process.exit(1)
+}
 
-console.log("ok    middleware API cache guard present")
+console.log("ok    middleware API + 404 cache guards present")

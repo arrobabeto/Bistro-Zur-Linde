@@ -5,6 +5,8 @@ import { defineMiddleware } from "astro:middleware"
  *
  * The `/[...slug]` route rule in astro.config.ts also matches `/api/**`.
  * Removing this file silently makes every API response cacheable.
+ * 404s must also be no-store: hashed `/_astro` misses are otherwise cached
+ * as immutable for a year by the CDN and leave visitors on an unstyled site.
  */
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = context.url.pathname
@@ -16,7 +18,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const response = await next()
 
-  if (isApi) {
+  if (isApi || response.status === 404) {
     response.headers.set("Cache-Control", "no-store")
     response.headers.set("CDN-Cache-Control", "no-store")
     response.headers.set("Vercel-CDN-Cache-Control", "no-store")

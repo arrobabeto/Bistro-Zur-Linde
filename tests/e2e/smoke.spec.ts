@@ -79,6 +79,33 @@ test.describe("smoke", () => {
     }
   })
 
+  test("home CSS is applied (not an unstyled document)", async ({
+    page,
+    request,
+  }) => {
+    const response = await page.goto("/")
+    expect(response?.status()).toBe(200)
+    const html = await page.content()
+    const cssHrefs = [...html.matchAll(/href="([^"]+\.css[^"]*)"/g)].map(
+      (match) => match[1],
+    )
+    if (cssHrefs.length > 0) {
+      for (const href of cssHrefs) {
+        if (!href) continue
+        const css = await request.get(href)
+        expect(css.status(), `CSS ${href}`).toBe(200)
+      }
+    } else {
+      // `astro dev` injects CSS via Vite instead of hashed /_astro links.
+      expect(html).toMatch(/data-vite-dev-id|\.css|--color-brand|@font-face/)
+    }
+    const display = await page
+      .locator("h1")
+      .first()
+      .evaluate((el) => getComputedStyle(el).fontFamily)
+    expect(display.toLowerCase()).not.toMatch(/^serif$|^times/)
+  })
+
   test("sitemap and robots respond", async ({ request }) => {
     const sitemap = await request.get("/sitemap.xml")
     expect(sitemap.status()).toBe(200)

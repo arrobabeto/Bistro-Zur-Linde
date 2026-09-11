@@ -12,7 +12,10 @@ const renderMode = process.env["RENDER_MODE"] === "static" ? "static" : "server"
 export default defineConfig({
   site: process.env["PUBLIC_SITE_URL"] ?? "http://localhost:4321",
   output: renderMode,
-  adapter: vercel(),
+  // Skew Protection must also be enabled in the Vercel project UI. The adapter
+  // then appends `?dpl=` to `/_astro` assets and sends `x-deployment-id` so
+  // old HTML can still resolve previous-deploy files (12h max age in UI).
+  adapter: vercel({ skewProtection: true }),
 
   // Inert under `output: "static"` — prerendered pages never enter the
   // caching pipeline, so this costs nothing in that mode.
@@ -20,13 +23,18 @@ export default defineConfig({
 
   // Every rule sets maxAge: the runtime gate checks `maxAge` and `tags` but
   // never `swr`, so a rule carrying only `swr` emits no headers at all.
+  // Keep `swr` short so post-deploy HTML cannot linger far past asset rotation.
   // The `/[...slug]` catch-all also matches /api/**, which src/middleware.ts
   // guards at runtime. See docs/DEVIATIONS.md D-07.
   routeRules: {
-    "/": { maxAge: 60, swr: 300, tags: ["cms", "page:home"] },
-    "/posts": { maxAge: 120, swr: 300, tags: ["cms", "posts"] },
-    "/posts/[id]/[...slug]": { maxAge: 300, swr: 600, tags: ["cms", "posts"] },
-    "/[...slug]": { maxAge: 300, swr: 600, tags: ["cms", "pages"] },
+    "/": { maxAge: 60, swr: 60, tags: ["cms", "page:home"] },
+    "/posts": { maxAge: 120, swr: 60, tags: ["cms", "posts"] },
+    "/posts/[id]/[...slug]": {
+      maxAge: 300,
+      swr: 60,
+      tags: ["cms", "posts"],
+    },
+    "/[...slug]": { maxAge: 300, swr: 60, tags: ["cms", "pages"] },
   },
 
   vite: { plugins: [tailwindcss()] },
