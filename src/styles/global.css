@@ -280,7 +280,7 @@
   }
 
   .footer-link {
-    @apply enter:text-white text-xl leading-7 whitespace-nowrap text-white/90 transition-colors;
+    @apply enter:text-white text-base leading-7 whitespace-nowrap text-white/90 transition-colors lg:text-xl;
   }
 
   /* Eyebrow label — Inter 16px, uppercase, wide tracking (Figma) */

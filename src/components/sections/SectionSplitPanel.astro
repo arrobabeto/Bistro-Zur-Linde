@@ -113,7 +113,7 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
             class:list={[
               "mt-2 gap-3",
               showPrimary && showSecondary
-                ? "inline-grid max-w-[calc(240px*2+0.75rem)] grid-cols-2"
+                ? "flex max-w-[240px] flex-col lg:inline-grid lg:max-w-[calc(240px*2+0.75rem)] lg:grid-cols-2"
                 : "flex flex-row flex-wrap items-center",
             ]}
           >
@@ -135,7 +135,7 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
                 class:list={[
                   "btn max-w-[240px] shrink-0 justify-center",
                   // Size to the primary: zero max-content contribution, stretch to column.
-                  showPrimary && "w-0 min-w-full px-5 lg:px-6",
+                  showPrimary && "w-full px-5 lg:w-0 lg:min-w-full lg:px-6",
                   panelTone === "muted" ? "btn-outline-light" : "btn-primary",
                 ]}
               >
