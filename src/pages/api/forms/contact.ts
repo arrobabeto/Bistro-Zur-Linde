@@ -1,12 +1,7 @@
 import type { APIRoute } from "astro"
 import { z } from "zod"
-import {
-  MAIL_FROM_EMAIL,
-  MAIL_FROM_NAME,
-  MAIL_TO_EMAIL,
-} from "astro:env/server"
 import { PUBLIC_SITE_NAME } from "astro:env/client"
-import { isEmailConfigured, sendEmail } from "~/lib/email"
+import { getMailConfig, isEmailConfigured, sendEmail } from "~/lib/email"
 import { insertContact } from "~/lib/orbitype/contacts"
 import { clientKey, rateLimit } from "~/lib/rate-limit"
 
@@ -101,15 +96,14 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true, message: "Sent" })
   }
 
-  const to = MAIL_TO_EMAIL
-  const from = MAIL_FROM_EMAIL
+  const { to, from, fromName } = getMailConfig()
   if (!to || !from || !isEmailConfigured()) {
     if (!asJson) return redirectToKontakt(request, "error=1")
     return json(
       {
         ok: false,
         message:
-          "Mail is not configured. Implement EmailProvider and set MAIL_TO_EMAIL / MAIL_FROM_EMAIL.",
+          "Mail is not configured. Set MAIL_API_KEY, MAIL_FROM_EMAIL, and MAIL_TO_EMAIL (verified SendGrid sender).",
       },
       503,
     )
@@ -119,7 +113,7 @@ export const POST: APIRoute = async ({ request }) => {
     await sendEmail({
       to,
       from,
-      fromName: MAIL_FROM_NAME || PUBLIC_SITE_NAME,
+      fromName: fromName || PUBLIC_SITE_NAME,
       subject: `Contact from ${data.salutation} ${data.first_name} ${data.last_name}`,
       text: [
         `Ansprache: ${data.salutation}`,

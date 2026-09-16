@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro"
 import { z } from "zod"
+import { PUBLIC_SITE_NAME } from "astro:env/client"
+import { getMailConfig, isEmailConfigured, sendEmail } from "~/lib/email"
 import { clientKey, rateLimit } from "~/lib/rate-limit"
 
 export const prerender = false
@@ -38,10 +40,30 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.redirect(new URL("/?newsletter=error", request.url), 303)
   }
 
-  // Provider not wired yet — accept the request shape but do not pretend it was sent.
-  console.warn("[newsletter] signup received (provider not configured)")
-  return Response.redirect(
-    new URL("/?newsletter=unavailable", request.url),
-    303,
-  )
+  const { to, from, fromName } = getMailConfig()
+  if (!to || !from || !isEmailConfigured()) {
+    return Response.redirect(
+      new URL("/?newsletter=unavailable", request.url),
+      303,
+    )
+  }
+
+  try {
+    await sendEmail({
+      to,
+      from,
+      fromName: fromName || PUBLIC_SITE_NAME,
+      subject: `Newsletter signup: ${parsed.data.email}`,
+      text: [
+        "New newsletter signup from the website.",
+        "",
+        `Email: ${parsed.data.email}`,
+      ].join("\n"),
+    })
+  } catch (error) {
+    console.error("[newsletter] send failed:", error)
+    return Response.redirect(new URL("/?newsletter=error", request.url), 303)
+  }
+
+  return Response.redirect(new URL("/?newsletter=sent", request.url), 303)
 }
