@@ -7,6 +7,9 @@ import { defineMiddleware } from "astro:middleware"
  * Removing this file silently makes every API response cacheable.
  * 404s must also be no-store: hashed `/_astro` misses are otherwise cached
  * as immutable for a year by the CDN and leave visitors on an unstyled site.
+ *
+ * Response.redirect() exposes immutable headers; mutate a copied Headers
+ * map and return a new Response so form POST 303s do not throw TypeError.
  */
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = context.url.pathname
@@ -16,12 +19,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.cache.set(false)
   }
 
-  const response = await next()
+  const upstream = await next()
+  const headers = new Headers(upstream.headers)
 
-  if (isApi || response.status === 404) {
-    response.headers.set("Cache-Control", "no-store")
-    response.headers.set("CDN-Cache-Control", "no-store")
-    response.headers.set("Vercel-CDN-Cache-Control", "no-store")
+  if (isApi || upstream.status === 404) {
+    headers.set("Cache-Control", "no-store")
+    headers.set("CDN-Cache-Control", "no-store")
+    headers.set("Vercel-CDN-Cache-Control", "no-store")
   }
 
   const vercelEnv = process.env["VERCEL_ENV"]
@@ -31,18 +35,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
     forceNoindex || isApi || (vercelEnv !== undefined && !isProduction)
 
   if (shouldNoindex) {
-    response.headers.set("X-Robots-Tag", "noindex, nofollow")
+    headers.set("X-Robots-Tag", "noindex, nofollow")
   }
 
   if (isProduction) {
-    response.headers.set(
+    headers.set(
       "Strict-Transport-Security",
       "max-age=63072000; includeSubDomains; preload",
     )
   }
 
-  if (!response.headers.has("Content-Security-Policy")) {
-    response.headers.set(
+  if (!headers.has("Content-Security-Policy")) {
+    headers.set(
       "Content-Security-Policy",
       [
         "default-src 'self'",
@@ -59,5 +63,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     )
   }
 
-  return response
+  return new Response(upstream.body, {
+    status: upstream.status,
+    statusText: upstream.statusText,
+    headers,
+  })
 })
