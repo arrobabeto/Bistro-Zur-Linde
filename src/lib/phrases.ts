@@ -27,8 +27,8 @@ export const phrases = {
   search: { en: "Search", de: "Suche" },
   send: { en: "Send", de: "Senden" },
   sent_successfully: {
-    en: "Sent successfully",
-    de: "Erfolgreich gesendet",
+    en: "Thank you for your enquiry.\n\nYour reservation was submitted successfully. We will confirm it as soon as possible.",
+    de: "Vielen Dank für Ihre Anfrage.\n\nIhre Reservierung wurde erfolgreich übermittelt. Wir bestätigen diese so schnell wie möglich.",
   },
   share_content: { en: "Share content", de: "Inhalt teilen" },
   subscribe: { en: "Subscribe", de: "Abonnieren" },

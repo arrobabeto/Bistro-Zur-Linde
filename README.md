@@ -18,7 +18,7 @@ This site is based on the original [Orbitype](https://www.orbitype.com) Astro te
 | `RENDER_MODE=server`                   | Ready                                                      |
 | `RENDER_MODE=static`                   | Ready (pages prerendered; `/api/**` remain serverless)     |
 | E2E without live Orbitype keys         | Ready                                                      |
-| Contact form + email provider          | Stub — wire `EmailProvider` before launch                  |
+| Contact form + email provider          | Ready — SendGrid via `MAIL_*` (verified sender required)   |
 | CDN cache HIT verification             | Needs a Vercel project                                     |
 | Orbitype Workflow → `/api/revalidate`  | Code ready; Workflow not verified end-to-end               |
 | CI (GitHub Actions)                    | See `.github/workflows/ci.yml`                             |
