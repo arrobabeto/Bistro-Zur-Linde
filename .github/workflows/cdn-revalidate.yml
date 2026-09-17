@@ -1,8 +1,7 @@
-name: Revalidate CDN after production deploy
+name: Revalidate CMS tags after production deploy
 
-# Fires when Vercel marks a GitHub deployment as successful.
-# Requires repo secrets: REVALIDATE_SECRET, PRODUCTION_SITE_URL
-# (e.g. https://www.bistrozurlinde.ch).
+# Soft-invalidates Astro cache tags if REVALIDATE_SECRET is set.
+# HTML pages are no-store; this does not fix sticky CSS 404s (Purge CDN).
 
 on:
   deployment_status:

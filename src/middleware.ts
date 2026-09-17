@@ -1,32 +1,29 @@
 import { defineMiddleware } from "astro:middleware"
 
 /**
- * Mandatory cache + robots + baseline security headers.
+ * Cache + robots + baseline security headers.
  *
- * The `/[...slug]` route rule in astro.config.ts also matches `/api/**`.
- * Removing this file silently makes every API response cacheable.
- * 404s must also be no-store: hashed `/_astro` misses are otherwise cached
- * as immutable for a year by the CDN and leave visitors on an unstyled site.
+ * HTML and `/api/**` are no-store so a normal browser refresh after deploy
+ * fetches HTML that points at the current hashed `/_astro/*.css`. Platform
+ * static files (successful `/_astro` 200s) do not pass through this file.
  *
  * Response.redirect() exposes immutable headers; mutate a copied Headers
  * map and return a new Response so form POST 303s do not throw TypeError.
  */
 export const onRequest = defineMiddleware(async (context, next) => {
-  const pathname = context.url.pathname
-  const isApi = pathname.startsWith("/api/")
-
-  if (context.cache.enabled && isApi) {
+  if (context.cache.enabled) {
     context.cache.set(false)
   }
+
+  const pathname = context.url.pathname
+  const isApi = pathname.startsWith("/api/")
 
   const upstream = await next()
   const headers = new Headers(upstream.headers)
 
-  if (isApi || upstream.status === 404) {
-    headers.set("Cache-Control", "no-store")
-    headers.set("CDN-Cache-Control", "no-store")
-    headers.set("Vercel-CDN-Cache-Control", "no-store")
-  }
+  headers.set("Cache-Control", "no-store")
+  headers.set("CDN-Cache-Control", "no-store")
+  headers.set("Vercel-CDN-Cache-Control", "no-store")
 
   const vercelEnv = process.env["VERCEL_ENV"]
   const forceNoindex = process.env["NOINDEX"] === "true"
