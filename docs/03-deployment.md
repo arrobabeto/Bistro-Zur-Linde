@@ -24,40 +24,56 @@ Both modes must pass in CI (`pnpm run build:server` and `pnpm run build:static`)
    - `REVALIDATE_SECRET` if you wire Orbitype Workflows
    - `MAIL_*` once an email provider is implemented in `src/lib/email.ts`
 6. Schema install and seed are **CLI-only**: `pnpm run cms:install` / `pnpm run cms:seed` from an authorized machine. They are not HTTP endpoints.
-7. Optional: add apex → `www` redirects in `vercel.json`.
+7. Apex `bistrozurlinde.ch` **308**s to `www` in `vercel.json` (one browser origin).
 
 ## Caching
 
-`cache: { provider: cacheVercel() }` plus `routeRules` in `astro.config.ts` emit CDN cache headers and tags at **runtime**. A cache hit is served with no function invocation.
+**HTML pages are `no-store`** (`src/middleware.ts`). A normal refresh must fetch HTML that points at the **current** hashed `/_astro/*.css`. That is what the client/PM asked for; a CDN purge does not clear Chrome’s copy of an old document or a CSS **404 + immutable**.
 
-**Deploy skew (unstyled site until hard refresh):** after a new production deploy, cached HTML can briefly reference hashed `/_astro/*.css` files that no longer exist. Vercel then serves those misses as **404 with `max-age=31536000, immutable`**, so visitors stay broken until a hard refresh. Mitigations in this repo:
+Hashed CSS **200** responses are still cached by Vercel (they never pass through Astro middleware). Do not disable that.
 
-1. Short `swr` on page `routeRules` (see `astro.config.ts`).
-2. Middleware forces `no-store` on **404** responses that go through Astro.
-3. `pnpm run cdn:revalidate` soft-invalidates tags `cms`, `pages`, `posts`, `page:home`.
-4. GitHub workflow [`.github/workflows/cdn-revalidate.yml`](../.github/workflows/cdn-revalidate.yml) runs that script when a **Production** deployment succeeds (needs secrets below).
+`cacheVercel()` stays in `astro.config.ts` only so `/api/revalidate` can still run; there are **no** HTML `routeRules` TTLs on this site (see [ADR-0005](adr/0005-native-cdn-cache-over-isr.md)).
 
-**You must also do this in the Vercel / GitHub dashboards:**
+After this change is deployed, tabs that were already unstyled need **one normal refresh** (not hard refresh). Tabs that are never reloaded keep the old DOM in memory.
 
-1. **Skew Protection** — already ON in the UI is good, but Astro also needs `adapter: vercel({ skewProtection: true })` (now in `astro.config.ts`). The gray banner “necessary steps… for your framework” refers to that. Redeploy after this change.
-2. **Purge CDN Cache** once for Production — Skew Protection does **not** clear 404 responses already cached as `immutable` for a year. That purge is what unsticks visitors who already hit a missing CSS file.
-3. Confirm `REVALIDATE_SECRET` in Vercel Production env.
-4. GitHub secrets: `REVALIDATE_SECRET` + `PRODUCTION_SITE_URL` = `https://www.bistrozurlinde.ch` (for the post-deploy revalidate workflow).
+### Why a Purge CDN alone was not enough
 
-Skew Protection alone cannot fix a CSS URL that already returned **404 + `max-age=31536000, immutable`** to a browser or edge; only a purge / hard refresh clears that.
+Purge empties the **edge**. It does not empty the **browser**. F5 will reuse:
 
-After the next production deploy you can also run locally:
+- cached HTML whose `<link>` names a dead CSS hash, or
+- that CSS URL stored as **404 immutable** (~1 year)
+
+Hard refresh bypasses local cache. HTML `no-store` makes F5 behave like “get current HTML”.
+
+### Emergency (sticky `/_astro` 404 still on the edge)
+
+```bash
+npx vercel cache purge --type cdn --yes
+```
+
+Dashboard: project → Caches → Purge CDN (Production). Then F5, not only incognito.
+
+### Checks
+
+```bash
+pnpm run check:asset-links -- --fixture tests/fixtures/asset-links
+pnpm run check:asset-links -- https://www.bistrozurlinde.ch / /bistro /saali
+```
+
+Optional CMS tag invalidate (not the CSS fix):
 
 ```bash
 pnpm run cdn:revalidate https://www.bistrozurlinde.ch
 ```
 
-`@astrojs/vercel` does **not** support `astro preview`, so CDN behaviour cannot be fully exercised locally. After deploy:
+GitHub secrets for that workflow: `REVALIDATE_SECRET`, `PRODUCTION_SITE_URL`.
 
-1. Request a page twice; the second response should show a CDN HIT (Vercel dashboard / response headers).
-2. Confirm `/api/**` responses are never publicly cached (`src/middleware.ts` forces this).
-3. Confirm every page’s stylesheet URL returns **HTTP 200** (not 404).
-4. Set `REVALIDATE_SECRET` and `POST /api/revalidate` with `Authorization: Bearer <secret>` and body `{ "tags": ["page:home"] }` (or `{ "path": "/" }`).
+`@astrojs/vercel` does **not** support `astro preview`. After deploy:
+
+1. HTML `Cache-Control: no-store`.
+2. `/api/**` `no-store`.
+3. Stylesheet href on the page returns **HTTP 200**.
+4. Apex redirects to www.
 
 ## Orbitype Workflow → revalidate
 
@@ -95,11 +111,13 @@ See blueprint §18.4 and [preview-promote.md](preview-promote.md). Minimum:
 - [ ] Unknown slug returns 404; CMS outage returns 503 (not a cached 404)
 - [ ] Sitemap / robots / llms return 200; no localhost in production canonicals
 - [ ] Security headers present; previews are `noindex`
-- [ ] CDN hit on a repeat page request
+- [ ] HTML pages send `Cache-Control: no-store` (normal refresh after deploy)
 - [ ] `/api/**` not cached
-- [ ] Stylesheet URLs on HTML pages return 200 (no sticky CSS 404)
-- [ ] Skew Protection enabled; CDN purged after first rollout of this fix
-- [ ] `cdn-revalidate` workflow secrets set; post-deploy invalidation works
+- [ ] Stylesheet URLs on HTML pages return 200
+- [ ] Apex redirects to `www`
+- [ ] `pnpm run check:asset-links -- --fixture tests/fixtures/asset-links` in CI
+- [ ] Skew Protection enabled in UI + `skewProtection: true` in adapter
+- [ ] Emergency path known: **Purge CDN** if a CSS 404 is already immutable on the edge
 - [ ] Workflow revalidation works (or documented as deferred)
 - [ ] Schema installed via CLI only (`cms:install` / `cms:seed`)
 - [ ] No client / third-party names in the template repo (clones may brand)

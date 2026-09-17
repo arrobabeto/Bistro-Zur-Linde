@@ -2,8 +2,7 @@ import { expect, test } from "@playwright/test"
 
 test.describe("caching", () => {
   test("API probe is never CDN-cached", async ({ request }) => {
-    // Side-effect-free endpoint. Middleware forces cache.set(false) on /api/**
-    // and the route sets no-store headers explicitly.
+    // Side-effect-free endpoint. Middleware forces no-store on HTML and /api/**.
     const response = await request.get("/api/health/cache-probe", {
       failOnStatusCode: false,
     })
@@ -24,9 +23,18 @@ test.describe("caching", () => {
     expect(cacheControl).not.toMatch(/s-maxage=\d+/)
   })
 
-  test("home page renders (CDN hit verified on Vercel post-deploy)", async ({
+  test("home HTML is no-store so a normal refresh can pick up new CSS hashes", async ({
     request,
   }) => {
+    const response = await request.get("/")
+    expect(response.status()).toBe(200)
+    const cacheControl = (
+      response.headers()["cache-control"] ?? ""
+    ).toLowerCase()
+    expect(cacheControl).toMatch(/no-store/)
+  })
+
+  test("home page renders", async ({ request }) => {
     const response = await request.get("/")
     expect(response.status()).toBe(200)
     const body = await response.text()

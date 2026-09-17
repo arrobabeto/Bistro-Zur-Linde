@@ -52,6 +52,7 @@ jobs:
       - run: pnpm run check:docs
       - run: pnpm run check:assets
       - run: pnpm run check:middleware
+      - run: pnpm run check:asset-links -- --fixture tests/fixtures/asset-links
       - run: pnpm run check:no-ddl-in-api
       - run: pnpm run cms:validate
 
