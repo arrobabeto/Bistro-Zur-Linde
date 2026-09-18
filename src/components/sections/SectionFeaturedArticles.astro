@@ -7,7 +7,7 @@
 // CMS JSON:
 // {
 //   "eyebrow": { "de": "Speisekarte ansehen" },
-//   "eyebrowHref": "/documents/menu-2026-08-31-dc98112b.pdf",
+//   "eyebrowHref": "https://www.bistrozurlinde.ch/documents/menu-2026-09-01-47683cfe.pdf",
 //   "slides":  [{
 //     "title":  { "de": "Wo Geschmack entsteht" },
 //     "author": { "de": "Bistro zur Linde" },
@@ -54,7 +54,8 @@ const label = translate(eyebrow, locale)
 const multi = slides.length > 1
 const imgHeight = mediaSize === "tall" ? "lg:h-[658px]" : "lg:h-[560px]"
 const imgH = mediaSize === "tall" ? 658 : 560
-const kitchenMenuPdf = "/documents/menu-2026-08-31-dc98112b.pdf"
+const kitchenMenuPdf =
+  "https://www.bistrozurlinde.ch/documents/menu-2026-09-01-47683cfe.pdf"
 const badgeHref =
   eyebrowHref || (/speisekarte/i.test(label) ? kitchenMenuPdf : undefined)
 const badgeClass =

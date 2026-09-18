@@ -26,11 +26,11 @@ const docHeading = translate(heading, locale)
 const isImpressum = variant === "impressum"
 ---
 
-<section class="container-wide pb-16 lg:pb-24" data-testid="section-legal-body">
+<section class="container-wide pb-12 lg:pb-24" data-testid="section-legal-body">
   <div
     class:list={[
       "mx-auto flex max-w-[1198px] flex-col",
-      isImpressum ? "gap-5" : "gap-8 lg:gap-10",
+      isImpressum ? "gap-4 lg:gap-5" : "gap-6 lg:gap-10",
     ]}
   >
     {

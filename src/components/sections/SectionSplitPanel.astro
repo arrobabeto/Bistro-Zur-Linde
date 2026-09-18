@@ -70,17 +70,21 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
 >
   {
     img && (
-      <img
-        src={img}
-        alt={translate(imgAlt, locale)}
+      <div
         class:list={[
-          "h-[280px] w-full object-cover lg:h-[529px]",
+          "relative h-[280px] overflow-hidden lg:h-auto lg:min-h-[529px]",
           mediaPosition === "right" && "lg:order-last",
         ]}
-        width="764"
-        height="529"
-        loading="lazy"
-      />
+      >
+        <img
+          src={img}
+          alt={translate(imgAlt, locale)}
+          class="absolute inset-0 h-full w-full object-cover"
+          width="764"
+          height="529"
+          loading="lazy"
+        />
+      </div>
     )
   }
 
