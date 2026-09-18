@@ -13,7 +13,7 @@ const INQUIRY_MAILTO = "mailto:reservation@bistrozurlinde.ch"
 const MENU_ANCHOR = "speisekarte"
 const MENU_HREF = `#${MENU_ANCHOR}`
 const KITCHEN_MENU_PDF =
-  "https://www.bistrozurlinde.ch/documents/menu-2026-09-03-1f18f1f0.pdf"
+  "https://www.bistrozurlinde.ch/documents/menu-2026-09-01-47683cfe.pdf"
 const DRINKS_MENU_PDF = "/documents/menu-2026-09-02-77387eee.pdf"
 const WINE_MENU_PDF =
   "https://www.bistrozurlinde.ch/documents/menu-2026-09-09-cb150761.pdf"
@@ -114,9 +114,10 @@ export function buildSeedPages() {
         {
           slides: [
             {
-              img: "/images/promo-1-mobile.jpg",
-              imgDesktop: "/images/promo-1.jpg",
-              imgAlt: { de: "Dachterrasse mit Lounge und Pergola" },
+              img: "/images/promo-2.jpg",
+              imgAlt: {
+                de: "Aussenansicht des Neubaus mit Eingang und Fassade",
+              },
               eyebrow: { de: "Der Ort" },
               title: {
                 de: "Neubau, Terrasse, Umgebung — einzigartig in der Region",
@@ -124,10 +125,9 @@ export function buildSeedPages() {
               href: "/bistro",
             },
             {
-              img: "/images/promo-2.jpg",
-              imgAlt: {
-                de: "Aussenansicht des Neubaus mit Eingang und Fassade",
-              },
+              img: "/images/promo-1-mobile.jpg",
+              imgDesktop: "/images/promo-1.jpg",
+              imgAlt: { de: "Dachterrasse mit Lounge und Pergola" },
             },
             {
               img: "/images/promo-3.jpg",
@@ -153,7 +153,7 @@ export function buildSeedPages() {
               img: "/images/event-eroeffnung-mobile.jpg",
               imgDesktop: "/images/event-eroeffnung-desktop.jpg",
               imgAlt: {
-                de: "Lindenpark-Gebäude bei der Neueröffnung mit Logo und Datum",
+                de: "Neueröffnung Linde Fine Bistro am 27.08.2026 in Küngoldingen mit Gebäudeansicht",
               },
             },
             {
@@ -164,7 +164,8 @@ export function buildSeedPages() {
               },
               ctaLabel: { de: "Mehr erfahren" },
               href: "https://www.zofingertagblatt.ch/aargau/zofingen/rudolf-zuend-startet-im-bistro-zur-linde-neu-durch-ld.4215998",
-              img: "/images/event-interview.jpg",
+              img: "/images/event-interview-mobile.jpg",
+              imgDesktop: "/images/event-interview.jpg",
               imgAlt: {
                 de: "Zeitungsseite zur Baureportage des Lindenparks",
               },
@@ -330,9 +331,9 @@ export function buildSeedPages() {
                 de: "Am 27. August 2026 öffnet das Bistro zur Linde seine Türen und heisst seine Gäste in Küngoldingen herzlich willkommen.",
               },
               img: "/images/event-eroeffnung-mobile.jpg",
-              imgDesktop: "/images/news-card-1.jpg",
+              imgDesktop: "/images/event-eroeffnung-desktop.jpg",
               imgAlt: {
-                de: "Ankündigung der Neueröffnung vor dem Gebäude des Lindenparks",
+                de: "Neueröffnung Linde Fine Bistro am 27.08.2026 in Küngoldingen mit Gebäudeansicht",
               },
             },
             {
@@ -378,7 +379,7 @@ export function buildSeedPages() {
         },
         {
           eyebrow: { de: "Speisekarte ansehen" },
-          eyebrowHref: "/documents/menu-2026-08-31-dc98112b.pdf",
+          eyebrowHref: KITCHEN_MENU_PDF,
           slides: [
             {
               title: { de: "Wo Geschmack entsteht" },
@@ -828,7 +829,6 @@ export function buildSeedPages() {
           _orbi: { component: "SectionLegalHero" },
         },
         {
-          heading: { de: "Impressum" },
           content: { de: IMPRESSUM_BODY_DE },
           variant: "impressum",
           _orbi: { component: "SectionLegalBody" },
