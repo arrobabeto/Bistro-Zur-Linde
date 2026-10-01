@@ -26,8 +26,8 @@ function openingHoursSpecification(): OpeningHoursSpec[] {
     {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "18:00",
-      closes: "23:30",
+      opens: "17:00",
+      closes: "23:00",
     },
     {
       "@type": "OpeningHoursSpecification",

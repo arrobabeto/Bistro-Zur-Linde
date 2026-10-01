@@ -47,7 +47,7 @@ export const CONTACT_PHONE = "+41 62 788 60 69"
 export const CONTACT_EMAIL = "reservation@bistrozurlinde.ch"
 
 export const OPENING_HOURS = [
-  "Mo–Fr: 11:00–14:00 & 18:00–23:30",
+  "Mo–Fr: 11:00–14:00 & 17:00–23:00 Uhr",
   "Sa: 18:00–23:30",
   "So: Geschlossen",
 ]
