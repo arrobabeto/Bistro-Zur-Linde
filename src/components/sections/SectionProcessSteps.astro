@@ -1,0 +1,68 @@
+---
+// SectionProcessSteps.astro
+//
+// Three steps (Figma 2373:1450). Numerals sit beside the rule on small
+// screens and above it from `lg`.
+//
+// CMS JSON:
+// {
+//   "title": { "de": "Weg zu Ihrem Anlass" },
+//   "steps": [{ "numeral": "I", "title": { "de": "Anfragen" }, "text": { "de": "…" } }],
+//   "_orbi": { "component": "SectionProcessSteps" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Step {
+  numeral?: string
+  title?: I18nString
+  text?: I18nString
+}
+
+interface Props {
+  title?: I18nString
+  steps?: Step[]
+  locale: Locale
+}
+
+const { title, steps = [], locale } = Astro.props
+---
+
+<section
+  class="bg-brand-50 px-6 py-16 lg:px-[120px] lg:py-24"
+  data-testid="section-process-steps"
+>
+  <div class="mx-auto flex max-w-[1272px] flex-col gap-10 lg:gap-14">
+    {
+      translate(title, locale) && (
+        <h2 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-center lg:text-[3.25rem]">
+          <CmsText html={translate(title, locale)} />
+        </h2>
+      )
+    }
+
+    <ol class="flex flex-col gap-8 lg:flex-row lg:gap-12">
+      {
+        steps.map((step) => (
+          <li class="flex min-w-0 flex-1 gap-5 lg:flex-col lg:gap-5">
+            {step.numeral && (
+              <p class="font-display text-brand-500 shrink-0 text-[2rem] leading-none lg:text-[2.5rem]">
+                {step.numeral}
+              </p>
+            )}
+            <div class="border-brand-900/20 flex flex-1 flex-col gap-3 border-t pt-5">
+              <h3 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium">
+                {translate(step.title, locale)}
+              </h3>
+              <p class="text-brand-500 text-base leading-6 lg:text-xl lg:leading-[30px]">
+                <CmsText html={translate(step.text, locale)} />
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

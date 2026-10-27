@@ -1,0 +1,95 @@
+---
+// SectionAtmospherePair.astro
+//
+// Terrace and bar side by side (Figma 2373:1431). Stacks on small screens.
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Terrasse & Bar" },
+//   "title": { "de": "Draussen ankommen. Drinnen bleiben." },
+//   "items": [{ "title": { "de": "Terrasse" }, "text": { "de": "…" }, "ctaLabel": { "de": "Terrasse anfragen" }, "href": "/kontakt", "img": "…" }],
+//   "_orbi": { "component": "SectionAtmospherePair" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Atmosphere {
+  title?: I18nString
+  text?: I18nString
+  ctaLabel?: I18nString
+  href?: string
+  img?: string
+  imgAlt?: I18nString
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  items?: Atmosphere[]
+  locale: Locale
+}
+
+const { eyebrow, title, items = [], locale } = Astro.props
+---
+
+<section
+  class="bg-white px-6 py-16 lg:px-[120px] lg:py-[120px]"
+  data-testid="section-atmosphere-pair"
+>
+  <div class="mx-auto flex max-w-[1272px] flex-col gap-10 lg:gap-14">
+    <div class="flex flex-col gap-4">
+      {
+        translate(eyebrow, locale) && (
+          <p class="text-accent-500 text-base leading-6 tracking-[0.3em] uppercase">
+            {translate(eyebrow, locale)}
+          </p>
+        )
+      }
+      {
+        translate(title, locale) && (
+          <h2 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-[3.25rem]">
+            <CmsText html={translate(title, locale)} />
+          </h2>
+        )
+      }
+    </div>
+
+    <ul class="grid gap-10 lg:grid-cols-2 lg:gap-8">
+      {
+        items.map((item, index) => {
+          const cta = translate(item.ctaLabel, locale)
+          return (
+            <li class="flex flex-col items-start gap-6">
+              {item.img && (
+                <img
+                  src={item.img}
+                  alt={translate(item.imgAlt, locale)}
+                  class:list={[
+                    "h-[280px] w-full object-cover lg:h-[420px]",
+                    index === 0 ? "rounded-2xl lg:rounded-3xl" : "rounded-2xl",
+                  ]}
+                  width="620"
+                  height="420"
+                  loading="lazy"
+                />
+              )}
+              <h3 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-[2.5rem]">
+                {translate(item.title, locale)}
+              </h3>
+              <p class="text-brand-500 text-base leading-6 lg:text-xl lg:leading-[30px]">
+                <CmsText html={translate(item.text, locale)} />
+              </p>
+              {cta && item.href && (
+                <a href={item.href} class="btn btn-secondary">
+                  {cta}
+                </a>
+              )}
+            </li>
+          )
+        })
+      }
+    </ul>
+  </div>
+</section>

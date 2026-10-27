@@ -17,8 +17,8 @@ import "~/styles/global.css"
 
 interface Props {
   locale: Locale
-  /** Render the header over the first section instead of above it. */
-  overlayHeader?: boolean
+  /** Render the header over the first section. `"lg"` overlays from desktop only. */
+  overlayHeader?: boolean | "lg"
 }
 
 const { locale, overlayHeader = false } = Astro.props

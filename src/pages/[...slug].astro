@@ -70,9 +70,15 @@ const sections = [
   ...(template?.sections_after ?? []),
 ]
 
-// SectionPageHero is full-bleed and reserves room for the header, so pages
-// opening with it get the overlaid light header instead of the stacked one.
-const overlayHeader = sections[0]?._orbi?.component === "SectionPageHero"
+// Full-bleed heroes reserve room for the header. Events overlays from `lg`
+// only: the mobile frame keeps a solid header above the copy.
+const opening = sections[0]?._orbi?.component
+const overlayHeader =
+  opening === "SectionPageHero"
+    ? true
+    : opening === "SectionEventsHero"
+      ? "lg"
+      : false
 
 if (Astro.cache.enabled) {
   Astro.cache.set({

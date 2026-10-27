@@ -17,6 +17,7 @@ const KITCHEN_MENU_PDF =
 const DRINKS_MENU_PDF = "/documents/menu-2026-09-02-77387eee.pdf"
 const WINE_MENU_PDF =
   "https://www.bistrozurlinde.ch/documents/menu-2026-09-09-cb150761.pdf"
+const EVENT_INQUIRY = "/kontakt?topic=Anlass%20planen#schreiben"
 
 export function buildSeedPages() {
   return [
@@ -780,6 +781,232 @@ export function buildSeedPages() {
           ctaHref: RESERVATION_HREF,
           mark: "/images/logo.svg",
           _orbi: { component: "SectionReservation" },
+        },
+      ],
+    },
+    {
+      id: "seed-events",
+      slug: "events",
+      title: { de: "Events" },
+      lead: {
+        de: "Feiern in der Linde — für jeden Anlass ein guter Rahmen.",
+      },
+      keywords: ["events", "anlass", "feier", "oftringen"],
+      head: {},
+      created_at: now(),
+      updated_at: now(),
+      sections: [
+        {
+          eyebrow: { de: "Events" },
+          title: { de: "Feiern in der" },
+          titleAccent: { de: "Linde." },
+          lead: {
+            de: "Welcher Anlass steht an? Wir finden den passenden Rahmen.",
+          },
+          ctaLabel: { de: "Anlass anfragen" },
+          ctaHref: EVENT_INQUIRY,
+          img: "/images/events/hero.jpg",
+          imgMobile: "/images/events/hero-mobile.jpg",
+          imgAlt: {
+            de: "Gedeckter Tisch im Sääli mit Kerzenlicht",
+          },
+          _orbi: { component: "SectionEventsHero" },
+        },
+        {
+          eyebrow: { de: "Besondere Momente" },
+          title: { de: "Für jeden Anlass ein guter Rahmen." },
+          lead: {
+            de: "Was Sie auch zusammenführt: Wir freuen uns auf Ihre Ideen.",
+          },
+          note: {
+            de: "Die Fotografien zeigen die Atmosphäre der Linde.",
+          },
+          items: [
+            {
+              title: { de: "Runde Geburtstage" },
+              text: {
+                de: "Ein besonderer Geburtstag verdient Zeit für die Menschen, die Ihnen nahestehen. Erzählen Sie uns, wie Sie feiern möchten.",
+              },
+              room: { de: "Passender Raum: Sääli" },
+              roomHref: "/saali",
+              ctaLabel: { de: "Anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/birthday.jpg",
+              imgAlt: { de: "Festlich gedeckter Tisch mit Kerzen" },
+            },
+            {
+              title: { de: "Firmenessen" },
+              text: {
+                de: "Abseits des Arbeitsalltags gemeinsam an einem Tisch sitzen. Wir besprechen mit Ihnen den Rahmen für Ihr Team.",
+              },
+              room: { de: "Passender Raum: Sääli" },
+              roomHref: "/saali",
+              ctaLabel: { de: "Anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/company.jpg",
+              imgAlt: { de: "Gesellschaft an einem langen Esstisch" },
+            },
+            {
+              title: { de: "Weihnachtsfeiern" },
+              text: {
+                de: "Das Jahr gemeinsam ausklingen lassen und auf das Erlebte anstossen. Ihre Vorstellungen sind der Ausgangspunkt für die Planung.",
+              },
+              ctaLabel: { de: "Anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/christmas.jpg",
+              imgAlt: { de: "Gäste an einer festlich gedeckten Tafel" },
+            },
+            {
+              title: { de: "Vereinsanlässe" },
+              text: {
+                de: "Zusammenkommen, sich austauschen und das Vereinsleben geniessen. Wir klären mit Ihnen, was zu Ihrer Runde passt.",
+              },
+              ctaLabel: { de: "Anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/club.jpg",
+              imgAlt: { de: "Runde, die mit Weingläsern anstösst" },
+            },
+            {
+              title: { de: "Familienfeiern" },
+              text: {
+                de: "Zeit füreinander, gute Gespräche und ein gemeinsamer Tisch. Ob ein kleiner oder ein grosser Moment: Wir hören Ihren Wünschen zu.",
+              },
+              ctaLabel: { de: "Anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/family.jpg",
+              imgAlt: { de: "Gast an einem gedeckten Tisch im Gastraum" },
+              objectPosition: "center 60%",
+            },
+            {
+              title: { de: "Apéros" },
+              text: {
+                de: "Ein Glas, ein Gespräch und ein ungezwungener Auftakt. Gemeinsam überlegen wir, wie Ihr Apéro aussehen könnte.",
+              },
+              ctaLabel: { de: "Anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/apero.jpg",
+              imgAlt: { de: "Gläser auf einem Apéro-Tisch" },
+            },
+          ],
+          _orbi: { component: "SectionOccasionCards" },
+        },
+        {
+          title: { de: "Unsere Räume" },
+          lead: { de: "Vier eigene Charaktere. Ein Blick in die Linde." },
+          items: [
+            {
+              name: { de: "Bistro" },
+              href: "/bistro",
+              img: "/images/events/room-bistro.jpg",
+              imgAlt: { de: "Gastraum des Bistros" },
+            },
+            {
+              name: { de: "Sääli" },
+              href: "/saali",
+              img: "/images/events/room-saali.jpg",
+              imgAlt: { de: "Saal mit langer Tafel" },
+            },
+            {
+              name: { de: "Zigarrenlounge" },
+              href: "/zigarrenlounge",
+              img: "/images/events/room-zigarre.jpg",
+              imgAlt: { de: "Sitzecke der Zigarrenlounge" },
+            },
+            {
+              name: { de: "Wine Room" },
+              href: "/wine-room",
+              img: "/images/events/room-wine.jpg",
+              imgAlt: { de: "Weinraum mit Regalen" },
+            },
+          ],
+          _orbi: { component: "SectionRoomStrip" },
+        },
+        {
+          eyebrow: { de: "Terrasse & Bar" },
+          title: { de: "Draussen ankommen. Drinnen bleiben." },
+          items: [
+            {
+              title: { de: "Terrasse" },
+              text: {
+                de: "Unter freiem Himmel zusammensitzen und den Moment geniessen. Gerne besprechen wir, ob die Terrasse zu Ihrem Anlass passt.",
+              },
+              ctaLabel: { de: "Terrasse anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/terrace.jpg",
+              imgAlt: { de: "Terrasse mit Blick in die Landschaft" },
+            },
+            {
+              title: { de: "Bar" },
+              text: {
+                de: "Anstossen, ins Gespräch kommen und den Abend beginnen. Erzählen Sie uns, welchen Rahmen Sie sich für Ihre Runde wünschen.",
+              },
+              ctaLabel: { de: "Bar anfragen" },
+              href: EVENT_INQUIRY,
+              img: "/images/events/bar.jpg",
+              imgAlt: { de: "Cocktail auf der Bar" },
+            },
+          ],
+          _orbi: { component: "SectionAtmospherePair" },
+        },
+        {
+          title: { de: "Weg zu Ihrem Anlass" },
+          steps: [
+            {
+              numeral: "I",
+              title: { de: "Anfragen" },
+              text: {
+                de: "Sie teilen uns Ihren Anlass, das gewünschte Datum und Ihre ersten Ideen mit.",
+              },
+            },
+            {
+              numeral: "II",
+              title: { de: "Abstimmen" },
+              text: {
+                de: "Gemeinsam besprechen wir den Rahmen, das Essen und die Details Ihres Anlasses.",
+              },
+            },
+            {
+              numeral: "III",
+              title: { de: "Feiern" },
+              text: {
+                de: "Wenn alles abgestimmt ist, bleibt Zeit für das Wichtigste: Ihre Gäste und den gemeinsamen Moment.",
+              },
+            },
+          ],
+          _orbi: { component: "SectionProcessSteps" },
+        },
+        {
+          title: { de: "Eindrücke von Anlässen" },
+          lead: {
+            de: "Ein Gefühl für die Linde: Diese Aufnahmen zeigen unsere Räume und ihre Atmosphäre.",
+          },
+          images: [
+            {
+              img: "/images/events/hero.jpg",
+              imgAlt: { de: "Gedeckter Tisch im Sääli" },
+              caption: { de: "Tischkultur in der Linde" },
+            },
+            {
+              img: "/images/events/gallery-wine.jpg",
+              imgAlt: { de: "Blick in die Weinauswahl" },
+              caption: { de: "Ein Blick in die Weinauswahl" },
+            },
+            {
+              img: "/images/events/gallery-detail.jpg",
+              imgAlt: { de: "Atmosphäre im Bistro" },
+              caption: { de: "Atmosphäre im Bistro" },
+            },
+          ],
+          videoTitle: { de: "Ein Anlass in bewegten Bildern" },
+          videoLabel: { de: "Videoplatzhalter" },
+          _orbi: { component: "SectionImpressionGallery" },
+        },
+        {
+          title: { de: "Ihr Anlass, unser Rahmen." },
+          ctaLabel: { de: "Anlass anfragen" },
+          ctaHref: EVENT_INQUIRY,
+          mark: "/images/logo.svg",
+          _orbi: { component: "SectionEventsClose" },
         },
       ],
     },

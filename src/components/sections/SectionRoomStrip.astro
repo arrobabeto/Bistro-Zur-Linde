@@ -1,0 +1,150 @@
+---
+// SectionRoomStrip.astro
+//
+// Four rooms on cream (Figma 2373:1399). Lightbox enlarges the photo;
+// the label is not a link to the room page.
+//
+// CMS JSON:
+// {
+//   "title": { "de": "Unsere Räume" },
+//   "lead": { "de": "…" },
+//   "items": [{ "name": { "de": "Bistro" }, "img": "/images/events/room-bistro.jpg" }],
+//   "_orbi": { "component": "SectionRoomStrip" }
+// }
+import { translate } from "~/lib/i18n"
+import { phrases } from "~/lib/phrases"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Room {
+  name?: I18nString
+  /** Room page. Only the name is a link; the photo stays a lightbox. */
+  href?: string
+  capacity?: I18nString
+  img?: string
+  imgAlt?: I18nString
+}
+
+interface Props {
+  title?: I18nString
+  lead?: I18nString
+  items?: Room[]
+  locale: Locale
+}
+
+const { title, lead, items = [], locale } = Astro.props
+const enlargeLabel = translate(phrases.enlarge_image, locale)
+const closeLabel = translate(phrases.close, locale)
+---
+
+<section
+  class="bg-brand-50 px-6 py-16 lg:px-[120px] lg:py-20"
+  data-testid="section-room-strip"
+>
+  <div class="mx-auto flex max-w-[1272px] flex-col gap-8">
+    {
+      translate(title, locale) && (
+        <h2 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-[3.25rem]">
+          {translate(title, locale)}
+        </h2>
+      )
+    }
+    {
+      translate(lead, locale) && (
+        <p class="text-brand-500 text-base leading-6 lg:text-xl lg:leading-[30px]">
+          {translate(lead, locale)}
+        </p>
+      )
+    }
+
+    <ul class="grid grid-cols-2 gap-x-4 gap-y-7 lg:grid-cols-4 lg:gap-6">
+      {
+        items.map((item) => {
+          const alt = translate(item.imgAlt, locale)
+          const capacity = translate(item.capacity, locale)
+          return (
+            <li class="flex min-w-0 flex-col gap-3">
+              {item.img && (
+                <button
+                  type="button"
+                  data-lightbox-trigger
+                  data-lightbox-alt={alt}
+                  aria-label={enlargeLabel}
+                  class="relative cursor-zoom-in overflow-hidden rounded-2xl text-left"
+                >
+                  <img
+                    src={item.img}
+                    alt={alt}
+                    class="h-[148px] w-full object-cover lg:h-[220px]"
+                    width="294"
+                    height="220"
+                    loading="lazy"
+                  />
+                  <span
+                    class="bg-brand-50 absolute right-3 bottom-3 flex size-8 items-center justify-center rounded-full"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      class="text-brand-900 size-3.5"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                    >
+                      <path
+                        d="M8.5 1.5H12.5V5.5M12.5 1.5L8 6M5.5 12.5H1.5V8.5M1.5 12.5L6 8"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              )}
+              <p class="font-display text-brand-900 text-[22px] leading-[1.15] font-medium break-words lg:text-[28px]">
+                {item.href ? (
+                  <a href={item.href} class="enter:text-accent-500">
+                    {translate(item.name, locale)}
+                  </a>
+                ) : (
+                  translate(item.name, locale)
+                )}
+              </p>
+              {capacity && (
+                <p class="text-brand-500 text-xs leading-normal">{capacity}</p>
+              )}
+            </li>
+          )
+        })
+      }
+    </ul>
+  </div>
+
+  <dialog
+    data-lightbox
+    class="backdrop:bg-brand-900/80 m-auto max-h-[min(100vh-2rem,56rem)] w-[min(100%-2rem,72rem)] border-0 bg-transparent p-0 shadow-none"
+    aria-label={enlargeLabel}
+  >
+    <div class="relative flex items-center justify-center p-2 sm:p-4">
+      <button
+        type="button"
+        data-lightbox-close
+        class="bg-brand-900/70 absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full text-2xl leading-none text-white"
+        aria-label={closeLabel}
+      >
+        ×
+      </button>
+      <img
+        data-lightbox-img
+        src=""
+        alt=""
+        class="max-h-[min(90vh,52rem)] max-w-full object-contain"
+      />
+    </div>
+  </dialog>
+</section>
+
+<script>
+  import { initLightbox } from "~/scripts/lightbox"
+
+  initLightbox()
+</script>

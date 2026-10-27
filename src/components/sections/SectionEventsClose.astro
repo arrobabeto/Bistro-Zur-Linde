@@ -1,0 +1,62 @@
+---
+// SectionEventsClose.astro
+//
+// Closing mark and inquiry (Figma 2373:1490).
+//
+// CMS JSON:
+// {
+//   "title": { "de": "Ihr Anlass, unser Rahmen." },
+//   "ctaLabel": { "de": "Anlass anfragen" },
+//   "ctaHref": "/kontakt?topic=Anlass%20planen#schreiben",
+//   "mark": "/images/logo.svg",
+//   "_orbi": { "component": "SectionEventsClose" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  title?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  mark?: string
+  locale: Locale
+}
+
+const { title, ctaLabel, ctaHref, mark, locale } = Astro.props
+const heading = translate(title, locale)
+const cta = translate(ctaLabel, locale)
+---
+
+<section
+  class="bg-brand-50 flex flex-col items-center gap-6 px-6 py-[72px] text-center lg:gap-7 lg:px-[120px] lg:py-[100px]"
+  data-testid="section-events-close"
+>
+  {
+    mark && (
+      <img
+        src={mark}
+        alt=""
+        class="h-[107px] w-[83px] object-contain"
+        width="83"
+        height="107"
+        loading="lazy"
+      />
+    )
+  }
+  {
+    heading && (
+      <h2 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-[3rem]">
+        <CmsText html={heading} />
+      </h2>
+    )
+  }
+  {
+    cta && ctaHref && (
+      <a href={ctaHref} class="btn btn-ghost !border-brand-900">
+        {cta}
+      </a>
+    )
+  }
+</section>
