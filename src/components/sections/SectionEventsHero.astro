@@ -1,0 +1,133 @@
+---
+// SectionEventsHero.astro
+//
+// Desktop: full-bleed photo with centred cream type (Figma 2373:1341).
+// Mobile: copy first, photo underneath (Figma 2373:1603). The page shell
+// overlays the header from `lg` only.
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Events" },
+//   "title": { "de": "Feiern in der" },
+//   "titleAccent": { "de": "Linde." },
+//   "lead": { "de": "…" },
+//   "ctaLabel": { "de": "Anlass anfragen" },
+//   "ctaHref": "/kontakt?topic=Anlass%20planen#schreiben",
+//   "img": "/images/events/hero.jpg",
+//   "imgMobile": "/images/events/hero-mobile.jpg",
+//   "_orbi": { "component": "SectionEventsHero" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  titleAccent?: I18nString
+  lead?: I18nString
+  ctaLabel?: I18nString
+  ctaHref?: string
+  img?: string
+  imgMobile?: string
+  imgAlt?: I18nString
+  locale: Locale
+}
+
+const {
+  eyebrow,
+  title,
+  titleAccent,
+  lead,
+  ctaLabel,
+  ctaHref,
+  img,
+  imgMobile,
+  imgAlt,
+  locale,
+} = Astro.props
+
+const heading = translate(title, locale)
+const accent = translate(titleAccent, locale)
+const cta = translate(ctaLabel, locale)
+const alt = translate(imgAlt, locale)
+const mobileSrc = imgMobile || img
+---
+
+<section
+  class="relative isolate lg:flex lg:min-h-[792px] lg:items-center lg:justify-center lg:overflow-hidden"
+  data-testid="section-events-hero"
+>
+  {
+    img && (
+      <img
+        src={img}
+        alt={alt}
+        class="absolute inset-0 -z-20 hidden h-full w-full object-cover lg:block"
+        width="1512"
+        height="792"
+      />
+    )
+  }
+  <div class="absolute inset-0 -z-10 hidden bg-black/[0.58] lg:block"></div>
+
+  <div
+    class="flex flex-col gap-[22px] px-6 pt-5 pb-9 lg:items-center lg:gap-7 lg:px-[120px] lg:pt-32 lg:pb-[120px] lg:text-center"
+  >
+    {
+      translate(eyebrow, locale) && (
+        <p class="text-accent-500 lg:text-brand-50 text-base leading-6 tracking-[0.3em] uppercase">
+          {translate(eyebrow, locale)}
+        </p>
+      )
+    }
+    {
+      heading && (
+        <h1 class="font-display text-brand-900 lg:text-brand-50 text-[2.5rem] leading-[46px] font-medium lg:text-[5.125rem] lg:leading-[93px]">
+          <CmsText html={heading} />
+          {accent && (
+            <>
+              {" "}
+              <em class="font-semibold italic">
+                <CmsText html={accent} />
+              </em>
+            </>
+          )}
+        </h1>
+      )
+    }
+    {
+      translate(lead, locale) && (
+        <p class="text-brand-500 lg:text-brand-50 max-w-[710px] text-base leading-7 lg:text-lg lg:leading-[30px]">
+          <CmsText html={translate(lead, locale)} />
+        </p>
+      )
+    }
+    {
+      cta && ctaHref && (
+        <a
+          href={ctaHref}
+          class="btn bg-brand-500 enter:bg-brand-900 lg:bg-brand-50 lg:text-brand-900 lg:enter:bg-white self-start text-white lg:self-center"
+        >
+          {cta}
+          <span class="hidden lg:inline" aria-hidden="true">
+            →
+          </span>
+        </a>
+      )
+    }
+  </div>
+
+  {
+    mobileSrc && (
+      <img
+        src={mobileSrc}
+        alt={alt}
+        class="h-[309px] w-full object-cover lg:hidden"
+        width="375"
+        height="309"
+      />
+    )
+  }
+</section>

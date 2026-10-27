@@ -1,0 +1,133 @@
+---
+// SectionOccasionCards.astro
+//
+// Two-column occasion cards (Figma 2373:1348). Stacks on small screens.
+//
+// CMS JSON:
+// {
+//   "eyebrow": { "de": "Besondere Momente" },
+//   "title": { "de": "Für jeden Anlass ein guter Rahmen." },
+//   "lead": { "de": "…" },
+//   "note": { "de": "Die Fotografien zeigen die Atmosphäre der Linde." },
+//   "items": [{ "title": { "de": "…" }, "text": { "de": "…" }, "room": { "de": "…" }, "ctaLabel": { "de": "Anfragen" }, "href": "/kontakt", "img": "/images/events/birthday.jpg" }],
+//   "_orbi": { "component": "SectionOccasionCards" }
+// }
+import CmsText from "~/components/common/CmsText.astro"
+import { translate } from "~/lib/i18n"
+import type { I18nString } from "~/types/i18n"
+import type { Locale } from "~/config/locales"
+
+interface Occasion {
+  title?: I18nString
+  text?: I18nString
+  room?: I18nString
+  roomHref?: string
+  ctaLabel?: I18nString
+  href?: string
+  img?: string
+  imgAlt?: I18nString
+  /** CSS object-position, used when a portrait photo needs a specific crop. */
+  objectPosition?: string
+}
+
+interface Props {
+  eyebrow?: I18nString
+  title?: I18nString
+  lead?: I18nString
+  note?: I18nString
+  items?: Occasion[]
+  locale: Locale
+}
+
+const { eyebrow, title, lead, note, items = [], locale } = Astro.props
+---
+
+<section
+  class="bg-white px-6 py-16 lg:px-[120px] lg:py-[120px]"
+  data-testid="section-occasion-cards"
+>
+  <div class="mx-auto flex max-w-[1272px] flex-col gap-10 lg:gap-16">
+    <div class="flex flex-col gap-4 lg:items-center lg:text-center">
+      {
+        translate(eyebrow, locale) && (
+          <p class="text-accent-500 text-base leading-6 tracking-[0.3em] uppercase">
+            {translate(eyebrow, locale)}
+          </p>
+        )
+      }
+      {
+        translate(title, locale) && (
+          <h2 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-[3.25rem]">
+            <CmsText html={translate(title, locale)} />
+          </h2>
+        )
+      }
+      {
+        translate(lead, locale) && (
+          <p class="text-brand-500 text-base leading-6 lg:text-xl lg:leading-[30px]">
+            <CmsText html={translate(lead, locale)} />
+          </p>
+        )
+      }
+      {
+        translate(note, locale) && (
+          <p class="text-brand-500 text-xs leading-5">
+            {translate(note, locale)}
+          </p>
+        )
+      }
+    </div>
+
+    <ul class="grid gap-6 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-16">
+      {
+        items.map((item) => {
+          const cta = translate(item.ctaLabel, locale)
+          const room = translate(item.room, locale)
+          return (
+            <li class="flex flex-col gap-6">
+              {item.img && (
+                <img
+                  src={item.img}
+                  alt={translate(item.imgAlt, locale)}
+                  class="h-[280px] w-full rounded-2xl object-cover lg:h-[400px]"
+                  style={
+                    item.objectPosition
+                      ? `object-position: ${item.objectPosition}`
+                      : undefined
+                  }
+                  width="620"
+                  height="400"
+                  loading="lazy"
+                />
+              )}
+              <div class="flex flex-col items-start gap-3.5">
+                <h3 class="font-display text-brand-900 text-[2rem] leading-[1.12] font-medium lg:text-[2.5rem]">
+                  {translate(item.title, locale)}
+                </h3>
+                <p class="text-brand-500 text-base leading-6 lg:text-xl lg:leading-[30px]">
+                  <CmsText html={translate(item.text, locale)} />
+                </p>
+                {room &&
+                  (item.roomHref ? (
+                    <a
+                      href={item.roomHref}
+                      class="text-brand-500 enter:text-accent-500 text-[13px] leading-6"
+                    >
+                      {room}
+                    </a>
+                  ) : (
+                    <p class="text-brand-500 text-[13px] leading-6">{room}</p>
+                  ))}
+                {cta && item.href && (
+                  <a href={item.href} class="btn btn-ghost !border-brand-900">
+                    {cta}
+                  </a>
+                )}
+              </div>
+            </li>
+          )
+        })
+      }
+    </ul>
+  </div>
+</section>

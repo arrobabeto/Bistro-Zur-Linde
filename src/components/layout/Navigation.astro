@@ -7,14 +7,22 @@ import { PRIMARY_NAV, RESERVATION_HREF } from "~/config/navigation"
 
 interface Props {
   locale: Locale
-  /** Lay the header over a full-bleed hero instead of stacking above it. */
-  overlay?: boolean
+  /** Lay the header over a full-bleed hero. `"lg"` overlays from desktop only. */
+  overlay?: boolean | "lg"
 }
 
 const { locale, overlay = false } = Astro.props
+const overlayAll = overlay === true
+const overlayLg = overlay === "lg"
 ---
 
-<header class:list={[overlay ? "absolute inset-x-0 top-0 z-20" : "relative"]}>
+<header
+  class:list={[
+    overlayAll && "absolute inset-x-0 top-0 z-20",
+    overlayLg && "relative lg:absolute lg:inset-x-0 lg:top-0 lg:z-20",
+    !overlayAll && !overlayLg && "relative",
+  ]}
+>
   <nav
     class="container-wide flex items-center gap-3 py-6 lg:gap-6"
     aria-label={translate(phrases.menu, locale)}
@@ -36,7 +44,8 @@ const { locale, overlay = false } = Astro.props
             <a
               class:list={[
                 "nav-link",
-                overlay && "enter:!text-white/70 !text-white",
+                overlayAll && "enter:!text-white/70 !text-white",
+                overlayLg && "lg:enter:!text-white/70 lg:!text-white",
               ]}
               href={item.href}
             >
@@ -65,7 +74,7 @@ const { locale, overlay = false } = Astro.props
         <svg
           class:list={[
             "h-[30.5px] w-[30.5px] group-open:hidden",
-            overlay ? "text-white" : "text-brand-900",
+            overlayAll ? "text-white" : "text-brand-900",
           ]}
           viewBox="0 0 30.502 30.502"
           fill="none"
@@ -86,7 +95,7 @@ const { locale, overlay = false } = Astro.props
         <svg
           class:list={[
             "hidden h-[30.5px] w-[30.5px] group-open:block",
-            overlay ? "text-white" : "text-brand-900",
+            overlayAll ? "text-white" : "text-brand-900",
           ]}
           viewBox="0 0 30.502 30.502"
           fill="none"
