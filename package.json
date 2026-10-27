@@ -26,6 +26,7 @@
     "cms:install": "node scripts/cms/install-schema.mjs",
     "cms:migrate": "node scripts/cms/migrate.mjs",
     "cms:seed": "node scripts/cms/seed.mjs",
+    "cms:sync-seed": "node scripts/cms/sync-seed-pages.mjs",
     "cms:export": "node scripts/cms/export.mjs",
     "cms:rollback": "node scripts/cms/rollback.mjs",
     "test:e2e": "playwright test",
