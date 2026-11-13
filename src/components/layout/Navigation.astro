@@ -3,7 +3,11 @@ import { phrases } from "~/lib/phrases"
 import { translate } from "~/lib/i18n"
 import type { Locale } from "~/config/locales"
 import { siteName } from "~/lib/site"
-import { PRIMARY_NAV, RESERVATION_HREF } from "~/config/navigation"
+import {
+  GIFT_CARD_HREF,
+  PRIMARY_NAV,
+  RESERVATION_HREF,
+} from "~/config/navigation"
 
 interface Props {
   locale: Locale
@@ -56,12 +60,28 @@ const overlayLg = overlay === "lg"
       }
     </ul>
 
-    <a
-      class="btn btn-primary ml-auto shrink-0 !px-7 !py-1 text-[17px] leading-6 font-semibold lg:!px-14 lg:!py-3 lg:text-lg lg:leading-8 lg:font-medium"
-      href={RESERVATION_HREF}
-    >
-      {translate(phrases.reserve_now, locale)}
-    </a>
+    <div class="ml-auto flex shrink-0 items-center gap-2 lg:gap-3">
+      <a
+        class:list={[
+          "btn hidden shrink-0 !px-5 !py-1 text-[17px] leading-6 font-semibold lg:inline-flex lg:!px-8 lg:!py-3 lg:text-lg lg:leading-8 lg:font-medium",
+          overlayAll && "btn-outline-light",
+          overlayLg &&
+            "btn-ghost lg:!border-brand-50 lg:!text-brand-50 lg:enter:!bg-brand-50 lg:enter:!text-brand-900",
+          !overlayAll && !overlayLg && "btn-ghost",
+        ]}
+        href={GIFT_CARD_HREF}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Online-Gutscheine
+      </a>
+      <a
+        class="btn btn-primary shrink-0 !px-7 !py-1 text-[17px] leading-6 font-semibold lg:!px-14 lg:!py-3 lg:text-lg lg:leading-8 lg:font-medium"
+        href={RESERVATION_HREF}
+      >
+        {translate(phrases.reserve_now, locale)}
+      </a>
+    </div>
 
     {
       /* Native disclosure: the zero-client-JS e2e guard forbids a scripted menu */
@@ -126,6 +146,16 @@ const overlayLg = overlay === "lg"
             </li>
           ))
         }
+        <li class="lg:hidden">
+          <a
+            class="nav-link block py-3"
+            href={GIFT_CARD_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Online-Gutscheine
+          </a>
+        </li>
       </ul>
     </details>
   </nav>

@@ -1,7 +1,8 @@
 ---
 // SectionImpressionGallery.astro
 //
-// Asymmetric photo group plus a static video stand-in (Figma 2373:1468).
+// Asymmetric photo group (Figma 2373:1468). The video stand-in is omitted;
+// the lead photo fills the left column height beside the stacked pair.
 // Captions show below `lg`, matching the mobile frame.
 //
 // CMS JSON:
@@ -9,8 +10,8 @@
 //   "title": { "de": "Eindrücke von Anlässen" },
 //   "lead": { "de": "…" },
 //   "images": [{ "img": "…", "caption": { "de": "…" } }],
-//   "videoTitle": { "de": "Ein Anlass in bewegten Bildern" },
-//   "videoLabel": { "de": "Videoplatzhalter" },
+//   "videoTitle": { "de": "…" },
+//   "videoLabel": { "de": "…" },
 //   "_orbi": { "component": "SectionImpressionGallery" }
 // }
 import CmsText from "~/components/common/CmsText.astro"
@@ -28,15 +29,15 @@ interface Props {
   title?: I18nString
   lead?: I18nString
   images?: Shot[]
+  /** Kept for CMS compatibility; not rendered. */
   videoTitle?: I18nString
+  /** Kept for CMS compatibility; not rendered. */
   videoLabel?: I18nString
   locale: Locale
 }
 
-const { title, lead, images = [], videoTitle, videoLabel, locale } = Astro.props
+const { title, lead, images = [], locale } = Astro.props
 const [leadShot, sideShot, detailShot] = images
-const videoHeading = translate(videoTitle, locale)
-const videoNote = translate(videoLabel, locale)
 
 const frame = "w-full rounded-2xl object-cover"
 ---
@@ -63,19 +64,17 @@ const frame = "w-full rounded-2xl object-cover"
       }
     </div>
 
-    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-6">
-      <div
-        class="contents lg:flex lg:w-[58.4%] lg:shrink-0 lg:flex-col lg:gap-6"
-      >
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-6">
+      <div class="contents lg:flex lg:w-[58.4%] lg:shrink-0 lg:flex-col">
         {
           leadShot?.img && (
-            <figure class="order-1 flex flex-col gap-3">
+            <figure class="order-1 flex flex-col gap-3 lg:min-h-0 lg:flex-1">
               <img
                 src={leadShot.img}
                 alt={translate(leadShot.imgAlt, locale)}
-                class:list={[frame, "h-[290px] lg:h-[400px]"]}
+                class:list={[frame, "h-[290px] lg:h-full lg:min-h-0"]}
                 width="744"
-                height="400"
+                height="679"
                 loading="lazy"
               />
               {translate(leadShot.caption, locale) && (
@@ -84,30 +83,6 @@ const frame = "w-full rounded-2xl object-cover"
                 </figcaption>
               )}
             </figure>
-          )
-        }
-        {
-          (videoHeading || videoNote) && (
-            <div class="bg-brand-900 order-4 flex h-[230px] flex-col items-center justify-center gap-5 rounded-2xl px-6 text-center lg:h-[260px]">
-              <span
-                class="border-brand-50 flex size-16 items-center justify-center rounded-full border"
-                aria-hidden="true"
-              >
-                <svg class="text-brand-50 size-[22px]" viewBox="0 0 22 22">
-                  <path d="M8 5.5v11l9-5.5-9-5.5z" fill="currentColor" />
-                </svg>
-              </span>
-              {videoHeading && (
-                <p class="font-display text-brand-50 text-2xl leading-normal">
-                  {videoHeading}
-                </p>
-              )}
-              {videoNote && (
-                <p class="text-brand-50 text-xs tracking-[0.1em] uppercase">
-                  {videoNote}
-                </p>
-              )}
-            </div>
           )
         }
       </div>
