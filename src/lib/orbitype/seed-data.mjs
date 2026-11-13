@@ -51,6 +51,9 @@ export function buildSeedPages() {
           },
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
+          ctaSecondaryLabel: { de: "Speisekarte ansehen" },
+          ctaSecondaryHref:
+            "https://www.bistrozurlinde.ch/documents/menu-2026-11-02-1505e91b.pdf",
           img: "/images/hero.jpg",
           imgAlt: {
             de: "Gäste im hellen Gastraum des Bistro zur Linde mit Blick ins Grüne",

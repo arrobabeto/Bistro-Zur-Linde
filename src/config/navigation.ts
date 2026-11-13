@@ -30,6 +30,9 @@ import { RESERVATION_HASH } from "~/config/opentable"
 /** Opens the OpenTable reservation dialog (see ReservationDialog). */
 export const RESERVATION_HREF = `#${RESERVATION_HASH}`
 
+export const GIFT_CARD_HREF =
+  "https://mylightspeed.app/giftcard/12eaaad6-1f90-4516-ab15-5f990db4039f/menu"
+
 export const SOCIAL_LINKS: readonly NavItem[] = [
   { label: "Instagram", href: "https://www.instagram.com/bistrozurlinde" },
   {
