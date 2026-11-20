@@ -11,6 +11,7 @@ import {
   FOOTER_LEGAL,
   FOOTER_MENU,
   OPENING_HOURS,
+  OPENING_HOURS_EVENTS_NOTE,
   KITCHEN_HOURS,
   SOCIAL_LINKS,
 } from "~/config/navigation"
@@ -78,8 +79,23 @@ const year = new Date().getFullYear()
             <h2 class="font-display text-2xl leading-7 font-semibold">
               Öffnungszeiten
             </h2>
-            <p class="text-[17px] leading-7 font-light whitespace-pre-line">
-              {OPENING_HOURS.join("\n")}
+            <p class="text-[17px] leading-7 font-light">
+              {
+                OPENING_HOURS.slice(0, -1).map((line) => (
+                  <span class="block">{line}</span>
+                ))
+              }
+              <span
+                class="flex flex-wrap items-baseline justify-center gap-x-2 lg:justify-start"
+              >
+                <span>{OPENING_HOURS.at(-1)}</span>
+                <a
+                  class="enter:decoration-white underline decoration-white/50 underline-offset-2 transition-colors"
+                  href={`mailto:${CONTACT_EMAIL}`}
+                >
+                  {OPENING_HOURS_EVENTS_NOTE}
+                </a>
+              </span>
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 lg:items-start">
