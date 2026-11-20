@@ -56,6 +56,9 @@ export const OPENING_HOURS = [
   "So: Geschlossen",
 ]
 
+/** Shown next to Sunday hours in the footer; mailto uses CONTACT_EMAIL. */
+export const OPENING_HOURS_EVENTS_NOTE = "Events auf Anfrage"
+
 export const KITCHEN_HOURS = [
   "Mo–Fr: 11:30–13:30 & 18:00–22:00",
   "Sa: 18:00–22:00",
