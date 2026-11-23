@@ -9,12 +9,10 @@ const now = () => new Date().toISOString()
 const RESERVATION_HREF = "#reservieren"
 const INQUIRY_MAILTO = "mailto:reservation@bistrozurlinde.ch"
 
-/** Both "Speisekarte" buttons on /bistro scroll to the menu panel. */
+/** Every "Speisekarte ansehen" / "Speisekarte entdecken" link opens this PDF. */
 const MENU_ANCHOR = "speisekarte"
-const MENU_HREF = `#${MENU_ANCHOR}`
-const KITCHEN_MENU_PDF =
-  "https://www.bistrozurlinde.ch/documents/menu-2026-09-01-47683cfe.pdf"
-const DRINKS_MENU_PDF = "/documents/menu-2026-09-02-77387eee.pdf"
+const MENU_PDF = "/documents/menu-2026-11-20-ad218ea0.pdf"
+const DRINKS_MENU_PDF = "/documents/menu-2026-11-23-e4740463.pdf"
 const WINE_MENU_PDF =
   "https://www.bistrozurlinde.ch/documents/menu-2026-09-09-cb150761.pdf"
 const EVENT_INQUIRY = "/kontakt?topic=Anlass%20planen#schreiben"
@@ -52,8 +50,7 @@ export function buildSeedPages() {
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
           ctaSecondaryLabel: { de: "Speisekarte ansehen" },
-          ctaSecondaryHref:
-            "https://www.bistrozurlinde.ch/documents/menu-2026-11-02-1505e91b.pdf",
+          ctaSecondaryHref: MENU_PDF,
           img: "/images/hero.jpg",
           imgAlt: {
             de: "Gäste im hellen Gastraum des Bistro zur Linde mit Blick ins Grüne",
@@ -228,7 +225,7 @@ export function buildSeedPages() {
           ctaLabel: { de: "Tisch reservieren" },
           ctaHref: RESERVATION_HREF,
           ctaSecondaryLabel: { de: "Speisekarte ansehen" },
-          ctaSecondaryHref: MENU_HREF,
+          ctaSecondaryHref: MENU_PDF,
           img: "/images/bistro-hero.jpg",
           imgAlt: {
             de: "Gedeckte Tische vor dem beleuchteten Weinregal im Bistro zur Linde",
@@ -267,7 +264,7 @@ export function buildSeedPages() {
             de: "Saisonal, mit frischen Produkten, vom Tagesmenü bis zum sorgfältig komponierten Abendessen. Die Speisekarte inklusive Preisen finden Sie direkt hier.",
           },
           ctaLabel: { de: "Speisekarte entdecken" },
-          ctaHref: MENU_HREF,
+          ctaHref: MENU_PDF,
           ctaSecondaryLabel: { de: "Getränkekarte ansehen" },
           ctaSecondaryHref: DRINKS_MENU_PDF,
           img: "/images/bistro-menu.jpg",
@@ -383,7 +380,7 @@ export function buildSeedPages() {
         },
         {
           eyebrow: { de: "Speisekarte ansehen" },
-          eyebrowHref: KITCHEN_MENU_PDF,
+          eyebrowHref: MENU_PDF,
           slides: [
             {
               title: { de: "Wo Geschmack entsteht" },
@@ -430,7 +427,7 @@ export function buildSeedPages() {
           ctaLabel: { de: "Sääli anfragen" },
           ctaHref: INQUIRY_MAILTO,
           ctaSecondaryLabel: { de: "Speisekarte ansehen" },
-          ctaSecondaryHref: KITCHEN_MENU_PDF,
+          ctaSecondaryHref: MENU_PDF,
           align: "start",
           img: "/images/saali-hero.jpg",
           imgAlt: {
@@ -732,7 +729,7 @@ export function buildSeedPages() {
           },
           middleLabel: { de: "Öffnungszeiten" },
           middleText: {
-            de: "Mo–Fr: 11:00–14:00 & 17:00–23:00 Uhr\nSa: 17:00–23:30\nSo: Geschlossen",
+            de: `Mo–Fr: 11:00–14:00 & 17:00–23:00 Uhr\nSa: 17:00–23:30\nSo: Geschlossen\n<a href="${INQUIRY_MAILTO}" class="underline underline-offset-2">Events auf Anfrage</a>`,
           },
           rightLabel: { de: "Küche" },
           rightText: {

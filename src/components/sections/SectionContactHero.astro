@@ -115,9 +115,13 @@ const dividerClass = "bg-brand-900/20 hidden h-40 w-px shrink-0 sm:block"
                 <div class={columnClass}>
                   {column.label && <h2 class={headingClass}>{column.label}</h2>}
                   {column.text && (
-                    <p class={bodyClass}>
+                    <p
+                      class={`${bodyClass} [&_a]:underline [&_a]:underline-offset-2`}
+                    >
                       {column.text.split("\n").map((line) => (
-                        <span class="block whitespace-nowrap">{line}</span>
+                        <span class="block whitespace-nowrap">
+                          <CmsText html={line} />
+                        </span>
                       ))}
                     </p>
                   )}

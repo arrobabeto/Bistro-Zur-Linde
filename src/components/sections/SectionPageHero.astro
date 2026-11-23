@@ -68,6 +68,7 @@ const heading = translate(title, locale)
 const accent = translate(titleAccent, locale)
 const cta = translate(ctaLabel, locale)
 const ctaSecondary = translate(ctaSecondaryLabel, locale)
+const secondaryFile = ctaSecondaryHref?.endsWith(".pdf") === true
 const inset = align === "start"
 const titleMax = inset
   ? "max-w-[831px]"
@@ -181,7 +182,13 @@ const titleMax = inset
       }
       {
         ctaSecondary && ctaSecondaryHref && (
-          <a href={ctaSecondaryHref} class="btn btn-outline-light">
+          <a
+            href={ctaSecondaryHref}
+            class="btn btn-outline-light"
+            {...(secondaryFile
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+          >
             {ctaSecondary}
             <span aria-hidden="true">→</span>
           </a>

@@ -7,7 +7,7 @@
 // CMS JSON:
 // {
 //   "eyebrow": { "de": "Speisekarte ansehen" },
-//   "eyebrowHref": "https://www.bistrozurlinde.ch/documents/menu-2026-09-01-47683cfe.pdf",
+//   "eyebrowHref": "/documents/menu-2026-11-20-ad218ea0.pdf",
 //   "slides":  [{
 //     "title":  { "de": "Wo Geschmack entsteht" },
 //     "author": { "de": "Bistro zur Linde" },
@@ -54,10 +54,9 @@ const label = translate(eyebrow, locale)
 const multi = slides.length > 1
 const imgHeight = mediaSize === "tall" ? "lg:h-[658px]" : "lg:h-[560px]"
 const imgH = mediaSize === "tall" ? 658 : 560
-const kitchenMenuPdf =
-  "https://www.bistrozurlinde.ch/documents/menu-2026-09-01-47683cfe.pdf"
+const menuPdf = "/documents/menu-2026-11-20-ad218ea0.pdf"
 const badgeHref =
-  eyebrowHref || (/speisekarte/i.test(label) ? kitchenMenuPdf : undefined)
+  eyebrowHref || (/speisekarte/i.test(label) ? menuPdf : undefined)
 const badgeClass =
   "bg-brand-50 text-brand-900 absolute top-5 left-1/2 z-10 max-w-[min(100%-2rem,20rem)] -translate-x-1/2 px-3 py-2 text-center text-xs leading-5 tracking-[0.12em] uppercase transition-opacity enter:opacity-80 lg:top-10 lg:px-5 lg:py-3 lg:text-base lg:leading-6 lg:tracking-[0.2em]"
 const badgeOpensFile = Boolean(
