@@ -24,7 +24,7 @@
         "de": "Öffnungszeiten"
       },
       "middleText": {
-        "de": "Mo–Fr: 11:00–14:00 & 17:00–23:00 Uhr\nSa: 17:00–23:30\nSo: Geschlossen"
+        "de": "Mo–Fr: 11:00–14:00 & 17:00–23:00 Uhr\nSa: 17:00–23:30\nSo: Geschlossen\n<a href=\"mailto:reservation@bistrozurlinde.ch\" class=\"underline underline-offset-2\">Events auf Anfrage</a>"
       },
       "rightLabel": {
         "de": "Küche"

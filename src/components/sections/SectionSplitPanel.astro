@@ -10,7 +10,7 @@
 //   "ctaLabel":      { "de": "Speisekarte entdecken" },
 //   "ctaHref":       "/speisekarte",
 //   "ctaSecondaryLabel": { "de": "Getränkekarte ansehen" },
-//   "ctaSecondaryHref":  "/documents/menu-2026-09-02-77387eee.pdf",
+//   "ctaSecondaryHref":  "/documents/menu-2026-11-23-e4740463.pdf",
 //   "img":           "/images/bistro-menu.jpg",
 //   "imgAlt":        { "de": "…" },
 //   "mediaPosition": "left",
@@ -61,6 +61,10 @@ const cta = translate(ctaLabel, locale)
 const ctaSecondary = translate(ctaSecondaryLabel, locale)
 const showPrimary = Boolean(cta && ctaHref)
 const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
+const fileAttrs = (href: string | undefined) =>
+  href?.endsWith(".pdf") === true
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {}
 ---
 
 <section
@@ -124,6 +128,7 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
             {showPrimary && (
               <a
                 href={ctaHref}
+                {...fileAttrs(ctaHref)}
                 class:list={[
                   "btn btn-primary shrink-0 justify-center !px-6 !py-3 whitespace-nowrap lg:!px-8",
                   showSecondary && "min-h-[3.5rem] w-full sm:w-auto sm:flex-1",
@@ -136,6 +141,7 @@ const showSecondary = Boolean(ctaSecondary && ctaSecondaryHref)
             {showSecondary && (
               <a
                 href={ctaSecondaryHref}
+                {...fileAttrs(ctaSecondaryHref)}
                 class:list={[
                   "btn shrink-0 justify-center !px-6 !py-3 whitespace-nowrap lg:!px-8",
                   showPrimary && "min-h-[3.5rem] w-full sm:w-auto sm:flex-1",
